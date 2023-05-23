@@ -29,23 +29,23 @@ contract LibExperienceTest is MudV2Test {
     }
   }
   function testGetExp() public {
-  LibExperience.initExp(targetEntity);
-  assertTrue(LibExperience.hasExp(targetEntity));
+    LibExperience.initExp(targetEntity);
+    assertTrue(LibExperience.hasExp(targetEntity));
 
-  uint32[PStat_length] memory addExp = [uint32(1), 1, 1];
-  LibExperience.increaseExp(targetEntity, addExp);
+    uint32[PStat_length] memory addExp = [uint32(1), 1, 1];
+    LibExperience.increaseExp(targetEntity, addExp);
 
-  uint32[PStat_length] memory exp = LibExperience.getExp(targetEntity);
-  for (uint256 i; i < exp.length; i++) {
-    assertEq(exp[i], 1);
-  }
+    uint32[PStat_length] memory exp = LibExperience.getExp(targetEntity);
+    for (uint256 i; i < exp.length; i++) {
+      assertEq(exp[i], 1);
+    }
 }
 
   function testHasExp() public {
-  assertFalse(LibExperience.hasExp(targetEntity));
+    assertFalse(LibExperience.hasExp(targetEntity));
 
-  LibExperience.initExp(targetEntity);
-  assertTrue(LibExperience.hasExp(targetEntity));
+    LibExperience.initExp(targetEntity);
+    assertTrue(LibExperience.hasExp(targetEntity));
 }
 
 function testSetExp() public {
