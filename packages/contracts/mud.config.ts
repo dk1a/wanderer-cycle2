@@ -52,6 +52,14 @@ export default mudConfig({
       ...entityKey,
       schema: arrayPStat
     },
+    LifeCurrent: {
+      ...entityKey,
+      schema: "uint32",
+    },
+    ManaCurrent: {
+      ...entityKey,
+      schema: "uint32",
+    },
   },
   modules: [
     {

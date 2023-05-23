@@ -5,3 +5,5 @@ pragma solidity >=0.8.0;
 
 import { Counter, CounterTableId } from "./tables/Counter.sol";
 import { Experience, ExperienceTableId } from "./tables/Experience.sol";
+import { LifeCurrent, LifeCurrentTableId } from "./tables/LifeCurrent.sol";
+import { ManaCurrent, ManaCurrentTableId } from "./tables/ManaCurrent.sol";
