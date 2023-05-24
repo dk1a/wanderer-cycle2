@@ -79,14 +79,13 @@ contract LibExperienceTest is MudV2Test {
     }
   }
 
-  function testIsMaxLevel() public {
+  function testMaxLevel() public {
     LibExperience.initExp(targetEntity);
-    // assertFalse(LibExperience.isMaxLevel(targetEntity));
 
     // Set the experience to the maximum level
-    uint32[PStat_length] memory maxExp = [uint32(type(uint8).max), type(uint8).max, type(uint8).max];
+    uint32[PStat_length] memory maxExp = [type(uint32).max, type(uint32).max, type(uint32).max];
     Experience.set(targetEntity, maxExp);
 
-    assertLe(LibExperience.getAggregateLevel(targetEntity, maxExp), 16);
+    assertEq(LibExperience.getAggregateLevel(targetEntity, maxExp), 16);
   }
 }
