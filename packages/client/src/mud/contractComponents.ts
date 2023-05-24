@@ -35,5 +35,35 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    LifeCurrent: (() => {
+      const tableId = new TableId("", "LifeCurrent");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    ManaCurrent: (() => {
+      const tableId = new TableId("", "ManaCurrent");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
   };
 }
