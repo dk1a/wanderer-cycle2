@@ -63,7 +63,6 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function testMaxLevel() public {
-
     LibExperience.initExp(targetEntity);
 
     // Set the experience to the maximum level
