@@ -6,6 +6,8 @@ artifacts/
 abi/
 types/
 broadcast/
+.idea/
+.DS_Store
 
 # Ignore MUD deploy artifacts
 deploys/**/*.json
