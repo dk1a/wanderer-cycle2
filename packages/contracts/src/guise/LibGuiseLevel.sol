@@ -12,8 +12,6 @@ library LibGuiseLevel {
   /// @dev Get target's aggregate level using its guise's level multipliers.
   /// (aggregate level means all primary stats aggregated together)
   function getAggregateLevel(bytes32 targetEntity) internal view returns (uint32) {
-    uint32[PStat_length] memory exp = LibExperience.getPStats(targetEntity);
-
     uint256 guiseProtoEntity = ActiveGuise.get(targetEntity);
     uint32[PStat_length] memory levelMul = GuisePrototype.get(bytes32(guiseProtoEntity));
     return LibExperience.getAggregateLevel(targetEntity, levelMul);
