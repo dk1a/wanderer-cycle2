@@ -34,7 +34,7 @@ contract LibExperienceTest is MudV2Test {
     }
   }
 
-  function testSetExp() public {
+  function testGetExp() public {
     uint32[PStat_length] memory exp = [uint32(10), 20, 30];
     Experience.set(targetEntity, exp);
 
