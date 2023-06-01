@@ -8,6 +8,7 @@ import { Experience, ExperienceTableId } from "../src/codegen/Tables.sol";
 import { ActiveGuise, ActiveGuiseTableId } from "../src/codegen/Tables.sol";
 import { GuisePrototype, GuisePrototypeTableId } from "../src/codegen/Tables.sol";
 import { PStat_length } from "../src/CustomTypes.sol";
+import "forge-std/console.sol";
 
 contract LibGuiseLevelTest is MudV2Test {
   bytes32 internal targetEntity = keccak256("targetEntity");
@@ -22,21 +23,29 @@ contract LibGuiseLevelTest is MudV2Test {
     LibExperience.initExp(targetEntity);
     assertTrue(LibExperience.hasExp(targetEntity));
 
+    // Add exp
     uint32[PStat_length] memory addExp = [uint32(1), 1, 1];
     LibExperience.increaseExp(targetEntity, addExp);
 
+    //Add guise and set levelmul
+    uint256 guiseProtoEntity = ActiveGuise.get(targetEntity);
     uint32[PStat_length] memory levelMul = [uint32(2), 2, 2];
+    GuisePrototype.set(bytes32(guiseProtoEntity), levelMul);
 
-    uint32 aggregateLevel = LibGuiseLevel.getAggregateLevel(targetEntity);
+    uint32 aggregateLevel = LibGuiseLevel.getAggregateLevel(bytes32(targetEntity));
     assertEq(aggregateLevel, 6); // expected level is 6 (2*1 + 2*1 + 2*1)
   }
 
   function testMultiplyExperience() public {
+    LibExperience.initExp(targetEntity);
+    assertTrue(LibExperience.hasExp(targetEntity));
+
     uint32[PStat_length] memory addExp = [uint32(1), 1, 1];
     LibExperience.increaseExp(targetEntity, addExp);
 
+    uint256 guiseProtoEntity = ActiveGuise.get(targetEntity);
     uint32[PStat_length] memory levelMul = [uint32(2), 2, 2];
-    Experience.set(targetEntity, levelMul);
+    GuisePrototype.set(bytes32(guiseProtoEntity), levelMul);
 
     uint32[PStat_length] memory expMultiplied = LibGuiseLevel.multiplyExperience(targetEntity, addExp);
     for (uint256 i; i < expMultiplied.length; i++) {
