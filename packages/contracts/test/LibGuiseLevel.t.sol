@@ -8,7 +8,6 @@ import { Experience, ExperienceTableId } from "../src/codegen/Tables.sol";
 import { ActiveGuise, ActiveGuiseTableId } from "../src/codegen/Tables.sol";
 import { GuisePrototype, GuisePrototypeTableId } from "../src/codegen/Tables.sol";
 import { PStat_length } from "../src/CustomTypes.sol";
-import "forge-std/console.sol";
 
 contract LibGuiseLevelTest is MudV2Test {
   bytes32 internal targetEntity = keccak256("targetEntity");
