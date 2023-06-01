@@ -33,7 +33,7 @@ contract LibGuiseLevelTest is MudV2Test {
     GuisePrototype.set(bytes32(guiseProtoEntity), levelMul);
 
     uint32 aggregateLevel = LibGuiseLevel.getAggregateLevel(bytes32(targetEntity));
-    assertEq(aggregateLevel, 6); // expected level is 6 (2*1 + 2*1 + 2*1)
+    assertEq(aggregateLevel, 1); // expected 1 = (2*1 + 2*1 + 2*1) / (2 + 2 + 2)
   }
 
   function testMultiplyExperience() public {
