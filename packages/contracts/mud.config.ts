@@ -1,13 +1,13 @@
 import { mudConfig, resolveTableId } from "@latticexyz/world/register";
 
 // TODO user-defined type
-const EntityId = "uint256" as const;
-const EntityIdArray = "uint256[]" as const;
+const EntityId = "bytes32" as const;
+const EntityIdArray = "bytes32[]" as const;
 // TODO set
-const EntityIdSet = "uint256[]" as const;
+const EntityIdSet = "bytes32[]" as const;
 
 const entityKey = {
-  primaryKeys: {
+  keySchema: {
     entity: EntityId,
   },
 } as const;
