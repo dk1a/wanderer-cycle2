@@ -15,22 +15,23 @@ contract LibExperienceTest is MudV2Test {
     vm.startPrank(worldAddress);
   }
 
-  function testIncreaseExp() public {
-    // Initialize exp
+  function testHasExp() public {
+    assertFalse(LibExperience.hasExp(targetEntity));
+
     LibExperience.initExp(targetEntity);
     assertTrue(LibExperience.hasExp(targetEntity));
+  }
+
+  function testIncreaseExp() public {
+    LibExperience.initExp(targetEntity);
 
     uint32[PStat_length] memory addExp = [uint32(1), 1, 1];
     LibExperience.increaseExp(targetEntity, addExp);
 
     uint32[PStat_length] memory exp = LibExperience.getExp(targetEntity);
     for (uint256 i; i < exp.length; i++) {
-        assertEq(exp[i], 1);
+      assertEq(exp[i], 1);
     }
-  }
-
-  function testHasExp() public {
-    assertFalse(LibExperience.hasExp(targetEntity));
   }
 
   function testSetExp() public {
@@ -39,7 +40,7 @@ contract LibExperienceTest is MudV2Test {
 
     uint32[PStat_length] memory retrievedExp = LibExperience.getExp(targetEntity);
     for (uint256 i; i < retrievedExp.length; i++) {
-        assertEq(retrievedExp[i], exp[i]);
+      assertEq(retrievedExp[i], exp[i]);
     }
   }
 
@@ -53,12 +54,12 @@ contract LibExperienceTest is MudV2Test {
 
     uint32[PStat_length] memory expectedExp;
     for (uint256 i; i < initialExp.length; i++) {
-        expectedExp[i] = initialExp[i] + addExp[i];
+      expectedExp[i] = initialExp[i] + addExp[i];
     }
 
     uint32[PStat_length] memory retrievedExp = LibExperience.getExp(targetEntity);
     for (uint256 i; i < retrievedExp.length; i++) {
-        assertEq(retrievedExp[i], expectedExp[i]);
+      assertEq(retrievedExp[i], expectedExp[i]);
     }
   }
 
@@ -70,5 +71,18 @@ contract LibExperienceTest is MudV2Test {
     Experience.set(targetEntity, maxExp);
 
     assertEq(LibExperience.getAggregateLevel(targetEntity, maxExp), 16);
+  }
+
+  function fuzzTestPStats(uint32[PStat_length] memory pstats) external {
+    // Get expected exp for the random pstat values
+    uint32[PStat_length] memory expectedExp = LibExperience.getExpForPStats(pstats);
+
+    // Get the actual exp
+    uint32[PStat_length] memory actualExp = LibExperience.getExp(targetEntity);
+
+    // Ensure that the actual exp matches the expected exp
+    for (uint256 i = 0; i < expectedExp.length; i++) {
+      assert(actualExp[i] == expectedExp[i]);
     }
+  }
 }
