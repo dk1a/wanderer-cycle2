@@ -5,3 +5,9 @@ pragma solidity >=0.8.0;
 
 import { Counter, CounterTableId } from "./tables/Counter.sol";
 import { Experience, ExperienceTableId } from "./tables/Experience.sol";
+import { AffixAvailable, AffixAvailableTableId } from "./tables/AffixAvailable.sol";
+import { AffixNaming, AffixNamingTableId } from "./tables/AffixNaming.sol";
+import { AffixPrototype, AffixPrototypeData, AffixPrototypeTableId } from "./tables/AffixPrototype.sol";
+import { AffixProtoIndex, AffixProtoIndexTableId } from "./tables/AffixProtoIndex.sol";
+import { AffixProtoGroup, AffixProtoGroupTableId } from "./tables/AffixProtoGroup.sol";
+import { Affix, AffixData, AffixTableId } from "./tables/Affix.sol";
