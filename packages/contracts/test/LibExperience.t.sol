@@ -73,16 +73,22 @@ contract LibExperienceTest is MudV2Test {
     assertEq(LibExperience.getAggregateLevel(targetEntity, maxExp), 16);
   }
 
-  function fuzzTestPStats(uint32[PStat_length] memory pstats) external {
+  function testFuzzPStats(uint32[PStat_length] memory pstats) public {
+    for (uint32 i = 0; i < pstats.length; i++) {
+      vm.assume(pstats[i] > 0 && pstats[i] <= LibExperience.MAX_LEVEL);
+    }
+
+    LibExperience.initExp(targetEntity);
     // Get expected exp for the random pstat values
     uint32[PStat_length] memory expectedExp = LibExperience.getExpForPStats(pstats);
+    LibExperience.increaseExp(targetEntity, expectedExp);
 
     // Get the actual exp
     uint32[PStat_length] memory actualExp = LibExperience.getExp(targetEntity);
 
     // Ensure that the actual exp matches the expected exp
     for (uint256 i = 0; i < expectedExp.length; i++) {
-      assert(actualExp[i] == expectedExp[i]);
+      assertEq(actualExp[i], expectedExp[i]);
     }
   }
 }
