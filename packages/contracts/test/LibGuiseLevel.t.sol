@@ -46,6 +46,8 @@ contract LibGuiseLevelTest is MudV2Test {
     }
     initializeValue(addExp, levelMul, targetEntity);
     uint32 aggregateLevel = LibGuiseLevel.getAggregateLevel(bytes32(targetEntity));
+
+    // TODO make a proper comparison
     assertEq(aggregateLevel, 2);
   }
 
