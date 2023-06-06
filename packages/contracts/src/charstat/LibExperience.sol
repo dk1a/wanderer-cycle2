@@ -84,7 +84,7 @@ library LibExperience {
   /**
    * @dev Calculate level based on single exp value
    */
-  function _getLevel(uint256 expVal) private pure returns (uint32) {
+  function _getLevel(uint256 expVal) internal pure returns (uint32) {
     // expVal per level rises exponentially with polynomial easing
     // 1-0, 2-96, 3-312, 4-544, 5-804, 6-1121...
     for (uint32 level = 1; level < MAX_LEVEL; level++) {

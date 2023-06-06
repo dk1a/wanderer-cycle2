@@ -4,58 +4,56 @@ pragma solidity >=0.8.0;
 import { MudV2Test } from "@latticexyz/std-contracts/src/test/MudV2Test.t.sol";
 import { LibGuiseLevel } from "../src/guise/LibGuiseLevel.sol";
 import { LibExperience } from "../src/charstat/LibExperience.sol";
-import { ActiveGuise } from "../src/codegen/Tables.sol";
-import { GuisePrototype } from "../src/codegen/Tables.sol";
+import { ActiveGuise, GuisePrototype } from "../src/codegen/Tables.sol";
 import { PStat_length } from "../src/CustomTypes.sol";
 
 contract LibGuiseLevelTest is MudV2Test {
   bytes32 internal targetEntity = keccak256("targetEntity");
-  uint32[PStat_length] addExp;
-  uint32[PStat_length] levelMul;
+  uint32[PStat_length] internal levelMul = [8, 8, 8];
 
   function setUp() public virtual override {
     super.setUp();
     vm.startPrank(worldAddress);
   }
 
-  function initializeValue(
-    uint32[PStat_length] memory _addExp,
-    uint32[PStat_length] memory _levelMul,
-    bytes32 targetEntity
-  ) public {
-    // Initialize exp and levelMul
+  // Initialize exp and levelMul
+  function _init(uint32[PStat_length] memory addExp) internal {
     LibExperience.initExp(targetEntity);
-    addExp = _addExp;
-    levelMul = _levelMul;
-
     LibExperience.increaseExp(targetEntity, addExp);
+
     bytes32 guiseProtoEntity = ActiveGuise.get(targetEntity);
     GuisePrototype.set(guiseProtoEntity, levelMul);
   }
 
   function testGetAggregateLevel() public {
-    initializeValue([uint32(1), 1, 1], [uint32(2), 2, 2], targetEntity);
+    _init([uint32(1), 1, 1]);
+
     uint32 aggregateLevel = LibGuiseLevel.getAggregateLevel(bytes32(targetEntity));
-    assertEq(aggregateLevel, 1); // expected 1 = (2*1 + 2*1 + 2*1) / (2 + 2 + 2)
+    // expected 1 = (8*1 + 8*1 + 8*1) / (8 + 8 + 8)
+    assertEq(aggregateLevel, 1);
   }
 
-  function testFuzzGetAggregateLevel(uint32[PStat_length] memory addExp, uint32[PStat_length] memory levelMul) public {
-    for (uint32 i = 0; i < PStat_length; i++) {
-      vm.assume(addExp[i] > 0);
-      vm.assume(levelMul[i] > 0);
-    }
-    initializeValue(addExp, levelMul, targetEntity);
+  function testFuzzGetAggregateLevel(uint32[PStat_length] memory addExp) public {
+    _init(addExp);
     uint32 aggregateLevel = LibGuiseLevel.getAggregateLevel(bytes32(targetEntity));
 
-    // TODO make a proper comparison
-    assertEq(aggregateLevel, 2);
+    uint256 expTotal;
+    uint256 levelMulTotal;
+    for (uint256 i; i < addExp.length; i++) {
+      expTotal += uint256(addExp[i]) * uint256(levelMul[i]);
+      levelMulTotal += uint256(levelMul[i]);
+    }
+
+    assertEq(aggregateLevel, LibExperience._getLevel(expTotal / levelMulTotal));
   }
 
   function testMultiplyExperience() public {
-    initializeValue([uint32(1), 1, 1], [uint32(2), 2, 2], targetEntity);
+    uint32[PStat_length] memory addExp = [uint32(1), 1, 1];
+    _init(addExp);
+
     uint32[PStat_length] memory expMultiplied = LibGuiseLevel.multiplyExperience(targetEntity, addExp);
     for (uint256 i; i < expMultiplied.length; i++) {
-      assertEq(expMultiplied[i], 2);
+      assertEq(expMultiplied[i], levelMul[i]);
     }
   }
 }
