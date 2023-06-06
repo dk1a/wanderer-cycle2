@@ -5,3 +5,8 @@ pragma solidity >=0.8.0;
 
 import { Counter, CounterTableId } from "./tables/Counter.sol";
 import { Experience, ExperienceTableId } from "./tables/Experience.sol";
+import { StatmodBase, StatmodBaseTableId } from "./tables/StatmodBase.sol";
+import { FromStatmodBase, FromStatmodBaseTableId } from "./tables/FromStatmodBase.sol";
+import { StatmodBaseOpts, StatmodBaseOptsData, StatmodBaseOptsTableId } from "./tables/StatmodBaseOpts.sol";
+import { StatmodScope, StatmodScopeTableId } from "./tables/StatmodScope.sol";
+import { StatmodValue, StatmodValueTableId } from "./tables/StatmodValue.sol";
