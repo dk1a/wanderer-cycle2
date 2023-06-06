@@ -29,8 +29,8 @@ contract LibGuiseLevelTest is MudV2Test {
     levelMul = _levelMul;
 
     LibExperience.increaseExp(targetEntity, addExp);
-    uint256 guiseProtoEntity = ActiveGuise.get(targetEntity);
-    GuisePrototype.set(bytes32(guiseProtoEntity), levelMul);
+    bytes32 guiseProtoEntity = ActiveGuise.get(targetEntity);
+    GuisePrototype.set(guiseProtoEntity, levelMul);
   }
 
   function testGetAggregateLevel() public {

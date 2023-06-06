@@ -35,12 +35,12 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    LifeCurrent: (() => {
-      const tableId = new TableId("", "LifeCurrent");
+    ActiveGuise: (() => {
+      const tableId = new TableId("", "ActiveGuise");
       return defineComponent(
         world,
         {
-          value: RecsType.Number,
+          value: RecsType.String,
         },
         {
           metadata: {
@@ -50,12 +50,12 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    ManaCurrent: (() => {
-      const tableId = new TableId("", "ManaCurrent");
+    GuisePrototype: (() => {
+      const tableId = new TableId("", "GuisePrototype");
       return defineComponent(
         world,
         {
-          value: RecsType.Number,
+          value: RecsType.NumberArray,
         },
         {
           metadata: {
