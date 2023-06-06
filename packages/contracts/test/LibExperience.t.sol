@@ -22,16 +22,30 @@ contract LibExperienceTest is MudV2Test {
     assertTrue(LibExperience.hasExp(targetEntity));
   }
 
-  function testIncreaseExp() public {
-    LibExperience.initExp(targetEntity);
-
-    uint32[PStat_length] memory addExp = [uint32(1), 1, 1];
+  function _testIncreaseExp(uint32[PStat_length] memory initialExp, uint32[PStat_length] memory addExp)
+    internal
+    returns (uint32[PStat_length] memory resultExp)
+  {
     LibExperience.increaseExp(targetEntity, addExp);
 
-    uint32[PStat_length] memory exp = LibExperience.getExp(targetEntity);
-    for (uint256 i; i < exp.length; i++) {
-      assertEq(exp[i], 1);
+    resultExp = LibExperience.getExp(targetEntity);
+    for (uint256 i; i < resultExp.length; i++) {
+      assertEq(resultExp[i], initialExp[i] + addExp[i]);
     }
+  }
+
+  function testIncreaseExp() public {
+    LibExperience.initExp(targetEntity);
+    uint32[PStat_length] memory initialExp = LibExperience.getExp(targetEntity);
+    initialExp = _testIncreaseExp(initialExp, [uint32(1), 1, 1]);
+    initialExp = _testIncreaseExp(initialExp, [uint32(8), 8, 8]);
+    initialExp = _testIncreaseExp(initialExp, [uint32(0), 0, 1]);
+  }
+
+  function testFuzzIncreaseExp(uint32[PStat_length] memory addExp) public {
+    LibExperience.initExp(targetEntity);
+    uint32[PStat_length] memory initialExp = LibExperience.getExp(targetEntity);
+    initialExp = _testIncreaseExp(initialExp, addExp);
   }
 
   function testGetExp() public {
@@ -41,25 +55,6 @@ contract LibExperienceTest is MudV2Test {
     uint32[PStat_length] memory retrievedExp = LibExperience.getExp(targetEntity);
     for (uint256 i; i < retrievedExp.length; i++) {
       assertEq(retrievedExp[i], exp[i]);
-    }
-  }
-
-  function testAddExp() public {
-    LibExperience.initExp(targetEntity);
-
-    uint32[PStat_length] memory initialExp = LibExperience.getExp(targetEntity);
-
-    uint32[PStat_length] memory addExp = [uint32(5), 10, 15];
-    LibExperience.increaseExp(targetEntity, addExp);
-
-    uint32[PStat_length] memory expectedExp;
-    for (uint256 i; i < initialExp.length; i++) {
-      expectedExp[i] = initialExp[i] + addExp[i];
-    }
-
-    uint32[PStat_length] memory retrievedExp = LibExperience.getExp(targetEntity);
-    for (uint256 i; i < retrievedExp.length; i++) {
-      assertEq(retrievedExp[i], expectedExp[i]);
     }
   }
 
