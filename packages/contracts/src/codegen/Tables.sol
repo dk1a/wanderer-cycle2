@@ -10,3 +10,4 @@ import { CurrentCycle, CurrentCycleTableId } from "./tables/CurrentCycle.sol";
 import { PreviousCycle, PreviousCycleTableId } from "./tables/PreviousCycle.sol";
 import { CycleTurns, CycleTurnsTableId } from "./tables/CycleTurns.sol";
 import { CycleTurnsLastClaimed, CycleTurnsLastClaimedTableId } from "./tables/CycleTurnsLastClaimed.sol";
+import { WNFTOwnership, WNFTOwnershipTableId } from "./tables/WNFTOwnership.sol";

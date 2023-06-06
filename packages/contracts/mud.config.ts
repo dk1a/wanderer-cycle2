@@ -65,6 +65,12 @@ export default mudConfig({
       ...entityKey,
       schema: "uint48",
     },
+    WNFTOwnership: {
+      keySchema: {
+        tokenId: "uint256",
+      },
+      schema: "address",
+    },
   },
   modules: [
     {
