@@ -3,17 +3,21 @@ pragma solidity >=0.8.0;
 
 import { MudV2Test } from "@latticexyz/std-contracts/src/test/MudV2Test.t.sol";
 import { LibCycleTurns } from "../src/cycle/LibCycleTurns.sol";
-import { CycleTurns, CycleTurnsTableId } from "../src/codegen/Tables.sol";
-import { CycleTurnsLastClaimed, CycleTurnsLastClaimedTableId } from "../src/codegen/Tables.sol";
+import { CycleTurns, CycleTurnsLastClaimed, ActiveGuise, ActiveCycle } from "../src/codegen/Tables.sol";
 
 contract LibExperienceTest is MudV2Test {
-  bytes32 cycleEntity;
-  uint256 initialTurns;
+  bytes32 internal targetEntity = keccak256("targetEntity");
+
+  uint32 cycleEntity;
+  uint32 initialTurns;
+  bytes32 guiseProtoEntity;
 
   function setUp() public virtual override {
     super.setUp();
     // TODO remove this if it's integrated into MUD
     vm.startPrank(worldAddress);
+    cycleEntity = LibCycleTurns.initActiveCycle(targetEntity);
+    initialTurns = CycleTurns.get(cycleEntity);
   }
 
   function test_setUp() public {
@@ -26,7 +30,7 @@ contract LibExperienceTest is MudV2Test {
     // trying to claim again prematurely should do nothing
     LibCycleTurns.claimTurns(cycleEntity);
 
-    uint256 turns = CycleTurns.get(cycleEntity);
+    uint32 turns = CycleTurns.get(cycleEntity);
     assertEq(turns, initialTurns);
   }
 
@@ -34,7 +38,7 @@ contract LibExperienceTest is MudV2Test {
     // after waiting for ACC_PERIOD, another batch should be claimable
     vm.warp(block.timestamp + LibCycleTurns.ACC_PERIOD);
     LibCycleTurns.claimTurns(cycleEntity);
-    uint256 turns = CycleTurns.get(cycleEntity);
+    uint32 turns = CycleTurns.get(cycleEntity);
     assertEq(turns, initialTurns + LibCycleTurns.TURNS_PER_PERIOD);
   }
 
@@ -50,10 +54,10 @@ contract LibExperienceTest is MudV2Test {
     vm.warp(block.timestamp + LibCycleTurns.ACC_PERIOD);
 
     uint32 maxCurrent = LibCycleTurns.MAX_CURRENT_TURNS_FOR_CLAIM;
-    cycleTurnsComponent.set(cycleEntity, maxCurrent);
+    LibCycleTurns.set(cycleEntity, maxCurrent);
     // claim turns while at max, this should succeed
-    LibCycleTurns.claimTurns(components, cycleEntity);
-    uint256 turns = cycleTurnsComponent.getValue(cycleEntity);
+    LibCycleTurns.claimTurns(cycleEntity);
+    uint256 turns = CycleTurns.get(cycleEntity);
     assertEq(turns, maxCurrent + LibCycleTurns.TURNS_PER_PERIOD);
   }
 
@@ -63,14 +67,14 @@ contract LibExperienceTest is MudV2Test {
     uint32 maxCurrent = LibCycleTurns.MAX_CURRENT_TURNS_FOR_CLAIM;
     CycleTurns.set(cycleEntity, maxCurrent + 1);
     // claim turns while over max, this should do nothing (same as premature)
-    LibCycleTurns.claimTurns(components, cycleEntity);
+    LibCycleTurns.claimTurns(cycleEntity);
     uint256 turns = CycleTurns.get(cycleEntity);
     assertEq(turns, maxCurrent + 1);
 
     // reduce current turns to max
     CycleTurns.set(cycleEntity, LibCycleTurns.MAX_CURRENT_TURNS_FOR_CLAIM);
     // this should succeed (ensuring that the previous empty claim didn't remove potential claimable turns)
-    LibCycleTurns.claimTurns(components, cycleEntity);
+    LibCycleTurns.claimTurns(cycleEntity);
     turns = CycleTurns.get(cycleEntity);
     assertEq(turns, maxCurrent + LibCycleTurns.TURNS_PER_PERIOD);
   }

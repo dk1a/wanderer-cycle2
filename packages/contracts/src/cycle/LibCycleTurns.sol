@@ -1,17 +1,27 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import { CycleTurns, CycleTurnsTableId } from "../codegen/Tables.sol";
-import { CycleTurnsLastClaimed, CycleTurnsLastClaimedTableId } from "../codegen/Tables.sol";
+import { ActiveCycle, CycleTurns, CycleTurnsLastClaimed, ActiveGuise } from "../codegen/Tables.sol";
 
 library LibCycleTurns {
   error LibCycleTurns__NotEnoughTurns();
+  //TODO remove and add to LibCycle
+  error LibCycleTurns__CycleIsAlreadyActive();
 
   // TODO minutes is for testing, change to days
   uint256 constant ACC_PERIOD = 1 minutes;
   uint32 constant TURNS_PER_PERIOD = 10;
   uint32 constant MAX_ACC_PERIODS = 2;
   uint32 constant MAX_CURRENT_TURNS_FOR_CLAIM = 50;
+
+  function initActiveCycle(bytes32 targetEntity) internal view returns (uint32 cycleEntity) {
+    uint32 guisePrototype = ActiveCycle.get(targetEntity);
+    if (guisePrototype == 0) {
+      revert LibCycleTurns__CycleIsAlreadyActive();
+    }
+    ActiveCycle.set(targetEntity, TURNS_PER_PERIOD);
+    return ActiveCycle.get(targetEntity);
+  }
 
   /// @dev Get the number of currently available cycle turns.
   function getTurns(bytes32 cycleEntity) internal view returns (uint32) {

@@ -17,21 +17,21 @@ import { EncodeArray } from "@latticexyz/store/src/tightcoder/EncodeArray.sol";
 import { Schema, SchemaLib } from "@latticexyz/store/src/Schema.sol";
 import { PackedCounter, PackedCounterLib } from "@latticexyz/store/src/PackedCounter.sol";
 
-bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("WNFTOwnership")));
-bytes32 constant WNFTOwnershipTableId = _tableId;
+bytes32 constant _tableId = bytes32(abi.encodePacked(bytes16(""), bytes16("ActiveGuise")));
+bytes32 constant ActiveGuiseTableId = _tableId;
 
-library WNFTOwnership {
+library ActiveGuise {
   /** Get the table's schema */
   function getSchema() internal pure returns (Schema) {
     SchemaType[] memory _schema = new SchemaType[](1);
-    _schema[0] = SchemaType.ADDRESS;
+    _schema[0] = SchemaType.BYTES32;
 
     return SchemaLib.encode(_schema);
   }
 
   function getKeySchema() internal pure returns (Schema) {
     SchemaType[] memory _schema = new SchemaType[](1);
-    _schema[0] = SchemaType.UINT256;
+    _schema[0] = SchemaType.BYTES32;
 
     return SchemaLib.encode(_schema);
   }
@@ -40,7 +40,7 @@ library WNFTOwnership {
   function getMetadata() internal pure returns (string memory, string[] memory) {
     string[] memory _fieldNames = new string[](1);
     _fieldNames[0] = "value";
-    return ("WNFTOwnership", _fieldNames);
+    return ("ActiveGuise", _fieldNames);
   }
 
   /** Register the table's schema */
@@ -66,62 +66,62 @@ library WNFTOwnership {
   }
 
   /** Get value */
-  function get(uint256 tokenId) internal view returns (address value) {
+  function get(bytes32 entity) internal view returns (bytes32 value) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256((tokenId)));
+    _keyTuple[0] = bytes32((entity));
 
     bytes memory _blob = StoreSwitch.getField(_tableId, _keyTuple, 0);
-    return (address(Bytes.slice20(_blob, 0)));
+    return (Bytes.slice32(_blob, 0));
   }
 
   /** Get value (using the specified store) */
-  function get(IStore _store, uint256 tokenId) internal view returns (address value) {
+  function get(IStore _store, bytes32 entity) internal view returns (bytes32 value) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256((tokenId)));
+    _keyTuple[0] = bytes32((entity));
 
     bytes memory _blob = _store.getField(_tableId, _keyTuple, 0);
-    return (address(Bytes.slice20(_blob, 0)));
+    return (Bytes.slice32(_blob, 0));
   }
 
   /** Set value */
-  function set(uint256 tokenId, address value) internal {
+  function set(bytes32 entity, bytes32 value) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256((tokenId)));
+    _keyTuple[0] = bytes32((entity));
 
     StoreSwitch.setField(_tableId, _keyTuple, 0, abi.encodePacked((value)));
   }
 
   /** Set value (using the specified store) */
-  function set(IStore _store, uint256 tokenId, address value) internal {
+  function set(IStore _store, bytes32 entity, bytes32 value) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256((tokenId)));
+    _keyTuple[0] = bytes32((entity));
 
     _store.setField(_tableId, _keyTuple, 0, abi.encodePacked((value)));
   }
 
   /** Tightly pack full data using this table's schema */
-  function encode(address value) internal view returns (bytes memory) {
+  function encode(bytes32 value) internal view returns (bytes memory) {
     return abi.encodePacked(value);
   }
 
   /** Encode keys as a bytes32 array using this table's schema */
-  function encodeKeyTuple(uint256 tokenId) internal pure returns (bytes32[] memory _keyTuple) {
+  function encodeKeyTuple(bytes32 entity) internal pure returns (bytes32[] memory _keyTuple) {
     _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256((tokenId)));
+    _keyTuple[0] = bytes32((entity));
   }
 
   /* Delete all data for given keys */
-  function deleteRecord(uint256 tokenId) internal {
+  function deleteRecord(bytes32 entity) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256((tokenId)));
+    _keyTuple[0] = bytes32((entity));
 
     StoreSwitch.deleteRecord(_tableId, _keyTuple);
   }
 
   /* Delete all data for given keys (using the specified store) */
-  function deleteRecord(IStore _store, uint256 tokenId) internal {
+  function deleteRecord(IStore _store, bytes32 entity) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = bytes32(uint256((tokenId)));
+    _keyTuple[0] = bytes32((entity));
 
     _store.deleteRecord(_tableId, _keyTuple);
   }
