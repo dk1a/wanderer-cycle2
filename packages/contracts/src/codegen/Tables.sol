@@ -11,3 +11,5 @@ import { AffixPrototype, AffixPrototypeData, AffixPrototypeTableId } from "./tab
 import { AffixProtoIndex, AffixProtoIndexTableId } from "./tables/AffixProtoIndex.sol";
 import { AffixProtoGroup, AffixProtoGroupTableId } from "./tables/AffixProtoGroup.sol";
 import { Affix, AffixData, AffixTableId } from "./tables/Affix.sol";
+import { ActiveGuise, ActiveGuiseTableId } from "./tables/ActiveGuise.sol";
+import { GuisePrototype, GuisePrototypeTableId } from "./tables/GuisePrototype.sol";

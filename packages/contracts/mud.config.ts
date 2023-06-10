@@ -98,11 +98,15 @@ export default mudConfig({
         value: "uint32",
       },
     },
+    ActiveGuise: entityRelation,
+    GuisePrototype: {
+      ...entityKey,
+      schema: arrayPStat,
+    },
   },
   enums: {
     AffixPartId: ["IMPLICIT", "PREFIX", "SUFFIX"],
   },
-
   modules: [
     {
       name: "KeysInTableModule",
