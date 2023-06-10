@@ -60,8 +60,6 @@ export default mudConfig({
       ...entityKey,
       schema: "uint32",
     },
-    CurrentCycle: entityRelation,
-    PreviousCycle: entityRelation,
     CycleTurns: {
       ...entityKey,
       schema: "uint32",

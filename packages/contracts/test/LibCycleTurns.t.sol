@@ -7,25 +7,24 @@ import { CycleTurns, CycleTurnsLastClaimed, ActiveGuise, ActiveCycle } from "../
 
 contract LibExperienceTest is MudV2Test {
   bytes32 internal targetEntity = keccak256("targetEntity");
+  bytes32 internal cycleEntity = keccak256("cycleEntity");
 
-  uint32 cycleEntity;
   uint32 initialTurns;
-  bytes32 guiseProtoEntity;
 
   function setUp() public virtual override {
     super.setUp();
     // TODO remove this if it's integrated into MUD
     vm.startPrank(worldAddress);
-    cycleEntity = LibCycleTurns.initActiveCycle(targetEntity);
-    initialTurns = CycleTurns.get(cycleEntity);
   }
 
   function test_setUp() public {
+    initialTurns = CycleTurns.get(cycleEntity);
     // spawn should autoclaim the first turns batch
     assertEq(initialTurns, LibCycleTurns.TURNS_PER_PERIOD);
   }
 
   function test_claimTurns_premature() public {
+    initialTurns = CycleTurns.get(cycleEntity);
     LibCycleTurns.claimTurns(cycleEntity);
     // trying to claim again prematurely should do nothing
     LibCycleTurns.claimTurns(cycleEntity);
@@ -35,6 +34,8 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function test_claimTurns_secondPeriod() public {
+    initialTurns = CycleTurns.get(cycleEntity);
+
     // after waiting for ACC_PERIOD, another batch should be claimable
     vm.warp(block.timestamp + LibCycleTurns.ACC_PERIOD);
     LibCycleTurns.claimTurns(cycleEntity);
@@ -43,6 +44,8 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function test_claimTurns_twoPeriods() public {
+    initialTurns = CycleTurns.get(cycleEntity);
+
     // after waiting for 2 ACC_PERIODs, 2 batches should be claimable at once
     vm.warp(block.timestamp + 2 * LibCycleTurns.ACC_PERIOD);
     LibCycleTurns.claimTurns(cycleEntity);
@@ -51,10 +54,11 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function test_claimTurns_atMaxCurrent() public {
+    initialTurns = CycleTurns.get(cycleEntity);
     vm.warp(block.timestamp + LibCycleTurns.ACC_PERIOD);
 
     uint32 maxCurrent = LibCycleTurns.MAX_CURRENT_TURNS_FOR_CLAIM;
-    LibCycleTurns.set(cycleEntity, maxCurrent);
+    CycleTurns.set(cycleEntity, maxCurrent);
     // claim turns while at max, this should succeed
     LibCycleTurns.claimTurns(cycleEntity);
     uint256 turns = CycleTurns.get(cycleEntity);
@@ -62,6 +66,7 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function test_claimTurns_overMaxCurrent() public {
+    initialTurns = CycleTurns.get(cycleEntity);
     vm.warp(block.timestamp + LibCycleTurns.ACC_PERIOD);
 
     uint32 maxCurrent = LibCycleTurns.MAX_CURRENT_TURNS_FOR_CLAIM;
