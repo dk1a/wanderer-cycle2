@@ -18,13 +18,7 @@ import { Affix, AffixData } from "../codegen/Tables.sol";
 library LibPickAffixes {
   error LibPickAffixes__NoAvailableAffix(AffixPartId affixPartId, bytes32 protoEntity, uint32 ilvl);
   error LibPickAffixes__InvalidMinMax();
-  error LibPickAffixes__InvalidIlvl(uint256 ilvl);
-
-  struct Comps {
-    AffixPrototypeComponent affixProto;
-    AffixAvailabilityComponent availability;
-    AffixPrototypeGroupComponent group;
-  }
+  error LibPickAffixes__InvalidIlvl(uint32 ilvl);
 
   function pickAffixes(
     AffixPartId[] memory affixPartIds,
@@ -70,7 +64,7 @@ library LibPickAffixes {
   )
     internal
     view
-    returns (uint32[] memory statmodProtoEntities, uint256[] memory affixProtoEntities, uint32[] memory affixValues)
+    returns (uint32[] memory statmodProtoEntities, uint32[] memory affixProtoEntities, uint32[] memory affixValues)
   {
     uint32 len = names.length;
     statmodProtoEntities = new uint32[](len);
@@ -80,8 +74,7 @@ library LibPickAffixes {
     for (uint32 i; i < names.length; i++) {
       affixProtoEntities[i] = getAffixProtoEntity(names[i], tiers[i]);
 
-      AffixPrototype memory affixProto = AffixPrototypeComponent(getAddressById(components, AffixPrototypeComponentID))
-        .getValue(affixProtoEntities[i]);
+      AffixPrototypeData memory affixProto = AffixPrototype.get(affixProtoEntities[i]);
       statmodProtoEntities[i] = affixProto.statmodProtoEntity;
 
       affixValues[i] = affixProto.max;
@@ -109,11 +102,13 @@ library LibPickAffixes {
 
   /// @dev Queries the default availability and removes `excludeEntities` from it.
   function _getAvailableEntities(
-    uint256 availabilityEntity,
-    uint256[] memory excludeEntities
+    uint32 ilvl,
+    AffixPartId affixPartId,
+    bytes32 targetEntity,
+    bytes32[] memory excludeEntities
   ) private view returns (uint256[] memory availableEntities) {
     // get default availability
-    availableEntities = comps.availability.getValue(availabilityEntity);
+    availableEntities = AffixAvailable.get(affixPartId, targetEntity, ilvl);
 
     for (uint256 i; i < availableEntities.length; i++) {
       // exclude the specified entities

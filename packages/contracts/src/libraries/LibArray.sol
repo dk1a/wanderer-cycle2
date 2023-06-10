@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: MIT
-
-pragma solidity ^0.8.17;
+pragma solidity >=0.8.0;
 
 library LibArray {
   function isIn(bytes32 entity, uint32[] memory array) internal pure returns (bool) {
