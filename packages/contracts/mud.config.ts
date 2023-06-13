@@ -53,10 +53,21 @@ export default mudConfig({
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
+    },
+    EffectTemplate: {
+      ...entityKey,
+      schema: {
+        entities: EntityIdArray,
+        values: "uint32[]",
+      },
     },
   },
+  enums: {
+    EleStat: enumEleStat,
+  },
+
   modules: [
     {
       name: "KeysInTableModule",
