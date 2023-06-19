@@ -25,18 +25,18 @@ library LibPickAffixes {
     uint32[] memory excludeAffixes,
     bytes32 targetEntity,
     uint32 ilvl,
-    uint32 randomness
+    uint256 randomness
   )
     internal
     view
-    returns (uint32[] memory statmodProtoEntities, uint32[] memory affixProtoEntities, uint32[] memory affixValues)
+    returns (bytes32[] memory statmodProtoEntities, bytes32[] memory affixProtoEntities, uint32[] memory affixValues)
   {
-    statmodProtoEntities = new uint32[](affixPartIds.length);
-    affixProtoEntities = new uint32[](affixPartIds.length);
+    statmodProtoEntities = new bytes32[](affixPartIds.length);
+    affixProtoEntities = new bytes32[](affixPartIds.length);
     affixValues = new uint32[](affixPartIds.length);
 
     for (uint256 i; i < affixPartIds.length; i++) {
-      randomness = uint32(keccak256(abi.encode(i, randomness)));
+      randomness = uint256(keccak256(abi.encode(i, randomness)));
       // pick affix proto entity
       bytes32 affixProtoEntity = _pickAffixProtoEntity(ilvl, affixPartIds[i], targetEntity, excludeAffixes, randomness);
       AffixPrototypeData memory affixProto = AffixPrototype.get(affixProtoEntity);
@@ -49,7 +49,7 @@ library LibPickAffixes {
 
       if (i != affixPartIds.length - 1) {
         // exclude all affixes from the picked affix's group (skip for the last cycle)
-        uint32[] memory newExcludeAffixes = getKeysWithValue(
+        bytes32[] memory newExcludeAffixes = getKeysWithValue(
           AffixProtoGroupTableId,
           AffixProtoGroup.get(affixProtoEntity)
         );
@@ -72,7 +72,7 @@ library LibPickAffixes {
     affixValues = new uint32[](len);
 
     for (uint32 i; i < names.length; i++) {
-      affixProtoEntities[i] = getAffixProtoEntity(names[i], tiers[i]);
+      affixProtoEntities[i] = AffixProtoIndex.get(names[i], tiers[i]);
 
       AffixPrototypeData memory affixProto = AffixPrototype.get(affixProtoEntities[i]);
       statmodProtoEntities[i] = affixProto.statmodProtoEntity;
@@ -87,9 +87,9 @@ library LibPickAffixes {
     AffixPartId affixPartId,
     bytes32 targetEntity,
     uint32[] memory excludeAffixes,
-    uint32 randomness
-  ) internal view returns (uint32) {
-    randomness = uint32(keccak256(abi.encode(keccak256("pickAffixEntity"), randomness)));
+    uint256 randomness
+  ) internal view returns (bytes32) {
+    randomness = uint256(keccak256(abi.encode(keccak256("pickAffixEntity"), randomness)));
 
     // TODO this can be significantly optimized if you need it
     uint32 availabilityEntity = AffixAvailable.get(affixPartId, targetEntity, ilvl);
@@ -127,8 +127,8 @@ library LibPickAffixes {
   }
 
   /// @dev Randomly pick an affix value.
-  function _pickAffixValue(AffixPrototypeData memory affixProto, uint32 randomness) internal pure returns (uint32) {
-    randomness = uint32(keccak256(abi.encode(keccak256("_pickAffixValue"), randomness)));
+  function _pickAffixValue(AffixPrototypeData memory affixProto, uint256 randomness) internal pure returns (uint32) {
+    randomness = uint256(keccak256(abi.encode(keccak256("_pickAffixValue"), randomness)));
 
     if (affixProto.max < affixProto.min) revert LibPickAffixes__InvalidMinMax();
     if (affixProto.max == affixProto.min) return affixProto.min;

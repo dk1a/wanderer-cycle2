@@ -2,7 +2,7 @@
 pragma solidity >=0.8.0;
 
 library LibArray {
-  function isIn(bytes32 entity, uint32[] memory array) internal pure returns (bool) {
+  function isIn(bytes32 entity, bytes32[] memory array) internal pure returns (bool) {
     for (uint32 i; i < array.length; i++) {
       if (array[i] == entity) return true;
     }
