@@ -77,6 +77,11 @@ export default mudConfig({
       },
       schema: "uint32",
     },
+    ActiveGuise: entityRelation,
+    GuisePrototype: {
+      ...entityKey,
+      schema: arrayPStat,
+    },
   },
   enums: {
     StatmodOp: ["ADD", "MUL", "BADD"],

@@ -10,3 +10,5 @@ import { FromStatmodBase, FromStatmodBaseTableId } from "./tables/FromStatmodBas
 import { StatmodBaseOpts, StatmodBaseOptsData, StatmodBaseOptsTableId } from "./tables/StatmodBaseOpts.sol";
 import { StatmodScope, StatmodScopeTableId } from "./tables/StatmodScope.sol";
 import { StatmodValue, StatmodValueTableId } from "./tables/StatmodValue.sol";
+import { ActiveGuise, ActiveGuiseTableId } from "./tables/ActiveGuise.sol";
+import { GuisePrototype, GuisePrototypeTableId } from "./tables/GuisePrototype.sol";
