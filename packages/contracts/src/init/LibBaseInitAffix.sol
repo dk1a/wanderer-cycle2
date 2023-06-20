@@ -74,9 +74,9 @@ library LibBaseInitAffix {
       if (affixParts.length == 0) continue;
       Range memory range = ranges[i];
 
-      AffixPrototype memory proto = AffixPrototype({
-        tier: tier,
+      AffixPrototypeData memory proto = AffixPrototype({
         statmodProtoEntity: statmodProtoEntity,
+        tier: tier,
         requiredIlvl: tierToDefaultRequiredIlvl(tier),
         min: range.min,
         max: range.max
@@ -132,6 +132,102 @@ library LibBaseInitAffix {
         uint256 availabilityEntity = AffixAvailable.getItem(partId, targetEntity, ilvl, i);
         AffixAvailable.push(partId, protoEntity, ilvl, availabilityEntity);
       }
+    }
+  }
+
+  /*//////////////////////////////////////////////////////////////////////////
+                              AFFIX PARTS OPTIONS
+  //////////////////////////////////////////////////////////////////////////*/
+
+  // explicits + implicits
+  function _affixes(
+    string memory prefixLabel,
+    string memory suffixLabel,
+    bytes32[] memory explicits_targetEntities,
+    TargetLabel[] memory implicits_targetLabels
+  ) internal pure returns (AffixPart[] memory) {
+    AffixPart[][] memory separateParts = new AffixPart[][](3);
+    // prefix
+    separateParts[0] = _commonLabel(AffixPartId.PREFIX, explicits_targetEntities, prefixLabel);
+    // suffix
+    separateParts[1] = _commonLabel(AffixPartId.SUFFIX, explicits_targetEntities, suffixLabel);
+    // implicit
+    separateParts[2] = _individualLabels(AffixPartId.IMPLICIT, implicits_targetLabels);
+
+    return _flatten(separateParts);
+  }
+
+  // explicits
+  function _explicits(
+    string memory prefixLabel,
+    string memory suffixLabel,
+    bytes32[] memory explicits_targetEntities
+  ) internal pure returns (AffixPart[] memory) {
+    AffixPart[][] memory separateParts = new AffixPart[][](2);
+    // prefix
+    separateParts[0] = _commonLabel(AffixPartId.PREFIX, explicits_targetEntities, prefixLabel);
+    // suffix
+    separateParts[1] = _commonLabel(AffixPartId.SUFFIX, explicits_targetEntities, suffixLabel);
+
+    return _flatten(separateParts);
+  }
+
+  // implicits
+  function _implicits(TargetLabel[] memory implicits_targetLabels) internal pure returns (AffixPart[] memory) {
+    return _individualLabels(AffixPartId.IMPLICIT, implicits_targetLabels);
+  }
+
+  // nothing
+  function _none() internal pure returns (AffixPart[] memory) {
+    return new AffixPart[](0);
+  }
+
+  // combine several arrays of affix parts into one
+  function _flatten(AffixPart[][] memory separateParts) private pure returns (AffixPart[] memory combinedParts) {
+    uint256 combinedLen;
+    for (uint256 i; i < separateParts.length; i++) {
+      combinedLen += separateParts[i].length;
+    }
+
+    combinedParts = new AffixPart[](combinedLen);
+
+    uint256 totalIndex;
+    for (uint256 i; i < separateParts.length; i++) {
+      AffixPart[] memory separatePart = separateParts[i];
+      for (uint256 j; j < separatePart.length; j++) {
+        combinedParts[totalIndex] = separatePart[j];
+        totalIndex++;
+      }
+    }
+    return combinedParts;
+  }
+
+  // 1 label for multiple target entities
+  function _commonLabel(
+    AffixPartId partId,
+    bytes32[] memory targetEntities,
+    string memory label
+  ) private pure returns (AffixPart[] memory affixParts) {
+    affixParts = new AffixPart[](targetEntities.length);
+
+    for (uint256 i; i < targetEntities.length; i++) {
+      affixParts[i] = AffixPart({ partId: partId, targetEntity: targetEntities[i], label: label });
+    }
+  }
+
+  // 1 label per each target entity
+  function _individualLabels(
+    AffixPartId partId,
+    TargetLabel[] memory targetLabels
+  ) private pure returns (AffixPart[] memory affixParts) {
+    affixParts = new AffixPart[](targetLabels.length);
+
+    for (uint256 i; i < targetLabels.length; i++) {
+      affixParts[i] = AffixPart({
+        partId: partId,
+        targetEntity: targetLabels[i].targetEntity,
+        label: targetLabels[i].label
+      });
     }
   }
 }
