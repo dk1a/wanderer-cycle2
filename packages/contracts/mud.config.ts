@@ -107,37 +107,9 @@ export default mudConfig({
       ...entityKey,
       schema: "string",
     },
-    StatmodBase: {
-      ...entityKey,
-      schema: "bytes32",
-    },
-    FromStatmodBase: entityRelation,
-    StatmodBaseOpts: {
-      ...entityKey,
-      schema: {
-        statmodOp: "StatmodOp",
-        eleStat: "EleStat",
-      },
-    },
-    StatmodScope: {
-      keySchema: {
-        targetEntity: EntityId,
-        baseEntity: EntityId,
-      },
-      schema: "bytes32",
-    },
-    StatmodValue: {
-      keySchema: {
-        targetEntity: EntityId,
-        baseEntity: EntityId,
-      },
-      schema: "uint32",
-    },
   },
   enums: {
     AffixPartId: ["IMPLICIT", "PREFIX", "SUFFIX"],
-    StatmodOp: ["ADD", "MUL", "BADD"],
-    EleStat: enumEleStat,
   },
   modules: [
     {

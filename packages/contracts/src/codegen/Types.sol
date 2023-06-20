@@ -7,17 +7,3 @@ enum AffixPartId {
   PREFIX,
   SUFFIX
 }
-
-enum StatmodOp {
-  ADD,
-  MUL,
-  BADD
-}
-
-enum EleStat {
-  NONE,
-  PHYSICAL,
-  FIRE,
-  COLD,
-  POISON
-}

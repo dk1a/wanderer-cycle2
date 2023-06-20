@@ -2,7 +2,6 @@
 pragma solidity >=0.8.0;
 
 import { Name } from "../codegen/Tables.sol";
-import { StatmodBase, FromStatmodBase, StatmodBaseOpts, StatmodBaseOptsData, StatmodScope, StatmodValue } from "../codegen/Tables.sol";
 import { AffixAvailable, AffixNaming, AffixPrototype, AffixPrototypeData, AffixProtoIndex, AffixProtoGroup, Affix, AffixData } from "../codegen/Tables.sol";
 
 import { AffixPartId } from "../codegen/Types.sol";
@@ -105,14 +104,13 @@ library LibBaseInitAffix {
     if (maxIlvl == 0 || affixProto.requiredIlvl > maxIlvl) {
       revert LibBaseInitAffix__MalformedInput(affixName, maxIlvl);
     }
-    if (affixProto.statmodProtoEntity == 0) {
+    if (!affixProto.statmodProtoEntity) {
       revert LibBaseInitAffix__InvalidStatmodPrototype();
     }
 
     bytes32 protoEntity = AffixProtoIndex.get(affixName, affixProto.tier);
     AffixPrototype.set(protoEntity, affixProto);
     Name.set(protoEntity, affixName);
-    //TODO work on types
     AffixProtoGroup.set(protoEntity, AffixProtoGroup.get(affixName));
 
     for (uint256 i; i < affixParts.length; i++) {
