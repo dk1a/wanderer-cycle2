@@ -9,7 +9,3 @@ import { ActiveGuise, ActiveGuiseTableId } from "./tables/ActiveGuise.sol";
 import { GuisePrototype, GuisePrototypeTableId } from "./tables/GuisePrototype.sol";
 import { EffectTemplate, EffectTemplateData, EffectTemplateTableId } from "./tables/EffectTemplate.sol";
 import { StatmodBase, StatmodBaseTableId } from "./tables/StatmodBase.sol";
-import { FromStatmodBase, FromStatmodBaseTableId } from "./tables/FromStatmodBase.sol";
-import { StatmodBaseOpts, StatmodBaseOptsData, StatmodBaseOptsTableId } from "./tables/StatmodBaseOpts.sol";
-import { StatmodScope, StatmodScopeTableId } from "./tables/StatmodScope.sol";
-import { StatmodValue, StatmodValueTableId } from "./tables/StatmodValue.sol";
