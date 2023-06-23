@@ -21,13 +21,13 @@ contract LibRNGTest is MudV2Test {
     vm.startPrank(worldAddress);
   }
 
-  function initEntity() public returns (bytes32 requestOwner, bytes32 notOwner) {
+  function _initEntity() internal returns (bytes32 requestOwner, bytes32 notOwner) {
     requestOwner = getUniqueEntity();
     notOwner = getUniqueEntity();
   }
 
   function test_getRandomness() public {
-    (bytes32 requestOwner, ) = initEntity();
+    (bytes32 requestOwner, ) = _initEntity();
     bytes32 requestId = LibRNG.requestRandomness(requestOwner);
     vm.roll(block.number + LibRNG.WAIT_BLOCKS + 1);
     uint256 randomness = LibRNG.getRandomness(requestOwner, requestId);
@@ -36,7 +36,7 @@ contract LibRNGTest is MudV2Test {
   }
 
   function test_getRandomness_revert_NotRequestOwner() public {
-    (bytes32 requestOwner, bytes32 notOwner) = initEntity();
+    (bytes32 requestOwner, bytes32 notOwner) = _initEntity();
 
     revertHelper = new GetRandomnessRevertHelper();
     bytes32 requestId = LibRNG.requestRandomness(requestOwner);
@@ -46,7 +46,7 @@ contract LibRNGTest is MudV2Test {
   }
 
   function test_getRandomness_revert_sameBlock() public {
-    (bytes32 requestOwner, ) = initEntity();
+    (bytes32 requestOwner, ) = _initEntity();
 
     revertHelper = new GetRandomnessRevertHelper();
     bytes32 requestId = LibRNG.requestRandomness(requestOwner);
@@ -56,7 +56,7 @@ contract LibRNGTest is MudV2Test {
   }
 
   function test_getRandomness_revert_tooLate() public {
-    (bytes32 requestOwner, ) = initEntity();
+    (bytes32 requestOwner, ) = _initEntity();
 
     revertHelper = new GetRandomnessRevertHelper();
     bytes32 requestId = LibRNG.requestRandomness(requestOwner);
@@ -68,7 +68,7 @@ contract LibRNGTest is MudV2Test {
 
   // basic test for different base blocknumbers
   function test_requestRandomness_blocknumbers(uint32 blocknumber) public {
-    (bytes32 requestOwner, ) = initEntity();
+    (bytes32 requestOwner, ) = _initEntity();
 
     vm.assume(blocknumber != 0);
     vm.roll(blocknumber);
@@ -88,7 +88,7 @@ contract LibRNGTest is MudV2Test {
 
   // thorough validity test for the possible offsets
   function test_requestRandomness_validity() public {
-    (bytes32 requestOwner, ) = initEntity();
+    (bytes32 requestOwner, ) = _initEntity();
 
     uint256 initBlock = 1;
     vm.roll(initBlock);
