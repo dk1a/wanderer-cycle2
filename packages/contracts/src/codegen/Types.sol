@@ -9,3 +9,9 @@ enum EleStat {
   COLD,
   POISON
 }
+
+enum StatmodOp {
+  ADD,
+  MUL,
+  BADD
+}

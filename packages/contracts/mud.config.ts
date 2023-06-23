@@ -63,6 +63,10 @@ export default mudConfig({
         values: "uint32[]",
       },
     },
+    StatmodBase: {
+      ...entityKey,
+      schema: "bytes32",
+    },
   },
   enums: {
     EleStat: enumEleStat,
@@ -73,6 +77,11 @@ export default mudConfig({
       name: "KeysInTableModule",
       root: true,
       args: [resolveTableId("Experience")],
+    },
+    {
+      name: "KeysInTableModule",
+      root: true,
+      args: [resolveTableId("StatmodBase")],
     },
   ],
 });

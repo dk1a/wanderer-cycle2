@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import { EffectTemplate, EffectTemplateData, EffectTemplateTableId } from "../codegen/Tables.sol";
+import { hasKey } from "@latticexyz/world/src/modules/keysintable/hasKey.sol";
+
+import { EffectTemplate, EffectTemplateData, StatmodBase, StatmodBaseTableId } from "../codegen/Tables.sol";
 
 library LibEffectPrototype {
   error LibEffectPrototype__LengthMismatch();
@@ -17,7 +19,8 @@ library LibEffectPrototype {
     }
     // verify statmods existence
     for (uint256 i; i < EffectTemplate.lengthEntities(effectProtoEntity); i++) {
-      if (effectTemplateData.entities[i] == bytes32(0)) {
+      bool isKey = hasKey(StatmodBaseTableId, StatmodBase.encodeKeyTuple(effectTemplateData.entities[i]));
+      if (!isKey) {
         revert LibEffectPrototype__InvalidStatmod();
       }
     }
