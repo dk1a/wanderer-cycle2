@@ -16,7 +16,7 @@ library LibActiveCombat {
   }
 
   function requireActiveCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity) internal view {
-    if (ActiveCombat.get(initiatorEntity) != bytes32(0)) {
+    if (ActiveCombat.get(initiatorEntity) == bytes32(0)) {
       revert LibActiveCombat__CombatNotActive();
     }
     if (ActiveCombat.get(initiatorEntity) != retaliatorEntity) {
@@ -25,8 +25,7 @@ library LibActiveCombat {
   }
 
   function requireNotActiveCombat(bytes32 initiatorEntity) internal view {
-    bytes32 retaliatorEntity = ActiveCombat.get(initiatorEntity);
-    if (retaliatorEntity != bytes32(0)) {
+    if (ActiveCombat.get(initiatorEntity) == bytes32(0)) {
       revert LibActiveCombat__CombatActive();
     }
   }
