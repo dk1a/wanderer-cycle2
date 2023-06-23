@@ -19,8 +19,8 @@ library LibEffectPrototype {
     }
     // verify statmods existence
     for (uint256 i; i < EffectTemplate.lengthEntities(effectProtoEntity); i++) {
-      bool isKey = hasKey(StatmodBaseTableId, StatmodBase.encodeKeyTuple(effectTemplateData.entities[i]));
-      if (!isKey) {
+      bool isKey = !hasKey(StatmodBaseTableId, StatmodBase.encodeKeyTuple(effectTemplateData.entities[i]));
+      if (StatmodBase.get(effectTemplateData.entities[i]) == bytes32(0)) {
         revert LibEffectPrototype__InvalidStatmod();
       }
     }
