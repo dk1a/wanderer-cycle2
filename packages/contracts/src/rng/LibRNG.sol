@@ -23,7 +23,7 @@ library LibRNG {
   uint256 constant WAIT_BLOCKS = 0;
 
   function requestRandomness(bytes32 requestOwnerEntity) internal returns (bytes32 requestId) {
-    requestId = getUniqueEntity();
+    bytes32 requestId = getUniqueEntity();
 
     RNGPrecommit.set(requestId, block.number + WAIT_BLOCKS);
 
