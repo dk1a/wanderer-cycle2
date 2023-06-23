@@ -1,7 +1,4 @@
 node_modules
-<<<<<<< HEAD
 .idea/
 .DS_Store
-=======
->>>>>>> 668ba158946e3ecb5da193a4a220d73457eef334
 .eslintcache
