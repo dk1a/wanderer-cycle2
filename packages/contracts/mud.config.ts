@@ -66,10 +66,5 @@ export default mudConfig({
       root: true,
       args: [resolveTableId("Experience")],
     },
-    {
-      name: "KeysInTableModule",
-      root: true,
-      args: [resolveTableId("ActiveCombat")],
-    },
   ],
 });
