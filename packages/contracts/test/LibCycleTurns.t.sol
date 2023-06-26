@@ -18,14 +18,17 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function test_setUp() public {
+    LibCycleTurns.claimTurns(cycleEntity);
+
     initialTurns = CycleTurns.get(cycleEntity);
     // spawn should autoclaim the first turns batch
     assertEq(initialTurns, LibCycleTurns.TURNS_PER_PERIOD);
   }
 
   function test_claimTurns_premature() public {
-    initialTurns = CycleTurns.get(cycleEntity);
     LibCycleTurns.claimTurns(cycleEntity);
+
+    initialTurns = CycleTurns.get(cycleEntity);
     // trying to claim again prematurely should do nothing
     LibCycleTurns.claimTurns(cycleEntity);
 
@@ -44,6 +47,8 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function test_claimTurns_twoPeriods() public {
+    LibCycleTurns.claimTurns(cycleEntity);
+
     initialTurns = CycleTurns.get(cycleEntity);
 
     // after waiting for 2 ACC_PERIODs, 2 batches should be claimable at once
