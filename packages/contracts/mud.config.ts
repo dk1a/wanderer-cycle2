@@ -53,15 +53,51 @@ export default mudConfig({
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
     },
+    EqptBase: {
+      ...entityKey,
+      schema: "bytes32",
+      //     {
+      //   weapon: EntityId,
+      //   shield: EntityId,
+      //   hat: EntityId,
+      //   clothing: EntityId,
+      //   gloves: EntityId,
+      //   pants: EntityId,
+      //   boots: EntityId,
+      //   amulet: EntityId,
+      //   ring: EntityId,
+      // }
+    },
+    FromEqptBase: entityRelation,
+    SlotAllowedBases: {
+      ...entityKey,
+      // set of base equipment entities
+      schema: EntityIdSet,
+    },
+    SlotEquipment: {
+      ...entityKey,
+      // equipment entity (not base)
+      schema: EntityId,
+    },
+    Name: {
+      ...entityKey,
+      schema: "string",
+    },
+    OwnedBy: entityRelation,
   },
   modules: [
     {
       name: "KeysInTableModule",
       root: true,
       args: [resolveTableId("Experience")],
+    },
+    {
+      name: "UniqueEntityModule",
+      root: true,
+      args: [resolveTableId("Name")],
     },
   ],
 });
