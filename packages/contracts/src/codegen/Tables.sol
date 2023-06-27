@@ -10,3 +10,6 @@ import { GuisePrototype, GuisePrototypeTableId } from "./tables/GuisePrototype.s
 import { ActiveCycle, ActiveCycleTableId } from "./tables/ActiveCycle.sol";
 import { CycleTurns, CycleTurnsTableId } from "./tables/CycleTurns.sol";
 import { CycleTurnsLastClaimed, CycleTurnsLastClaimedTableId } from "./tables/CycleTurnsLastClaimed.sol";
+import { Wanderer, WandererTableId } from "./tables/Wanderer.sol";
+import { DefaultWheel, DefaultWheelTableId } from "./tables/DefaultWheel.sol";
+import { WNFTOwnership, WNFTOwnershipTableId } from "./tables/WNFTOwnership.sol";
