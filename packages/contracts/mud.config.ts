@@ -113,7 +113,7 @@ export default mudConfig({
   },
   modules: [
     {
-      name: "KeysInTableModule",
+      name: "KeysWithValueModule",
       root: true,
       args: [resolveTableId("Experience")],
       ...keysWithValue(["AffixProtoGroup"]),
