@@ -42,26 +42,43 @@ const keysWithValue = (tableNames: string[]) =>
   }));
 
 export default mudConfig({
+  systems: {
+    RandomMapSubSystem: {
+      openAccess: false,
+      accessList: [],
+    },
+  },
   tables: {
     Counter: {
       keySchema: {},
       schema: "uint32",
     },
+    FromPrototype: entityRelation,
     Experience: {
       ...entityKey,
       schema: arrayPStat,
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
     },
+    MapBase: {
+      ...entityKey,
+      schema: "bytes32",
+    },
+    FromMapBase: entityRelation,
   },
   modules: [
     {
       name: "KeysInTableModule",
       root: true,
       args: [resolveTableId("Experience")],
+    },
+    {
+      name: "UniqueEntityModule",
+      root: true,
+      args: [resolveTableId("MapBase")],
     },
   ],
 });
