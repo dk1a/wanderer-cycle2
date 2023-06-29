@@ -53,9 +53,12 @@ export default mudConfig({
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
     },
+  },
+  enums: {
+    ActionType: ["ATTACK", "SKILL"],
   },
   modules: [
     {
