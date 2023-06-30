@@ -8,7 +8,7 @@ import { Wheel, DefaultWheel, Name, WheelData } from "../codegen/Tables.sol";
 library LibInitWheel {
   error GuisePrototypeInitSystem__InvalidSkill();
 
-  function init(IWorld world) internal {
+  function init() internal {
     bytes32 wheelEntity = add(
       "Wheel of Attainment",
       WheelData({ totalIdentityRequired: 0, charges: 3, isIsolated: false })
