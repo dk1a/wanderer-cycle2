@@ -47,14 +47,30 @@ export default mudConfig({
       keySchema: {},
       schema: "uint32",
     },
+    Name: {
+      ...entityKey,
+      schema: "string",
+    },
+    DefaultWheel: {
+      keySchema: {},
+      schema: EntityId,
+    },
+    Wheel: {
+      ...entityKey,
+      schema: {
+        totalIdentityRequired: "uint32",
+        charges: "uint32",
+        isIsolated: "bool",
+      },
+    },
     Experience: {
       ...entityKey,
       schema: arrayPStat,
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
     },
   },
   modules: [
@@ -62,6 +78,11 @@ export default mudConfig({
       name: "KeysInTableModule",
       root: true,
       args: [resolveTableId("Experience")],
+    },
+    {
+      name: "UniqueEntityModule",
+      root: true,
+      args: [resolveTableId("Wheel")],
     },
   ],
 });
