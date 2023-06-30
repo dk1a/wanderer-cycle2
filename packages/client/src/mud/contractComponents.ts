@@ -65,5 +65,20 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    MapBase: (() => {
+      const tableId = new TableId("", "MapBase");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
   };
 }
