@@ -20,6 +20,117 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    FromPrototype: (() => {
+      const tableId = new TableId("", "FromPrototype");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixAvailable: (() => {
+      const tableId = new TableId("", "AffixAvailable");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigIntArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixNaming: (() => {
+      const tableId = new TableId("", "AffixNaming");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixPrototype: (() => {
+      const tableId = new TableId("", "AffixPrototype");
+      return defineComponent(
+        world,
+        {
+          statmodProtoEntity: RecsType.String,
+          tier: RecsType.Number,
+          requiredLevel: RecsType.Number,
+          min: RecsType.Number,
+          max: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixProtoIndex: (() => {
+      const tableId = new TableId("", "AffixProtoIndex");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixProtoGroup: (() => {
+      const tableId = new TableId("", "AffixProtoGroup");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Affix: (() => {
+      const tableId = new TableId("", "Affix");
+      return defineComponent(
+        world,
+        {
+          partId: RecsType.Number,
+          protoEntity: RecsType.String,
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     Experience: (() => {
       const tableId = new TableId("", "Experience");
       return defineComponent(
