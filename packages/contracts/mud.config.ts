@@ -53,9 +53,80 @@ export default mudConfig({
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
     },
+    DurationScope: {
+      keySchema: {
+        targetEntity: EntityId,
+        baseEntity: EntityId,
+      },
+      schema: "bytes32",
+    },
+    DurationValue: {
+      keySchema: {
+        targetEntity: EntityId,
+        baseEntity: EntityId,
+      },
+      schema: "uint48",
+    },
+    DurationOnEnd: {
+      ...entityKey,
+      schema: systemCallbackSchema,
+    },
+
+    EffectTemplate: {
+      ...entityKey,
+      schema: {
+        entities: EntityIdArray,
+        values: "uint32[]",
+      },
+    },
+    EffectRemovability: {
+      ...entityKey,
+      schema: "EffectRemovabilityId",
+    },
+    EffectDuration: {
+      ...entityKey,
+      schema: scopedDurationSchema,
+    },
+    EffectApplied: {
+      keySchema: {
+        targetEntity: EntityId,
+        sourceEntity: EntityId,
+      },
+      schema: {
+        entities: EntityIdArray,
+        values: "uint32[]",
+      },
+    },
+    LearnedSkills: {
+      ...entityKey,
+      schema: EntityIdSet,
+    },
+    // most skill entities also have EffectTemplate for the effect triggered by skill use
+    SkillTemplate: {
+      ...entityKey,
+      schema: {
+        // level required to learn it
+        requiredLevel: "uint8",
+        // when/how it can be used
+        skillType: "SkillType",
+        // flag to also trigger an attack afterwards (base attack damage is not based on the skill)
+        withAttack: "bool",
+        // flag to also trigger a spell afterwards (`SpellDamage` is used for base damage)
+        withSpell: "bool",
+        // mana cost to be subtracted on use
+        cost: "uint32",
+        // who it can be used on
+        targetType: "TargetType",
+      },
+    },
+  },
+  enums: {
+    EffectRemovabilityId: ["BUFF", "DEBUFF", "PERSISTENT"],
+    SkillType: ["COMBAT", "NONCOMBAT", "PASSIVE"],
+    TargetType: ["SELF", "ENEMY", "ALLY", "SELF_OR_ALLY"],
   },
   modules: [
     {
