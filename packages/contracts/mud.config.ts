@@ -47,14 +47,22 @@ export default mudConfig({
       keySchema: {},
       schema: "uint32",
     },
+    Name: {
+      ...entityKey,
+      schema: "string",
+    },
+    MapBase: {
+      ...entityKey,
+      schema: "bytes32",
+    },
     Experience: {
       ...entityKey,
       schema: arrayPStat,
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
     },
   },
   modules: [
@@ -62,6 +70,11 @@ export default mudConfig({
       name: "KeysInTableModule",
       root: true,
       args: [resolveTableId("Experience")],
+    },
+    {
+      name: "UniqueEntityModule",
+      root: true,
+      args: [resolveTableId("MapBase")],
     },
   ],
 });

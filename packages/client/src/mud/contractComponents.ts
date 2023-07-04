@@ -20,6 +20,51 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    Name: (() => {
+      const tableId = new TableId("", "Name");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    MapBase: (() => {
+      const tableId = new TableId("", "MapBase");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    FromMapBase: (() => {
+      const tableId = new TableId("", "FromMapBase");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     Experience: (() => {
       const tableId = new TableId("", "Experience");
       return defineComponent(
