@@ -65,5 +65,150 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    DurationScope: (() => {
+      const tableId = new TableId("", "DurationScope");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    DurationValue: (() => {
+      const tableId = new TableId("", "DurationValue");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    DurationOnEnd: (() => {
+      const tableId = new TableId("", "DurationOnEnd");
+      return defineComponent(
+        world,
+        {
+          namespace: RecsType.String,
+          file: RecsType.String,
+          funcSelectorAndArgs: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    EffectTemplate: (() => {
+      const tableId = new TableId("", "EffectTemplate");
+      return defineComponent(
+        world,
+        {
+          entities: RecsType.StringArray,
+          values: RecsType.NumberArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    EffectRemovability: (() => {
+      const tableId = new TableId("", "EffectRemovabili");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    EffectDuration: (() => {
+      const tableId = new TableId("", "EffectDuration");
+      return defineComponent(
+        world,
+        {
+          scope: RecsType.String,
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    EffectApplied: (() => {
+      const tableId = new TableId("", "EffectApplied");
+      return defineComponent(
+        world,
+        {
+          entities: RecsType.StringArray,
+          values: RecsType.NumberArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    LearnedSkills: (() => {
+      const tableId = new TableId("", "LearnedSkills");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.StringArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    SkillTemplate: (() => {
+      const tableId = new TableId("", "SkillTemplate");
+      return defineComponent(
+        world,
+        {
+          requiredLevel: RecsType.Number,
+          skillType: RecsType.Number,
+          withAttack: RecsType.Boolean,
+          withSpell: RecsType.Boolean,
+          cost: RecsType.Number,
+          targetType: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
   };
 }
