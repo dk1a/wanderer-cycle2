@@ -53,9 +53,19 @@ export default mudConfig({
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
     },
+    LearnedSkills: {
+      ...entityKey,
+      schema: EntityIdSet,
+    },
+    Identity: {
+      ...entityKey,
+      schema: "uint32",
+    },
+    CurrentCycle: entityRelation,
+    PreviousCycle: entityRelation,
   },
   modules: [
     {
