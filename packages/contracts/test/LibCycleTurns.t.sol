@@ -59,7 +59,6 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function test_claimTurns_atMaxCurrent() public {
-    initialTurns = CycleTurns.get(cycleEntity);
     vm.warp(block.timestamp + LibCycleTurns.ACC_PERIOD);
 
     uint32 maxCurrent = LibCycleTurns.MAX_CURRENT_TURNS_FOR_CLAIM;
@@ -71,7 +70,6 @@ contract LibExperienceTest is MudV2Test {
   }
 
   function test_claimTurns_overMaxCurrent() public {
-    initialTurns = CycleTurns.get(cycleEntity);
     vm.warp(block.timestamp + LibCycleTurns.ACC_PERIOD);
 
     uint32 maxCurrent = LibCycleTurns.MAX_CURRENT_TURNS_FOR_CLAIM;
