@@ -84,7 +84,7 @@ export default mudConfig({
     {
       name: "UniqueEntityModule",
       root: true,
-      args: [resolveTableId("RNGRequestOwner")],
+      args: [],
     },
   ],
 });
