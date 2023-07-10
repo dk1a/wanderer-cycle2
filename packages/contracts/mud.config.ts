@@ -68,12 +68,23 @@ export default mudConfig({
       ...entityKey,
       schema: "uint48",
     },
+    RNGPrecommit: {
+      ...entityKey,
+      schema: "uint256",
+    },
+    // requestId => ownerEntity
+    RNGRequestOwner: entityRelation,
   },
   modules: [
     {
       name: "KeysInTableModule",
       root: true,
       args: [resolveTableId("Experience")],
+    },
+    {
+      name: "UniqueEntityModule",
+      root: true,
+      args: [resolveTableId("RNGRequestOwner")],
     },
   ],
 });

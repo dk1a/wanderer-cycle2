@@ -5,7 +5,6 @@ import { CycleTurns, CycleTurnsLastClaimed, ActiveGuise } from "../codegen/Table
 
 library LibCycleTurns {
   error LibCycleTurns__NotEnoughTurns();
-  //TODO remove and add to LibCycle
 
   // TODO minutes is for testing, change to days
   uint256 constant ACC_PERIOD = 1 minutes;
