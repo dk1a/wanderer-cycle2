@@ -72,7 +72,7 @@ export default mudConfig({
     {
       name: "UniqueEntityModule",
       root: true,
-      args: [resolveTableId("RNGPrecommit")],
+      args: [],
     },
   ],
 });
