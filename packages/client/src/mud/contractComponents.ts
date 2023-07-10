@@ -35,6 +35,102 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    AffixAvailable: (() => {
+      const tableId = new TableId("", "AffixAvailable");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigIntArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixNaming: (() => {
+      const tableId = new TableId("", "AffixNaming");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixPrototype: (() => {
+      const tableId = new TableId("", "AffixPrototype");
+      return defineComponent(
+        world,
+        {
+          statmodProtoEntity: RecsType.String,
+          tier: RecsType.Number,
+          requiredLevel: RecsType.Number,
+          min: RecsType.Number,
+          max: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixProtoIndex: (() => {
+      const tableId = new TableId("", "AffixProtoIndex");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AffixProtoGroup: (() => {
+      const tableId = new TableId("", "AffixProtoGroup");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Affix: (() => {
+      const tableId = new TableId("", "Affix");
+      return defineComponent(
+        world,
+        {
+          partId: RecsType.Number,
+          protoEntity: RecsType.String,
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     ActiveGuise: (() => {
       const tableId = new TableId("", "ActiveGuise");
       return defineComponent(
@@ -56,6 +152,97 @@ export function defineContractComponents(world: World) {
         world,
         {
           value: RecsType.NumberArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Name: (() => {
+      const tableId = new TableId("", "Name");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    StatmodBase: (() => {
+      const tableId = new TableId("", "StatmodBase");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    FromStatmodBase: (() => {
+      const tableId = new TableId("", "FromStatmodBase");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    StatmodBaseOpts: (() => {
+      const tableId = new TableId("", "StatmodBaseOpts");
+      return defineComponent(
+        world,
+        {
+          statmodOp: RecsType.Number,
+          eleStat: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    StatmodScope: (() => {
+      const tableId = new TableId("", "StatmodScope");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    StatmodValue: (() => {
+      const tableId = new TableId("", "StatmodValue");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
         },
         {
           metadata: {

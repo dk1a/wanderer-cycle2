@@ -51,17 +51,72 @@ export default mudConfig({
       ...entityKey,
       schema: arrayPStat,
     },
+    AffixAvailable: {
+      keySchema: {
+        affixPart: "AffixPartId",
+        targetEntity: EntityId,
+        ilvl: "uint32",
+      },
+      schema: "uint256[]",
+    },
+    AffixNaming: {
+      keySchema: {
+        affixPart: "AffixPartId",
+        targetEntity: EntityId,
+        protoEntity: EntityId,
+      },
+      schema: "string",
+    },
+    AffixPrototype: {
+      ...entityKey,
+      schema: {
+        statmodProtoEntity: EntityId,
+        tier: "uint32",
+        requiredLevel: "uint32",
+        min: "uint32",
+        max: "uint32",
+      },
+    },
+    AffixProtoIndex: {
+      keySchema: {
+        nameHash: "bytes32",
+        tier: "uint32",
+      },
+      schema: EntityId,
+    },
+    AffixProtoGroup: {
+      keySchema: {
+        nameHash: "bytes32",
+      },
+      schema: EntityId,
+    },
+    Affix: {
+      ...entityKey,
+      schema: {
+        partId: "AffixPartId",
+        protoEntity: EntityId,
+        value: "uint32",
+      },
+    },
     ActiveGuise: entityRelation,
     GuisePrototype: {
-     ...entityKey,
-     schema: arrayPStat,
+      ...entityKey,
+      schema: arrayPStat,
     },
+    Name: {
+      ...entityKey,
+      schema: "string",
+    },
+  },
+  enums: {
+    AffixPartId: ["IMPLICIT", "PREFIX", "SUFFIX"],
   },
   modules: [
     {
-      name: "KeysInTableModule",
+      name: "KeysWithValueModule",
       root: true,
       args: [resolveTableId("Experience")],
+      ...keysWithValue(["AffixProtoGroup"]),
     },
   ],
 });
