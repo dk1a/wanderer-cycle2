@@ -68,32 +68,12 @@ export default mudConfig({
       ...entityKey,
       schema: "uint48",
     },
-    Wanderer: {
-      ...entityKey,
-      schema: "bool",
-    },
-    DefaultWheel: {
-      keySchema: {},
-      schema: EntityId,
-    },
-    // TODO implement a proper ERC721
-    WNFTOwnership: {
-      keySchema: {
-        tokenId: "uint256",
-      },
-      schema: "address",
-    },
   },
   modules: [
     {
       name: "KeysInTableModule",
       root: true,
       args: [resolveTableId("Experience")],
-    },
-    {
-      name: "UniqueEntityModule",
-      root: true,
-      args: [resolveTableId("Wanderer")],
     },
   ],
 });
