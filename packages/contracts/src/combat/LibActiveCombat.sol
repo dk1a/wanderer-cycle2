@@ -9,7 +9,7 @@ library LibActiveCombat {
   error LibActiveCombat__CombatActiveForDifferentRetaliator();
 
   function getRetaliatorEntity(bytes32 initiatorEntity) internal view returns (bytes32 retaliatorEntity) {
-    if (ActiveCombat.get(initiatorEntity) != bytes32(0)) {
+    if (ActiveCombat.get(initiatorEntity) == bytes32(0)) {
       revert LibActiveCombat__CombatNotActive();
     }
     return ActiveCombat.get(initiatorEntity);
@@ -25,7 +25,7 @@ library LibActiveCombat {
   }
 
   function requireNotActiveCombat(bytes32 initiatorEntity) internal view {
-    if (ActiveCombat.get(initiatorEntity) == bytes32(0)) {
+    if (ActiveCombat.get(initiatorEntity) != bytes32(0)) {
       revert LibActiveCombat__CombatActive();
     }
   }
