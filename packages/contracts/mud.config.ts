@@ -68,9 +68,6 @@ export default mudConfig({
       schema: "bytes32",
     },
   },
-  enums: {
-    EleStat: enumEleStat,
-  },
 
   modules: [
     {
