@@ -7,7 +7,7 @@ import { Wheel, DefaultWheel, Name, WheelData } from "../codegen/Tables.sol";
 
 library LibInitWheel {
   function init() internal {
-    bytes32 wheelEntity = add(
+    bytes32 wheelEntity = _add(
       "Wheel of Attainment",
       WheelData({ totalIdentityRequired: 0, charges: 3, isIsolated: false })
     );
