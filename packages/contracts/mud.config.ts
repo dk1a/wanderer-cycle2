@@ -78,6 +78,9 @@ export default mudConfig({
     // requestId => ownerEntity
     RNGRequestOwner: entityRelation,
   },
+  enums: {
+    ActionType: ["ATTACK", "SKILL"],
+  },
   modules: [
     {
       name: "KeysInTableModule",
