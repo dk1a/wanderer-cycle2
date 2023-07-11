@@ -8,8 +8,6 @@ import { SkillType, TargetType } from ".../codegen/Types.sol";
 import { PStat, PStat_length } from "../CustomTypes.sol";
 
 library LibInitGuise {
-  error GuisePrototypeInitSystem__InvalidSkill();
-
   function init() internal {
     bytes32[] memory guiseSkills = new bytes32[](11);
     guiseSkills[0] = spe("Cleave");
@@ -24,22 +22,17 @@ library LibInitGuise {
     guiseSkills[9] = spe("Last Stand");
     guiseSkills[10] = spe("Weapon Mastery");
 
-    add("Warrior", [uint32(16), 8, 8], guiseSkills);
+    _add("Warrior", [uint32(16), 8, 8], guiseSkills);
   }
 
-  function add(string memory name, uint32[PStat_length] levelMul, bytes32[] memory guiseSkills) internal {
+  function _add(string memory name, uint32[PStat_length] levelMul, bytes32[] memory guiseSkills) private {
     uint256 entity = getUniqueEntity();
 
-    for (uint256 i; i < guiseSkills.length; i++) {
-      if (SkillTemplate.get(guiseSkills[i]) == 0) {
-        revert GuisePrototypeInitSystem__InvalidSkill();
-      }
-    }
-
     GuisePrototype.set(entity, levelMul);
-    //TODO set guiseSkills?
 
-    //  SkillTemplate.set(entity, guiseSkills);
+    for (uint256 i; i < guiseSkills.length; i++) {
+      SkillTemplate.set(entity, guiseSkills[i]);
+    }
     Name.set(entity, name);
   }
 }
