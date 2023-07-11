@@ -6,6 +6,7 @@ pragma solidity >=0.8.0;
 import { Counter, CounterTableId } from "./tables/Counter.sol";
 import { Name, NameTableId } from "./tables/Name.sol";
 import { SkillTemplate, SkillTemplateData, SkillTemplateTableId } from "./tables/SkillTemplate.sol";
+import { AvailableSkills, AvailableSkillsTableId } from "./tables/AvailableSkills.sol";
 import { Experience, ExperienceTableId } from "./tables/Experience.sol";
 import { ActiveGuise, ActiveGuiseTableId } from "./tables/ActiveGuise.sol";
 import { GuisePrototype, GuisePrototypeTableId } from "./tables/GuisePrototype.sol";

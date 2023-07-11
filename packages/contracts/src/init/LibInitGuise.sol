@@ -3,7 +3,7 @@ pragma solidity >=0.8.0;
 
 import { getUniqueEntity } from "@latticexyz/world/src/modules/uniqueentity/getUniqueEntity.sol";
 
-import { Name, SkillTemplate, SkillTemplateData, GuisePrototype } from "../codegen/Tables.sol";
+import { Name, SkillTemplate, SkillTemplateData, GuisePrototype, AvailableSkills } from "../codegen/Tables.sol";
 import { SkillType, TargetType } from ".../codegen/Types.sol";
 import { PStat, PStat_length } from "../CustomTypes.sol";
 
@@ -30,9 +30,7 @@ library LibInitGuise {
 
     GuisePrototype.set(entity, levelMul);
 
-    for (uint256 i; i < guiseSkills.length; i++) {
-      SkillTemplate.set(entity, guiseSkills[i]);
-    }
+    AvailableSkills.set(entity, guiseSkills);
     Name.set(entity, name);
   }
 }

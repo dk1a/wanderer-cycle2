@@ -68,6 +68,10 @@ export default mudConfig({
         targetType: "TargetType",
       },
     },
+    AvailableSkills: {
+      ...entityKey,
+      schema: EntityIdSet,
+    },
     Experience: {
       ...entityKey,
       schema: arrayPStat,
