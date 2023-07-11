@@ -6,7 +6,7 @@ import { hasKey } from "@latticexyz/world/src/modules/keysintable/hasKey.sol";
 import { LearnedSkills, LearnedSkillsTableId, SkillTemplate, SkillTemplateData } from "../codegen/Tables.sol";
 import { SkillType } from "../codegen/Types.sol";
 
-import { LibSkill } from "./LibSkill.sol";
+//import { LibSkill } from "./LibSkill.sol";
 
 library LibLearnedSkills {
   error LibLearnedSkills__LearnSkillDuplicate();
@@ -52,8 +52,8 @@ library LibLearnedSkills {
 
   function _autotoggleIfPassive(bytes32 userEntity, bytes32 skillEntity) private {
     SkillTemplateData skillTemplate = SkillTemplate.get(skillEntity);
-    if (skillTemplate.skillType == SkillType.PASSIVE) {
-      LibSkill.useSkill(userEntity);
-    }
+    //    if (skillTemplate.skillType == SkillType.PASSIVE) {
+    //      LibSkill.useSkill(userEntity);
+    //    }
   }
 }

@@ -77,10 +77,38 @@ export default mudConfig({
         targetType: "TargetType",
       },
     },
+    // initiatorEntity => retaliatorEntity
+    // An entity can initiate only 1 combat at a time
+    ActiveCombat: entityRelation,
+    ActiveCycle: {
+      ...entityKey,
+      schema: "uint32",
+    },
+    CycleTurns: {
+      ...entityKey,
+      schema: "uint32",
+    },
+    CycleTurnsLastClaimed: {
+      ...entityKey,
+      schema: "uint48",
+    },
+    RNGPrecommit: {
+      ...entityKey,
+      schema: "uint256",
+    },
+    // requestId => ownerEntity
+    RNGRequestOwner: entityRelation,
   },
   enums: {
     SkillType: ["COMBAT", "NONCOMBAT", "PASSIVE"],
     TargetType: ["SELF", "ENEMY", "ALLY", "SELF_OR_ALLY"],
   },
-  modules: [...keysWithValue(["Experience", "LearnedSkills"])],
+  modules: [
+    ...keysWithValue(["Experience", "LearnedSkills"]),
+    {
+      name: "UniqueEntityModule",
+      root: true,
+      args: [],
+    },
+  ],
 });
