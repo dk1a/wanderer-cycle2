@@ -78,7 +78,7 @@ export default mudConfig({
     {
       name: "KeysInTableModule",
       root: true,
-      args: [resolveTableId("StatmodBase")],
+      args: [],
     },
   ],
 });
