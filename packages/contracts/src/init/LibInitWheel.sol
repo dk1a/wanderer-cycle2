@@ -6,8 +6,6 @@ import { getUniqueEntity } from "@latticexyz/world/src/modules/uniqueentity/getU
 import { Wheel, DefaultWheel, Name, WheelData } from "../codegen/Tables.sol";
 
 library LibInitWheel {
-  error GuisePrototypeInitSystem__InvalidSkill();
-
   function init() internal {
     bytes32 wheelEntity = add(
       "Wheel of Attainment",
