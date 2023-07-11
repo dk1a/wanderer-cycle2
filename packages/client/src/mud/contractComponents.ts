@@ -96,6 +96,21 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    ActiveCombat: (() => {
+      const tableId = new TableId("", "ActiveCombat");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     ActiveCycle: (() => {
       const tableId = new TableId("", "ActiveCycle");
       return defineComponent(
