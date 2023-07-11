@@ -56,13 +56,12 @@ export default mudConfig({
       ...entityKey,
       schema: arrayPStat,
     },
-    // initiatorEntity => retaliatorEntity
-    // An entity can initiate only 1 combat at a time
-    ActiveCombat: entityRelation,
     ActiveCycle: {
       ...entityKey,
-      schema: "uint32",
+      schema: "bytes32",
     },
+    CurrentCycle: entityRelation,
+    PreviousCycle: entityRelation,
     CycleTurns: {
       ...entityKey,
       schema: "uint32",
@@ -71,6 +70,22 @@ export default mudConfig({
       ...entityKey,
       schema: "uint48",
     },
+    ActiveWheel: entityRelation,
+    Wheel: {
+      ...entityKey,
+      schema: {
+        totalIdentityRequired: "uint32",
+        charges: "uint32",
+        isIsolated: "bool",
+      },
+    },
+    Wanderer: {
+      ...entityKey,
+      schema: "bool",
+    },
+    // initiatorEntity => retaliatorEntity
+    // An entity can initiate only 1 combat at a time
+    ActiveCombat: entityRelation,
     RNGPrecommit: {
       ...entityKey,
       schema: "uint256",
