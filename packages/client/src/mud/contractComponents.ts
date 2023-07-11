@@ -96,5 +96,80 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    ActiveCycle: (() => {
+      const tableId = new TableId("", "ActiveCycle");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    CycleTurns: (() => {
+      const tableId = new TableId("", "CycleTurns");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    CycleTurnsLastClaimed: (() => {
+      const tableId = new TableId("", "CycleTurnsLastCl");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    RNGPrecommit: (() => {
+      const tableId = new TableId("", "RNGPrecommit");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    RNGRequestOwner: (() => {
+      const tableId = new TableId("", "RNGRequestOwner");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
   };
 }

@@ -9,3 +9,8 @@ import { ActiveGuise, ActiveGuiseTableId } from "./tables/ActiveGuise.sol";
 import { GuisePrototype, GuisePrototypeTableId } from "./tables/GuisePrototype.sol";
 import { EffectTemplate, EffectTemplateData, EffectTemplateTableId } from "./tables/EffectTemplate.sol";
 import { StatmodBase, StatmodBaseTableId } from "./tables/StatmodBase.sol";
+import { ActiveCycle, ActiveCycleTableId } from "./tables/ActiveCycle.sol";
+import { CycleTurns, CycleTurnsTableId } from "./tables/CycleTurns.sol";
+import { CycleTurnsLastClaimed, CycleTurnsLastClaimedTableId } from "./tables/CycleTurnsLastClaimed.sol";
+import { RNGPrecommit, RNGPrecommitTableId } from "./tables/RNGPrecommit.sol";
+import { RNGRequestOwner, RNGRequestOwnerTableId } from "./tables/RNGRequestOwner.sol";

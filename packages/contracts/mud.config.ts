@@ -67,6 +67,24 @@ export default mudConfig({
       ...entityKey,
       schema: "bytes32",
     },
+    ActiveCycle: {
+      ...entityKey,
+      schema: "uint32",
+    },
+    CycleTurns: {
+      ...entityKey,
+      schema: "uint32",
+    },
+    CycleTurnsLastClaimed: {
+      ...entityKey,
+      schema: "uint48",
+    },
+    RNGPrecommit: {
+      ...entityKey,
+      schema: "uint256",
+    },
+    // requestId => ownerEntity
+    RNGRequestOwner: entityRelation,
   },
 
   modules: [
@@ -76,7 +94,7 @@ export default mudConfig({
       args: [resolveTableId("Experience")],
     },
     {
-      name: "KeysInTableModule",
+      name: "UniqueEntityModule",
       root: true,
       args: [],
     },
