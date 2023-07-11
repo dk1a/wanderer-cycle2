@@ -16,10 +16,10 @@ library LibInitWheel {
 
     DefaultWheel.set(wheelEntity);
 
-    add("Wheel of Isolation", WheelData({ totalIdentityRequired: 128, charges: 4, isIsolated: true }));
+    _add("Wheel of Isolation", WheelData({ totalIdentityRequired: 128, charges: 4, isIsolated: true }));
   }
 
-  function add(string memory name, WheelData memory wheelData) internal returns (bytes32 entity) {
+  function _add(string memory name, WheelData memory wheelData) private returns (bytes32 entity) {
     bytes32 entity = getUniqueEntity();
 
     Wheel.set(entity, wheelData);
