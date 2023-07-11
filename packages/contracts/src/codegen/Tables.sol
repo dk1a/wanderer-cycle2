@@ -7,6 +7,8 @@ import { Counter, CounterTableId } from "./tables/Counter.sol";
 import { Experience, ExperienceTableId } from "./tables/Experience.sol";
 import { ActiveGuise, ActiveGuiseTableId } from "./tables/ActiveGuise.sol";
 import { GuisePrototype, GuisePrototypeTableId } from "./tables/GuisePrototype.sol";
+import { LearnedSkills, LearnedSkillsTableId } from "./tables/LearnedSkills.sol";
+import { SkillTemplate, SkillTemplateData, SkillTemplateTableId } from "./tables/SkillTemplate.sol";
 import { ActiveCombat, ActiveCombatTableId } from "./tables/ActiveCombat.sol";
 import { ActiveCycle, ActiveCycleTableId } from "./tables/ActiveCycle.sol";
 import { CycleTurns, CycleTurnsTableId } from "./tables/CycleTurns.sol";
