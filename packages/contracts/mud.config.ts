@@ -51,10 +51,18 @@ export default mudConfig({
       ...entityKey,
       schema: arrayPStat,
     },
+    Name: {
+      ...entityKey,
+      schema: "string",
+    },
     ActiveGuise: entityRelation,
     GuisePrototype: {
       ...entityKey,
       schema: arrayPStat,
+    },
+    MapBase: {
+      ...entityKey,
+      schema: "bytes32",
     },
     // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time

@@ -35,8 +35,8 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    ActiveGuise: (() => {
-      const tableId = new TableId("", "ActiveGuise");
+    Name: (() => {
+      const tableId = new TableId("", "Name");
       return defineComponent(
         world,
         {
@@ -50,12 +50,12 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    CycleTurns: (() => {
-      const tableId = new TableId("", "CycleTurns");
+    ActiveGuise: (() => {
+      const tableId = new TableId("", "ActiveGuise");
       return defineComponent(
         world,
         {
-          value: RecsType.Number,
+          value: RecsType.String,
         },
         {
           metadata: {
@@ -80,12 +80,102 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
+    MapBase: (() => {
+      const tableId = new TableId("", "MapBase");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    ActiveCombat: (() => {
+      const tableId = new TableId("", "ActiveCombat");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    ActiveCycle: (() => {
+      const tableId = new TableId("", "ActiveCycle");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    CycleTurns: (() => {
+      const tableId = new TableId("", "CycleTurns");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
     CycleTurnsLastClaimed: (() => {
       const tableId = new TableId("", "CycleTurnsLastCl");
       return defineComponent(
         world,
         {
           value: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    RNGPrecommit: (() => {
+      const tableId = new TableId("", "RNGPrecommit");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.BigInt,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    RNGRequestOwner: (() => {
+      const tableId = new TableId("", "RNGRequestOwner");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
         },
         {
           metadata: {
