@@ -64,6 +64,27 @@ export default mudConfig({
       ...entityKey,
       schema: "bytes32",
     },
+    // initiatorEntity => retaliatorEntity
+    // An entity can initiate only 1 combat at a time
+    ActiveCombat: entityRelation,
+    ActiveCycle: {
+      ...entityKey,
+      schema: "uint32",
+    },
+    CycleTurns: {
+      ...entityKey,
+      schema: "uint32",
+    },
+    CycleTurnsLastClaimed: {
+      ...entityKey,
+      schema: "uint48",
+    },
+    RNGPrecommit: {
+      ...entityKey,
+      schema: "uint256",
+    },
+    // requestId => ownerEntity
+    RNGRequestOwner: entityRelation,
   },
   modules: [
     {
