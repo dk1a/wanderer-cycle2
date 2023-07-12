@@ -51,6 +51,10 @@ export default mudConfig({
       ...entityKey,
       schema: arrayPStat,
     },
+    Name: {
+      ...entityKey,
+      schema: "string",
+    },
     ActiveGuise: entityRelation,
     GuisePrototype: {
       ...entityKey,
@@ -66,6 +70,11 @@ export default mudConfig({
       name: "KeysInTableModule",
       root: true,
       args: [resolveTableId("Experience")],
+    },
+    {
+      name: "UniqueEntityModule",
+      root: true,
+      args: [],
     },
   ],
 });

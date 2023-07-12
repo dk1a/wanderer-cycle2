@@ -1,10 +1,25 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.0;
 
-import { MapBaseTableId } from "../codegen/Tables.sol";
+import { getUniqueEntity } from "@latticexyz/world/src/modules/uniqueentity/getUniqueEntity.sol";
+
+import { MapBase, Name } from "../codegen/Tables.sol";
 
 library MapPrototypes {
-  bytes32 constant GLOBAL_BASIC = bytes32(keccak256(abi.encode(MapBaseTableId, "Global Basic")));
-  bytes32 constant GLOBAL_RANDOM = bytes32(keccak256(abi.encode(MapBaseTableId, "Global Random")));
-  bytes32 constant GLOBAL_CYCLE_BOSS = bytes32(keccak256(abi.encode(MapBaseTableId, "Global Cycle Boss")));
+  string constant GLOBAL_BASIC = "Global Basic";
+  string constant GLOBAL_RANDOM = "Global Random";
+  string constant GLOBAL_CYCLE_BOSS = "Global Cycle Boss";
+
+  function createNewMapPrototype() private {
+    _createNewMapPrototype(GLOBAL_BASIC);
+    _createNewMapPrototype(GLOBAL_RANDOM);
+    _createNewMapPrototype(GLOBAL_CYCLE_BOSS);
+  }
+
+  function _createNewMapPrototype(string memory mapName) private returns (bytes32 _mapProto) {
+    bytes32 mapProto = getUniqueEntity();
+    Name.set(mapProto, mapName);
+    //TODO create new logic for MapBase.set()
+    MapBase.set(mapProto, mapName);
+  }
 }
