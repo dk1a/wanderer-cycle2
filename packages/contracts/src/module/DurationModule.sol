@@ -6,9 +6,11 @@ import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 import { IBaseWorld } from "@latticexyz/world/src/interfaces/IBaseWorld.sol";
 import { IModule } from "@latticexyz/world/src/interfaces/IModule.sol";
 
+import { WorldContext } from "@latticexyz/world/src/WorldContext.sol";
+
 import { getTargetTableSelector } from "@latticexyz/world/src/modules/utils/getTargetTableSelector.sol";
 import { MODULE_NAMESPACE, MODULE_NAME } from "./constants.sol";
-import { Duration } from "../codegen/tables/Duration.sol";
+import { Duration } from "./codegen/tables/Duration.sol";
 
 contract DurationModule is IModule, WorldContext {
   function getName() public pure returns (bytes16) {

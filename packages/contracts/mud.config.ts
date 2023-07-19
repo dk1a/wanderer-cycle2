@@ -42,12 +42,6 @@ const keysWithValue = (tableNames: string[]) =>
   }));
 
 export default mudConfig({
-  systems: {
-    ScopedDurationSubSystem: {
-      openAccess: false,
-      accessList: [],
-    },
-  },
   tables: {
     Counter: {
       keySchema: {},
@@ -64,8 +58,8 @@ export default mudConfig({
     },
     Duration: {
       keySchema: {
-        targetEntity: "bytes32",
-        baseEntity: "bytes32",
+        targetEntity: EntityId,
+        baseEntity: EntityId,
       },
       schema: "bytes32",
       tableIdArgument: true,
@@ -95,6 +89,5 @@ export default mudConfig({
       root: true,
       args: [resolveTableId("Experience")],
     },
-    ...keysWithValue(["Scope", "Value"]),
   ],
 });
