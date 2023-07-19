@@ -62,6 +62,14 @@ export default mudConfig({
       ...entityKey,
       schema: arrayPStat,
     },
+    Duration: {
+      keySchema: {
+        targetEntity: "bytes32",
+        baseEntity: "bytes32",
+      },
+      schema: "bytes32",
+      tableIdArgument: true,
+    },
     DurationScope: {
       keySchema: {
         targetEntity: EntityId,
@@ -87,5 +95,6 @@ export default mudConfig({
       root: true,
       args: [resolveTableId("Experience")],
     },
+    ...keysWithValue(["Scope", "Value"]),
   ],
 });

@@ -7,6 +7,7 @@ import { Counter, CounterTableId } from "./tables/Counter.sol";
 import { Experience, ExperienceTableId } from "./tables/Experience.sol";
 import { ActiveGuise, ActiveGuiseTableId } from "./tables/ActiveGuise.sol";
 import { GuisePrototype, GuisePrototypeTableId } from "./tables/GuisePrototype.sol";
+import { Duration } from "./tables/Duration.sol";
 import { DurationScope, DurationScopeTableId } from "./tables/DurationScope.sol";
 import { DurationValue, DurationValueTableId } from "./tables/DurationValue.sol";
 import { DurationOnEnd, DurationOnEndData, DurationOnEndTableId } from "./tables/DurationOnEnd.sol";
