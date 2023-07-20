@@ -111,12 +111,5 @@ export default mudConfig({
   enums: {
     AffixPartId: ["IMPLICIT", "PREFIX", "SUFFIX"],
   },
-  modules: [
-    {
-      name: "KeysWithValueModule",
-      root: true,
-      args: [resolveTableId("Experience")],
-      ...keysWithValue(["AffixProtoGroup"]),
-    },
-  ],
+  modules: [...keysWithValue(["Experience", "AffixProtoGroup"])],
 });

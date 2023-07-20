@@ -50,6 +50,7 @@ library LibPickAffixes {
       if (i != affixPartIds.length - 1) {
         // exclude all affixes from the picked affix's group (skip for the last cycle)
         bytes32[] memory newExcludeAffixes = getKeysWithValue(
+          world,
           AffixProtoGroupTableId,
           AffixProtoGroup.get(affixProtoEntity)
         );
