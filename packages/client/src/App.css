@@ -3,9 +3,13 @@
 @tailwind utilities;
 
 * {
-  font-family: "Tektur", cursive;
+  font-family: "Courier Prime", monospace;
 }
 
 h1 {
-  font-family: "Courier Prime", monospace;
+  font-family: "Tektur", cursive;
+}
+
+span {
+  font-family: "Silkscreen", cursive;
 }
