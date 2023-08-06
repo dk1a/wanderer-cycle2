@@ -12,7 +12,7 @@ library LibLearnedSkills {
   error LibLearnedSkills__LearnSkillDuplicate();
 
   function hasSkill(bytes32 userEntity, bytes32 skillEntity) internal view returns (bool) {
-    bytes32[] userSkills = LearnedSkills.get(userEntity);
+    bytes32[] memory userSkills = LearnedSkills.get(userEntity);
     for (uint256 i = 0; i < userSkills.length; i++) {
       if (userSkills[i] == skillEntity) {
         return true;
@@ -25,14 +25,14 @@ library LibLearnedSkills {
    * @dev Add `skillEntity` to set of learned skills, revert if it's already learned
    */
   function learnSkill(bytes32 userEntity, bytes32 skillEntity) internal {
-    bytes32[] userSkills = LearnedSkills.get(userEntity);
+    bytes32[] memory userSkills = LearnedSkills.get(userEntity);
     for (uint256 i = 0; i < userSkills.length; i++) {
       if (userSkills[i] == skillEntity) {
         revert LibLearnedSkills__LearnSkillDuplicate();
       }
     }
     LearnedSkills.push(userEntity, skillEntity);
-    _autotoggleIfPassive(__self, skillEntity);
+    _autotoggleIfPassive(userEntity, skillEntity);
   }
 
   /**
@@ -51,7 +51,7 @@ library LibLearnedSkills {
   }
 
   function _autotoggleIfPassive(bytes32 userEntity, bytes32 skillEntity) private {
-    SkillTemplateData skillTemplate = SkillTemplate.get(skillEntity);
+    SkillTemplateData memory skillTemplate = SkillTemplate.get(skillEntity);
     //    if (skillTemplate.skillType == SkillType.PASSIVE) {
     //      LibSkill.useSkill(userEntity);
     //    }
