@@ -18,7 +18,7 @@ library LibInitWheel {
   }
 
   function _add(string memory name, WheelData memory wheelData) private returns (bytes32 entity) {
-    bytes32 entity = getUniqueEntity();
+    entity = getUniqueEntity();
 
     Wheel.set(entity, wheelData);
     Name.set(entity, name);
