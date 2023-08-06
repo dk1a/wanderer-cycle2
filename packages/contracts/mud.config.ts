@@ -41,6 +41,13 @@ const keysWithValue = (tableNames: string[]) =>
     args: [resolveTableId(tableName)],
   }));
 
+const keysInTable = (tableNames: string[]) =>
+  tableNames.map((tableName) => ({
+    name: "KeysInTableModule",
+    root: true,
+    args: [resolveTableId(tableName)],
+  }));
+
 export default mudConfig({
   tables: {
     Counter: {
@@ -116,7 +123,7 @@ export default mudConfig({
   },
 
   modules: [
-    ...keysWithValue(["Experience", "LearnedSkills"]),
+    ...keysInTable(["Experience", "LearnedSkills"]),
     {
       name: "UniqueEntityModule",
       root: true,
