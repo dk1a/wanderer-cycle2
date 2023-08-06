@@ -35,17 +35,29 @@ export function defineContractComponents(world: World) {
         }
       );
     })(),
-    SkillTemplate: (() => {
-      const tableId = new TableId("", "SkillTemplate");
+    DefaultWheel: (() => {
+      const tableId = new TableId("", "DefaultWheel");
       return defineComponent(
         world,
         {
-          requiredLevel: RecsType.Number,
-          skillType: RecsType.Number,
-          withAttack: RecsType.Boolean,
-          withSpell: RecsType.Boolean,
-          cost: RecsType.Number,
-          targetType: RecsType.Number,
+          value: RecsType.String,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    Wheel: (() => {
+      const tableId = new TableId("", "Wheel");
+      return defineComponent(
+        world,
+        {
+          totalIdentityRequired: RecsType.Number,
+          charges: RecsType.Number,
+          isIsolated: RecsType.Boolean,
         },
         {
           metadata: {
@@ -91,6 +103,87 @@ export function defineContractComponents(world: World) {
         world,
         {
           value: RecsType.NumberArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    AvailableSkills: (() => {
+      const tableId = new TableId("", "AvailableSkills");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.StringArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    LearnedSkills: (() => {
+      const tableId = new TableId("", "LearnedSkills");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.StringArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    SkillTemplate: (() => {
+      const tableId = new TableId("", "SkillTemplate");
+      return defineComponent(
+        world,
+        {
+          requiredLevel: RecsType.Number,
+          skillType: RecsType.Number,
+          withAttack: RecsType.Boolean,
+          withSpell: RecsType.Boolean,
+          cost: RecsType.Number,
+          targetType: RecsType.Number,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    EffectTemplate: (() => {
+      const tableId = new TableId("", "EffectTemplate");
+      return defineComponent(
+        world,
+        {
+          entities: RecsType.StringArray,
+          values: RecsType.NumberArray,
+        },
+        {
+          metadata: {
+            contractId: tableId.toHexString(),
+            tableId: tableId.toString(),
+          },
+        }
+      );
+    })(),
+    StatmodBase: (() => {
+      const tableId = new TableId("", "StatmodBase");
+      return defineComponent(
+        world,
+        {
+          value: RecsType.String,
         },
         {
           metadata: {

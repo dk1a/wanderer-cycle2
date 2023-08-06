@@ -41,6 +41,13 @@ const keysWithValue = (tableNames: string[]) =>
     args: [resolveTableId(tableName)],
   }));
 
+const keysInTable = (tableNames: string[]) =>
+  tableNames.map((tableName) => ({
+    name: "KeysInTableModule",
+    root: true,
+    args: [resolveTableId(tableName)],
+  }));
+
 export default mudConfig({
   tables: {
     Counter: {
@@ -50,6 +57,35 @@ export default mudConfig({
     Name: {
       ...entityKey,
       schema: "string",
+    },
+    DefaultWheel: {
+      keySchema: {},
+      schema: EntityId,
+    },
+    Wheel: {
+      ...entityKey,
+      schema: {
+        totalIdentityRequired: "uint32",
+        charges: "uint32",
+        isIsolated: "bool",
+      },
+    },
+    Experience: {
+      ...entityKey,
+      schema: arrayPStat,
+    },
+    ActiveGuise: entityRelation,
+    GuisePrototype: {
+      ...entityKey,
+      schema: arrayPStat,
+    },
+    AvailableSkills: {
+      ...entityKey,
+      schema: EntityIdSet,
+    },
+    LearnedSkills: {
+      ...entityKey,
+      schema: EntityIdSet,
     },
     SkillTemplate: {
       ...entityKey,
@@ -68,18 +104,16 @@ export default mudConfig({
         targetType: "TargetType",
       },
     },
-    AvailableSkills: {
+    EffectTemplate: {
       ...entityKey,
-      schema: EntityIdSet,
+      schema: {
+        entities: EntityIdArray,
+        values: "uint32[]",
+      },
     },
-    Experience: {
+    StatmodBase: {
       ...entityKey,
-      schema: arrayPStat,
-    },
-    ActiveGuise: entityRelation,
-    GuisePrototype: {
-      ...entityKey,
-      schema: arrayPStat,
+      schema: "bytes32",
     },
     // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time
@@ -107,12 +141,9 @@ export default mudConfig({
     SkillType: ["COMBAT", "NONCOMBAT", "PASSIVE"],
     TargetType: ["SELF", "ENEMY", "ALLY", "SELF_OR_ALLY"],
   },
+
   modules: [
-    {
-      name: "KeysInTableModule",
-      root: true,
-      args: [resolveTableId("Experience")],
-    },
+    ...keysInTable(["Experience", "LearnedSkills"]),
     {
       name: "UniqueEntityModule",
       root: true,
