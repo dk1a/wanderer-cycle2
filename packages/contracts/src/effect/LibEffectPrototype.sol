@@ -12,11 +12,11 @@ library LibEffectPrototype {
    */
   function verifiedSet(bytes32 effectProtoEntity, EffectTemplateData memory effectTemplateData) internal {
     // verify lengths
-    if (EffectTemplate.lengthEntities(effectProtoEntity) != EffectTemplate.lengthValues(effectProtoEntity)) {
+    if (effectTemplateData.entities.length != effectTemplateData.values.length) {
       revert LibEffectPrototype__LengthMismatch();
     }
     // verify statmods existence
-    for (uint256 i; i < EffectTemplate.lengthEntities(effectProtoEntity); i++) {
+    for (uint256 i; i < effectTemplateData.entities.length; i++) {
       if (StatmodBase.get(effectTemplateData.entities[i]) == bytes32(0)) {
         revert LibEffectPrototype__InvalidStatmod();
       }
