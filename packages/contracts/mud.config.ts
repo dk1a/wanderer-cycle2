@@ -77,6 +77,17 @@ export default mudConfig({
         targetType: "TargetType",
       },
     },
+    EffectTemplate: {
+      ...entityKey,
+      schema: {
+        entities: EntityIdArray,
+        values: "uint32[]",
+      },
+    },
+    StatmodBase: {
+      ...entityKey,
+      schema: "bytes32",
+    },
     // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time
     ActiveCombat: entityRelation,
@@ -103,6 +114,7 @@ export default mudConfig({
     SkillType: ["COMBAT", "NONCOMBAT", "PASSIVE"],
     TargetType: ["SELF", "ENEMY", "ALLY", "SELF_OR_ALLY"],
   },
+
   modules: [
     ...keysWithValue(["Experience", "LearnedSkills"]),
     {
