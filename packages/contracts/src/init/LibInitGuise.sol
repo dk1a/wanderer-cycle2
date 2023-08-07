@@ -4,7 +4,7 @@ pragma solidity >=0.8.0;
 import { getUniqueEntity } from "@latticexyz/world/src/modules/uniqueentity/getUniqueEntity.sol";
 
 import { Name, SkillTemplate, SkillTemplateData, GuisePrototype, AvailableSkills } from "../codegen/Tables.sol";
-import { SkillType, TargetType } from ".../codegen/Types.sol";
+import { SkillType, TargetType } from "../codegen/Types.sol";
 import { PStat, PStat_length } from "../CustomTypes.sol";
 
 library LibInitGuise {
@@ -25,8 +25,12 @@ library LibInitGuise {
     _add("Warrior", [uint32(16), 8, 8], guiseSkills);
   }
 
-  function _add(string memory name, uint32[PStat_length] levelMul, bytes32[] memory guiseSkills) private {
-    uint256 entity = getUniqueEntity();
+  function spe(string memory source) internal pure returns (bytes32) {
+    return keccak256(abi.encodePacked(source));
+  }
+
+  function _add(string memory name, uint32[PStat_length] memory levelMul, bytes32[] memory guiseSkills) private {
+    bytes32 entity = getUniqueEntity();
 
     GuisePrototype.set(entity, levelMul);
 
