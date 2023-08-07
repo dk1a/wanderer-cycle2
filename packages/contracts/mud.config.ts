@@ -41,6 +41,13 @@ const keysWithValue = (tableNames: string[]) =>
     args: [resolveTableId(tableName)],
   }));
 
+const keysInTable = (tableNames: string[]) =>
+  tableNames.map((tableName) => ({
+    name: "KeysInTableModule",
+    root: true,
+    args: [resolveTableId(tableName)],
+  }));
+
 export default mudConfig({
   tables: {
     Counter: {
@@ -72,6 +79,18 @@ export default mudConfig({
       ...entityKey,
       schema: EntityIdSet,
     },
+    DefaultWheel: {
+      keySchema: {},
+      schema: EntityId,
+    },
+    Wheel: {
+      ...entityKey,
+      schema: {
+        totalIdentityRequired: "uint32",
+        charges: "uint32",
+        isIsolated: "bool",
+      },
+    },
     Experience: {
       ...entityKey,
       schema: arrayPStat,
@@ -80,6 +99,21 @@ export default mudConfig({
     GuisePrototype: {
       ...entityKey,
       schema: arrayPStat,
+    },
+    LearnedSkills: {
+      ...entityKey,
+      schema: EntityIdSet,
+    },
+    EffectTemplate: {
+      ...entityKey,
+      schema: {
+        entities: EntityIdArray,
+        values: "uint32[]",
+      },
+    },
+    StatmodBase: {
+      ...entityKey,
+      schema: "bytes32",
     },
     // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time
@@ -108,11 +142,7 @@ export default mudConfig({
     TargetType: ["SELF", "ENEMY", "ALLY", "SELF_OR_ALLY"],
   },
   modules: [
-    {
-      name: "KeysInTableModule",
-      root: true,
-      args: [resolveTableId("Experience")],
-    },
+    ...keysInTable(["Experience", "LearnedSkills"]),
     {
       name: "UniqueEntityModule",
       root: true,
