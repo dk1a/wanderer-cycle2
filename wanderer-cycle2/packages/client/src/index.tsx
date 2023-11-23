@@ -1,7 +1,7 @@
 import ReactDOM from "react-dom/client";
-import { App } from "./App";
-import { setup } from "./mud/setup";
-import { MUDProvider } from "./MUDContext";
+import { App } from "./app/App";
+import { setup } from "./app/mud/setup";
+import { MUDProvider } from "./app/providers/MudProvider/MUDContext";
 import mudConfig from "contracts/mud.config";
 
 const rootElement = document.getElementById("react-root");

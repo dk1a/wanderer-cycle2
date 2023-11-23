@@ -1,4 +1,4 @@
-import { useMUD } from "./MUDContext";
+import { useMUD } from "./providers/MudProvider/MUDContext";
 
 const styleUnset = { all: "unset" } as const;
 

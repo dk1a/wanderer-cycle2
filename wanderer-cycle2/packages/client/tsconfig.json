@@ -13,7 +13,14 @@
     "noEmit": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "paths": {
+      "@/*": ["src/*"],
+      "shared/*": ["shared/*"],
+      "entities/*": ["entities/*"],
+      "pages/*": ["pages/*"],
+      "widgets/*": ["widgets/*"],
+    }
   },
   "include": ["src"]
 }
