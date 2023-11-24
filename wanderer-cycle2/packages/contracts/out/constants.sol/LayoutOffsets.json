@@ -1,17 +1,17 @@
 {
   "abi": [],
   "bytecode": {
-    "object": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212202995ffcab2a607b38c92ca665f41b348fdf68e7e8451176c4b14dd6466a0f8c764736f6c63430008150033",
+    "object": "0x60566037600b82828239805160001a607314602a57634e487b7160e01b600052600060045260246000fd5b30600052607381538281f3fe73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220745c938ae0afeee398e456a84be7cc154e1bfdb640bfc3c2e92d474c4099e1a564736f6c63430008150033",
     "sourceMap": "1109:508:25:-:0;;;;;;;;;;;;;;;-1:-1:-1;;;1109:508:25;;;;;;;;;;;;;;;;;",
     "linkReferences": {}
   },
   "deployedBytecode": {
-    "object": "0x73000000000000000000000000000000000000000030146080604052600080fdfea26469706673582212202995ffcab2a607b38c92ca665f41b348fdf68e7e8451176c4b14dd6466a0f8c764736f6c63430008150033",
+    "object": "0x73000000000000000000000000000000000000000030146080604052600080fdfea2646970667358221220745c938ae0afeee398e456a84be7cc154e1bfdb640bfc3c2e92d474c4099e1a564736f6c63430008150033",
     "sourceMap": "1109:508:25:-:0;;;;;;;;",
     "linkReferences": {}
   },
   "methodIdentifiers": {},
-  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"FieldLayout and Schema utilize the same offset values for metadata.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"LayoutOffsets Library\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"This library provides constant offsets for FieldLayout and Schema metadata.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.3.2/node_modules/@latticexyz/store/src/constants.sol\":\"LayoutOffsets\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@latticexyz/=node_modules/@latticexyz/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.3.2/node_modules/@latticexyz/store/src/constants.sol\":{\"keccak256\":\"0x9e37c64c119ef07ad914bc589ee3f6d67946ab95877978c1ee3e2c1ffae07076\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3fad47e542025382aa28e8171253e34f93b2f149434b67a26989542d70218793\",\"dweb:/ipfs/QmW6JsKNwPc6oAMrgcikgR2EPwMUtQANiuZSQSGCd29HHC\"]}},\"version\":1}",
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.21+commit.d9974bed\"},\"language\":\"Solidity\",\"output\":{\"abi\":[],\"devdoc\":{\"details\":\"FieldLayout and Schema utilize the same offset values for metadata.\",\"kind\":\"dev\",\"methods\":{},\"title\":\"LayoutOffsets Library\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"This library provides constant offsets for FieldLayout and Schema metadata.\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.1.6/node_modules/@latticexyz/store/src/constants.sol\":\"LayoutOffsets\"},\"evmVersion\":\"paris\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":3000},\"remappings\":[\":@latticexyz/=node_modules/@latticexyz/\",\":ds-test/=node_modules/ds-test/src/\",\":forge-std/=node_modules/forge-std/src/\"]},\"sources\":{\"/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.1.6/node_modules/@latticexyz/store/src/constants.sol\":{\"keccak256\":\"0x9e37c64c119ef07ad914bc589ee3f6d67946ab95877978c1ee3e2c1ffae07076\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://3fad47e542025382aa28e8171253e34f93b2f149434b67a26989542d70218793\",\"dweb:/ipfs/QmW6JsKNwPc6oAMrgcikgR2EPwMUtQANiuZSQSGCd29HHC\"]}},\"version\":1}",
   "metadata": {
     "compiler": {
       "version": "0.8.21+commit.d9974bed"
@@ -44,12 +44,12 @@
         "bytecodeHash": "ipfs"
       },
       "compilationTarget": {
-        "/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.3.2/node_modules/@latticexyz/store/src/constants.sol": "LayoutOffsets"
+        "/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.1.6/node_modules/@latticexyz/store/src/constants.sol": "LayoutOffsets"
       },
       "libraries": {}
     },
     "sources": {
-      "/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.3.2/node_modules/@latticexyz/store/src/constants.sol": {
+      "/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.1.6/node_modules/@latticexyz/store/src/constants.sol": {
         "keccak256": "0x9e37c64c119ef07ad914bc589ee3f6d67946ab95877978c1ee3e2c1ffae07076",
         "urls": [
           "bzz-raw://3fad47e542025382aa28e8171253e34f93b2f149434b67a26989542d70218793",
@@ -61,7 +61,7 @@
     "version": 1
   },
   "ast": {
-    "absolutePath": "/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.3.2/node_modules/@latticexyz/store/src/constants.sol",
+    "absolutePath": "/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+store@2.0.0-next.14_typescript@5.1.6/node_modules/@latticexyz/store/src/constants.sol",
     "id": 15136,
     "exportedSymbols": {
       "BYTE_TO_BITS": [

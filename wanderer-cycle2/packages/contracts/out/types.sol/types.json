@@ -9,7 +9,7 @@
     "linkReferences": {}
   },
   "ast": {
-    "absolutePath": "/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+world@2.0.0-next.14_typescript@5.3.2/node_modules/@latticexyz/world/src/modules/core/types.sol",
+    "absolutePath": "/home/parallels/projects/wanderer-cycle2/node_modules/.pnpm/@latticexyz+world@2.0.0-next.14_typescript@5.1.6/node_modules/@latticexyz/world/src/modules/core/types.sol",
     "id": 25678,
     "exportedSymbols": {
       "ResourceId": [
