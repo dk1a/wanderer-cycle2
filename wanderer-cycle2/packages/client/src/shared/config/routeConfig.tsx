@@ -15,6 +15,8 @@ export enum AppRoutes {
   CYCLE = 'cycle',
   ABOUT = 'about',
   NOT_FOUND = 'not_found',
+  DISCORD = 'discord',
+  GITHUB = 'github'
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
@@ -25,6 +27,8 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.CYCLE]: '/cycle',
   [AppRoutes.ABOUT]: '/about',
   [AppRoutes.NOT_FOUND]: '*',
+  [AppRoutes.DISCORD]: 'https://discord.gg/9pX3h53VnX',
+  [AppRoutes.GITHUB]: 'https://github.com/dk1a/wanderer-cycle',
 };
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
@@ -55,5 +59,13 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
   [AppRoutes.NOT_FOUND]: {
     path: RoutePath.not_found,
     element: <NotFoundPage />,
+  },
+  [AppRoutes.GITHUB]: {
+    path: RoutePath.about,
+    element: '',
+  },
+  [AppRoutes.DISCORD]: {
+    path: RoutePath.not_found,
+    element: '',
   },
 };
