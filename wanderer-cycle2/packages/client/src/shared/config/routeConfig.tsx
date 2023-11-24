@@ -1,24 +1,52 @@
 import { RouteProps } from 'react-router-dom';
-import {MainPage} from "@/pages/MainPage";
 import {AboutPage} from "@/pages/AboutPage";
 import {NotFoundPage} from "@/pages/NotFoundPage";
+import {WandrerSelect} from "@/pages/WandererSelect";
+import {InventoryPage} from "@/pages/InventoryPage";
+import {MapsPage} from "@/pages/MapsPage";
+import {SkillPage} from "@/pages/SkillPage";
+import {CyclePage} from "@/pages/CyclePage";
 
 export enum AppRoutes {
-  MAIN = 'main',
+  WANDERER_SELECT = 'wanderer_select',
+  MAPS = 'maps',
+  INVENTORY = 'inventory',
+  SKILLS = 'skills',
+  CYCLE = 'cycle',
   ABOUT = 'about',
   NOT_FOUND = 'not_found',
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
-  [AppRoutes.MAIN]: '/',
+  [AppRoutes.WANDERER_SELECT]: '/',
+  [AppRoutes.MAPS]: '/maps',
+  [AppRoutes.INVENTORY]: '/inventory',
+  [AppRoutes.SKILLS]: '/skills',
+  [AppRoutes.CYCLE]: '/cycle',
   [AppRoutes.ABOUT]: '/about',
   [AppRoutes.NOT_FOUND]: '*',
 };
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
-  [AppRoutes.MAIN]: {
-    path: RoutePath.main,
-    element: <MainPage />,
+  [AppRoutes.WANDERER_SELECT]: {
+    path: RoutePath.wanderer_select,
+    element: <WandrerSelect />,
+  },
+  [AppRoutes.MAPS]: {
+    path: RoutePath.maps,
+    element: <MapsPage />,
+  },
+  [AppRoutes.INVENTORY]: {
+    path: RoutePath.inventory,
+    element: <InventoryPage />,
+  },
+  [AppRoutes.SKILLS]: {
+    path: RoutePath.skills,
+    element: <SkillPage />,
+  },
+  [AppRoutes.CYCLE]: {
+    path: RoutePath.cycle,
+    element: <CyclePage />,
   },
   [AppRoutes.ABOUT]: {
     path: RoutePath.about,
