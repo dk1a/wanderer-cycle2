@@ -1,5 +1,5 @@
-import WandrerSelect from "@/pages/WandererSelect/ui/WandrerSelect";
+import WandererSelect from "@/pages/WandererSelect/ui/WandererSelect";
 
 export {
-  WandrerSelect
+  WandererSelect
 }

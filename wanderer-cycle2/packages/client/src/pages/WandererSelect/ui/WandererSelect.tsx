@@ -1,11 +1,11 @@
 import {classNames} from "@/shared/lib/classNames/classNames";
-import cls from './WandrerSelect.module.scss'
+import cls from './WandererSelect.module.scss'
 
-interface WandrerSelectProps{
+interface WandererSelectProps{
   className?: string;
 }
 
-const WandrerSelect = ({className}: WandrerSelectProps) => {
+const WandererSelect = ({className}: WandererSelectProps) => {
   return (
     <div className={classNames(cls.WandrerSelect , {}, [className])}>
       
@@ -13,4 +13,4 @@ const WandrerSelect = ({className}: WandrerSelectProps) => {
   );
 };
 
-export default WandrerSelect;
+export default WandererSelect;

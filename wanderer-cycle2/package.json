@@ -16,12 +16,10 @@
     "@types/debug": "^4.1.12",
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
-    "debug": "^4.3.4",
     "eslint": "8.29.0",
     "mprocs": "^0.6.4",
-    "prettier": "^3.1.0",
     "rimraf": "^3.0.2",
-    "typescript": "5.3.2"
+    "typescript": "5.1.6"
   },
   "engines": {
     "node": "18.x",

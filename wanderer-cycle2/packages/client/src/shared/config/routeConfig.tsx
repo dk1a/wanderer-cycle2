@@ -1,7 +1,7 @@
-import { RouteProps } from 'react-router-dom';
+import {Link, RouteProps} from 'react-router-dom';
 import {AboutPage} from "@/pages/AboutPage";
 import {NotFoundPage} from "@/pages/NotFoundPage";
-import {WandrerSelect} from "@/pages/WandererSelect";
+import {WandererSelect} from "@/pages/WandererSelect";
 import {InventoryPage} from "@/pages/InventoryPage";
 import {MapsPage} from "@/pages/MapsPage";
 import {SkillPage} from "@/pages/SkillPage";
@@ -34,7 +34,7 @@ export const RoutePath: Record<AppRoutes, string> = {
 export const routeConfig: Record<AppRoutes, RouteProps> = {
   [AppRoutes.WANDERER_SELECT]: {
     path: RoutePath.wanderer_select,
-    element: <WandrerSelect />,
+    element: <WandererSelect />,
   },
   [AppRoutes.MAPS]: {
     path: RoutePath.maps,
@@ -61,11 +61,11 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     element: <NotFoundPage />,
   },
   [AppRoutes.GITHUB]: {
-    path: RoutePath.about,
+    path: RoutePath.github,
     element: '',
   },
   [AppRoutes.DISCORD]: {
-    path: RoutePath.not_found,
+    path: RoutePath.discord,
     element: '',
   },
 };
