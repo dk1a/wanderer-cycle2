@@ -4,6 +4,7 @@ import { setup } from "./app/mud/setup";
 import { MUDProvider } from "./app/providers/MudProvider/MUDContext";
 import mudConfig from "contracts/mud.config";
 import {ErrorBoundary} from "./app/providers/ErrorBoundary";
+import "./app/styles/index.scss";
 
 const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");
