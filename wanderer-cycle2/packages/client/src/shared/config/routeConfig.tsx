@@ -8,12 +8,12 @@ import {SkillPage} from "@/pages/SkillPage";
 import {CyclePage} from "@/pages/CyclePage";
 
 export enum AppRoutes {
-  WANDERER_SELECT = 'wanderer_select',
-  MAPS = 'maps',
-  INVENTORY = 'inventory',
-  SKILLS = 'skills',
-  CYCLE = 'cycle',
-  ABOUT = 'about',
+  WANDERER_SELECT = 'Wanderer-select',
+  MAPS = 'Maps',
+  INVENTORY = 'Inventory',
+  SKILLS = 'Skills',
+  CYCLE = 'Cycle',
+  ABOUT = 'About',
   NOT_FOUND = 'not_found',
   DISCORD = 'discord',
   GITHUB = 'github'
@@ -32,33 +32,25 @@ export const RoutePath: Record<AppRoutes, string> = {
 };
 
 export const routeConfig: Record<AppRoutes, RouteProps> = {
-  [AppRoutes.WANDERER_SELECT]: {
-    path: RoutePath.wanderer_select,
-    element: <WandererSelect />,
-  },
   [AppRoutes.MAPS]: {
-    path: RoutePath.maps,
+    path: RoutePath.Maps,
     element: <MapsPage />,
   },
   [AppRoutes.INVENTORY]: {
-    path: RoutePath.inventory,
+    path: RoutePath.Inventory,
     element: <InventoryPage />,
   },
   [AppRoutes.SKILLS]: {
-    path: RoutePath.skills,
+    path: RoutePath.Skills,
     element: <SkillPage />,
   },
   [AppRoutes.CYCLE]: {
-    path: RoutePath.cycle,
+    path: RoutePath.Cycle,
     element: <CyclePage />,
   },
-  [AppRoutes.ABOUT]: {
-    path: RoutePath.about,
-    element: <AboutPage />,
-  },
-  [AppRoutes.NOT_FOUND]: {
-    path: RoutePath.not_found,
-    element: <NotFoundPage />,
+  [AppRoutes.WANDERER_SELECT]: {
+    path: RoutePath["Wanderer-select"],
+    element: <WandererSelect />,
   },
   [AppRoutes.GITHUB]: {
     path: RoutePath.github,
@@ -68,4 +60,12 @@ export const routeConfig: Record<AppRoutes, RouteProps> = {
     path: RoutePath.discord,
     element: '',
   },
+  // [AppRoutes.ABOUT]: {
+  //   path: RoutePath.about,
+  //   element: <AboutPage />,
+  // },
+  // [AppRoutes.NOT_FOUND]: {
+  //   path: RoutePath.not_found,
+  //   element: <NotFoundPage />,
+  // },
 };
