@@ -3,6 +3,7 @@ import { AppLink } from '@/shared/ui/AppLink/AppLink';
 import {routeConfig} from '@/shared/config/routeConfig';
 import cls from './Navbar.module.scss';
 import {useLocation} from "react-router-dom";
+import {Button} from "@/shared/ui/Button/Button";
 
 interface NavbarProps {
   className?: string;
@@ -13,8 +14,9 @@ export const Navbar = ({ className }: NavbarProps) => {
 
   return (
     <div className={classNames(cls.Navbar, {}, [className])}>
-      <div className={cls.items}>
+      <Button>void</Button>
 
+      <div className={cls.items}>
         {Object.keys(routeConfig).map((routeKey, index, array) => {
           const route = routeConfig[routeKey];
           const isActive = location.pathname === route.path
