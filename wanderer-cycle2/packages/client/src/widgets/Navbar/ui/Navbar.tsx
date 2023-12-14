@@ -15,12 +15,13 @@ export const Navbar = ({ className }: NavbarProps) => {
     <div className={classNames(cls.Navbar, {}, [className])}>
       <div className={cls.items}>
 
-        {Object.keys(routeConfig).map((routeKey) => {
+        {Object.keys(routeConfig).map((routeKey, index, array) => {
           const route = routeConfig[routeKey];
           const isActive = location.pathname === route.path
+          const isPreLast = index === array.length - 2;
 
           return (
-            <AppLink key={routeKey} to={route.path} className={cls.item}>
+            <AppLink key={routeKey} to={route.path} className={classNames(cls.item, { [cls.spaced]: isPreLast })}>
               <span className={classNames(cls.link, { [cls.active]: isActive })}>
                 {routeKey.replace(/_/g, ' ')}
               </span>
