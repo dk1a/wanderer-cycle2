@@ -11,3 +11,7 @@
   right: -32px;
   bottom: 32px;
 }
+
+.collapsed {
+  width: var(--sidebar-width-collapsed);
+}
