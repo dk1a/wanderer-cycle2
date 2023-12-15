@@ -5,22 +5,33 @@ import {Button} from "@/shared/ui/Button/Button";
 
 interface SidebarProps {
   className?: string;
+  position: 'left' | 'right'
 }
 
-export const Sidebar = ({ className }: SidebarProps) => {
+export const Sidebar = ({ className, position }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const onToggle = () => {
     setCollapsed((prev) => !prev);
   };
 
+  const sidebarClasses = classNames(
+    cls.Sidebar,
+    {
+      [cls.collapsed]: collapsed,
+      [cls.left]: position === 'left',
+      [cls.right]: position === 'right',
+    },
+    [className]
+  );
+
   return (
-    <div className={classNames(cls.Sidebar, { [cls.collapsed]: collapsed }, [className])}>
+    <div className={sidebarClasses}>
       <Button
         onClick={onToggle}
         className={cls.collapseBtn}
       >
-        {collapsed ? '>' : '<'}
+        {collapsed ? 'open' : 'close'}
       </Button>
     </div>
   );

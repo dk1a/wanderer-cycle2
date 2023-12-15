@@ -5,6 +5,7 @@
   color: var(--control-color);
   background-color: var(--primary-color);
   transition: all;
+  cursor: pointer;
 
   &:hover {
     background-color: var(--400-bg-color);

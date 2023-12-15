@@ -8,7 +8,8 @@ export const App = () => {
     <Router>
       <div className={'app'}>
         <Navbar/>
-        <Sidebar/>
+        <Sidebar position={"left"}/>
+        <Sidebar position={"right"}/>
         <AppRouter/>
       </div>
     </Router>

@@ -2,16 +2,37 @@
   height: calc(100vh - var(--navbar-height));
   width: var(--sidebar-width);
   background: var(--400-color);
-  position: relative;
+  position: fixed;
   transition: width 0.3s;
+  display: flex;
+  justify-content: center;
 }
 
-.collapseBtn {
-  position: absolute;
-  right: -32px;
-  bottom: 32px;
+.left {
+  left: 0;
+}
+
+.right {
+  right: 0;
 }
 
 .collapsed {
   width: var(--sidebar-width-collapsed);
 }
+
+.collapseBtn {
+  position: absolute;
+  bottom: 32px;
+}
+
+//.collapseBtnRight{
+//  position: absolute;
+//  left: -32px;
+//  bottom: 32px;
+//}
+//
+//.collapseBtnLeft{
+//  position: absolute;
+//  right: -32px;
+//  bottom: 32px;
+//}
