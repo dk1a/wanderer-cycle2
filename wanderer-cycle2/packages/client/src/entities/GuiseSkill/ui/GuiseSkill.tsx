@@ -1,5 +1,6 @@
 import {classNames} from "@/shared/lib/classNames/classNames";
 import cls from './GuiseSkill.module.scss'
+import { Tooltip } from 'react-tooltip'
 
 interface GuiseSkillProps{
   className?: string;
@@ -8,7 +9,12 @@ interface GuiseSkillProps{
 const GuiseSkill = ({className}: GuiseSkillProps) => {
   return (
     <div className={classNames(cls.GuiseSkill , {}, [className])}>
-      
+      <a className={cls.link}>
+        guise skill
+      </a>
+      <Tooltip anchorSelect={"." + cls.link} place={'top'}>
+        hello
+      </Tooltip>
     </div>
   );
 };

@@ -8,7 +8,7 @@ interface TippyProps{
 const Tippy = ({className}: TippyProps) => {
   return (
     <div className={classNames(cls.Tippy , {}, [className])}>
-      
+
     </div>
   );
 };

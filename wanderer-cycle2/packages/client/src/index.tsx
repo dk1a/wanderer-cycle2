@@ -5,6 +5,7 @@ import { MUDProvider } from "./app/providers/MudProvider/MUDContext";
 import mudConfig from "contracts/mud.config";
 import {ErrorBoundary} from "./app/providers/ErrorBoundary";
 import "./app/styles/index.scss";
+import 'react-tooltip/dist/react-tooltip.css'
 
 const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");
