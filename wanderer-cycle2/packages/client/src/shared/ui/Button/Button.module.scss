@@ -16,8 +16,9 @@
   }
 
   &:disabled {
-    color: var(--comment-color);
+    color: var(--400-color);
     cursor: not-allowed;
     background-color: var(--600-color);
+    border: 1px solid var(--400-color);
   }
 }

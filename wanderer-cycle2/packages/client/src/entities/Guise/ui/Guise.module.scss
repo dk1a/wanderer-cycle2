@@ -49,3 +49,14 @@
   margin-right: 0.5rem;
   color: var(--number-color);
 }
+
+.level{
+  display: flex;
+  justify-content: space-between;
+  color: var(--comment-color);
+}
+
+.btn{
+  display: flex;
+  justify-content: center;
+}
