@@ -5,14 +5,17 @@ import {Button} from "@/shared/ui/Button/Button";
 
 interface SidebarProps {
   className?: string;
-  position: 'left' | 'right'
+  position: 'left' | 'right';
+  setSidebarOpen: (isOpen: boolean) => void;
 }
 
-export const Sidebar = ({ className, position }: SidebarProps) => {
+export const Sidebar = ({ className, position, setSidebarOpen }: SidebarProps) => {
   const [collapsed, setCollapsed] = useState(false);
 
   const onToggle = () => {
-    setCollapsed((prev) => !prev);
+    const newCollapsedState = !collapsed;
+    setCollapsed(newCollapsedState);
+    setSidebarOpen(!newCollapsedState);
   };
 
   const sidebarClasses = classNames(

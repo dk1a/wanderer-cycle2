@@ -11,5 +11,14 @@ body {
 .app {
   min-height: 100vh;
   background: var(--600-color);
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
 }
 
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center; // Выравнивание по центру
+}
