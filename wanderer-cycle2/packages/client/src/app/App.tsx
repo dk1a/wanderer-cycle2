@@ -10,8 +10,8 @@ export const App = () => {
       <div className={'app'}>
         <Navbar/>
         <Guise/>
-        <Sidebar position={"left"}/>
-        <Sidebar position={"right"}/>
+        {/*<Sidebar position={"left"}/>*/}
+        {/*<Sidebar position={"right"}/>*/}
         <AppRouter/>
       </div>
     </Router>
