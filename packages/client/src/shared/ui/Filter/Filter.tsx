@@ -1,3 +1,6 @@
+declare let er: any //TODO fix problem with "er"
+
+
 import {classNames} from "@/shared/lib/classNames/classNames";
 import cls from './Filter.module.scss'
 import Select from "react-select/base";
@@ -18,7 +21,7 @@ interface FilterProps{
   filter: string;
 }
 
-const Filter = ({className, sort, setSort, filter, setFilter}: FilterProps) => {
+export default function Filter ({className, sort, setSort, filter, setFilter}: FilterProps){
   return (
     <div className={classNames(cls.Filter , {}, [className])}>
       <Select
@@ -26,11 +29,8 @@ const Filter = ({className, sort, setSort, filter, setFilter}: FilterProps) => {
         placeholder={"select"}
         value={sort}
         onChange={setSort}
-        options={inventorySortOptions}
       />
-      <Input value={filter} onChange={(e) => setFilter(e.target.value)} placeholder={"Search..."} />
+      <Input value={filter} placeholder={"Search..."} />
     </div>
   );
-};
-
-export default Filter;
+}

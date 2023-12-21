@@ -5,7 +5,7 @@ import cls from './Input.module.scss'
 type InputProps = {
     value: string;
     placeholder: string;
-    onChange: ChangeEventHandler<HTMLInputElement>;
+    onChange?: ChangeEventHandler<HTMLInputElement>;
     className?: string;
 };
 
