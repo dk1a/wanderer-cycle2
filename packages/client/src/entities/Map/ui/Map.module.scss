@@ -1,0 +1,30 @@
+.Map{
+  border: 1px solid var(--400-color);
+  width: 200px;
+  height: 250px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--500-color);
+}
+
+.description{
+  color: var(--comment-color);
+  margin-top: 5px;
+}
+
+.level{
+  color: var(--key-color);
+}
+
+.number{
+  color: var(--number-color);
+}
+
+.MapBase{
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  background-color: var(--500-color);
+  width: 12rem;
+  padding: 0.5rem 0.25rem;
+}
