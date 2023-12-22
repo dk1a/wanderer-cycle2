@@ -1,6 +1,5 @@
 declare let er: any //TODO fix problem with "er"
 
-
 import {classNames} from "@/shared/lib/classNames/classNames";
 import cls from './Filter.module.scss'
 import Select from "react-select/base";
