@@ -1,0 +1,18 @@
+.Wanderer{
+  border: 1px solid var(--400-color);
+  height: auto;
+  width: 400px;
+  padding: 10px 15px 10px 15px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  background-color: var(--500-color);
+}
+
+.btn{
+  margin-top: 10px;
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+}
