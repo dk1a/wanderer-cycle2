@@ -1,0 +1,24 @@
+.Button {
+  font-size: var(--font-size-m);
+  padding: 2px 5px 2px 5px;
+  border: 1px solid var(--control-color);
+  color: var(--control-color);
+  background-color: var(--primary-color);
+  transition: all;
+  cursor: pointer;
+
+  &:hover {
+    background-color: var(--400-bg-color);
+  }
+
+  &:active {
+    background-color: var(--600-color);
+  }
+
+  &:disabled {
+    color: var(--400-color);
+    cursor: not-allowed;
+    background-color: var(--600-color);
+    border: 1px solid var(--400-color);
+  }
+}

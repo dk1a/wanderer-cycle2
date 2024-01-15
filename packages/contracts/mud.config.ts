@@ -1,6 +1,5 @@
 import { mudConfig, resolveTableId } from "@latticexyz/world/register";
 
-// TODO user-defined type
 const EntityId = "bytes32" as const;
 const EntityIdArray = "bytes32[]" as const;
 // TODO set
@@ -14,7 +13,7 @@ const entityKey = {
 
 const entityRelation = {
   ...entityKey,
-  schema: EntityId,
+  valueSchema: EntityId,
 } as const;
 
 const systemCallbackSchema = {
@@ -50,21 +49,24 @@ const keysInTable = (tableNames: string[]) =>
 
 export default mudConfig({
   tables: {
-    Counter: {
-      keySchema: {},
-      schema: "uint32",
+    Tasks: {
+      valueSchema: {
+        createdAt: "uint256",
+        completedAt: "uint256",
+        description: "string",
+      },
     },
     Name: {
       ...entityKey,
-      schema: "string",
+      valueSchema: "string",
     },
     DefaultWheel: {
       keySchema: {},
-      schema: EntityId,
+      valueSchema: EntityId,
     },
     Wheel: {
       ...entityKey,
-      schema: {
+      valueSchema: {
         totalIdentityRequired: "uint32",
         charges: "uint32",
         isIsolated: "bool",
@@ -72,20 +74,20 @@ export default mudConfig({
     },
     Experience: {
       ...entityKey,
-      schema: arrayPStat,
+      valueSchema: arrayPStat,
     },
     ActiveGuise: entityRelation,
     GuisePrototype: {
       ...entityKey,
-      schema: arrayPStat,
+      valueSchema: arrayPStat,
     },
     LearnedSkills: {
       ...entityKey,
-      schema: EntityIdSet,
+      valueSchema: EntityIdSet,
     },
     SkillTemplate: {
       ...entityKey,
-      schema: {
+      valueSchema: {
         // level required to learn it
         requiredLevel: "uint8",
         // when/how it can be used
@@ -102,37 +104,38 @@ export default mudConfig({
     },
     EffectTemplate: {
       ...entityKey,
-      schema: {
+      valueSchema: {
         entities: EntityIdArray,
         values: "uint32[]",
       },
     },
     StatmodBase: {
       ...entityKey,
-      schema: "bytes32",
+      valueSchema: "bytes32",
     },
     // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time
     ActiveCombat: entityRelation,
     ActiveCycle: {
       ...entityKey,
-      schema: "uint32",
+      valueSchema: "uint32",
     },
     CycleTurns: {
       ...entityKey,
-      schema: "uint32",
+      valueSchema: "uint32",
     },
     CycleTurnsLastClaimed: {
       ...entityKey,
-      schema: "uint48",
+      valueSchema: "uint48",
     },
     RNGPrecommit: {
       ...entityKey,
-      schema: "uint256",
+      valueSchema: "uint256",
     },
     // requestId => ownerEntity
     RNGRequestOwner: entityRelation,
   },
+
   enums: {
     SkillType: ["COMBAT", "NONCOMBAT", "PASSIVE"],
     TargetType: ["SELF", "ENEMY", "ALLY", "SELF_OR_ALLY"],

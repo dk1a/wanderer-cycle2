@@ -1,0 +1,24 @@
+@import "reset";
+@import "variables/global";
+@import "themes/normal";
+@import "themes/void";
+
+body {
+  font: var(--font-m);
+  color: var(--600-color);
+}
+
+.app {
+  min-height: 100vh;
+  background: var(--600-color);
+  display: flex;
+  flex-direction: column;
+  //justify-content: center;
+}
+
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center; // Выравнивание по центру
+}

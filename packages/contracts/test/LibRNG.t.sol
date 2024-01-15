@@ -1,11 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.21;
 
-import { MudV2Test } from "@latticexyz/std-contracts/src/test/MudV2Test.t.sol";
-import { getUniqueEntity } from "@latticexyz/world/src/modules/uniqueentity/getUniqueEntity.sol";
+import "forge-std/Test.sol";
+import { MudTest } from "@latticexyz/world/test/MudTest.t.sol";
+import { IWorld } from "../src/codegen/world/IWorld.sol";
+import { getUniqueEntity } from "@latticexyz/world-modules/src/modules/uniqueentity/getUniqueEntity.sol";
 
 import { LibRNG } from "../src/rng/LibRNG.sol";
-import { RNGPrecommit, RNGRequestOwner } from "../src/codegen/Tables.sol";
+import { RNGPrecommit, RNGRequestOwner } from "../src/codegen/index.sol";
 
 contract GetRandomnessRevertHelper {
   function getRandomness(bytes32 requestOwner, bytes32 requestId) public view {
@@ -13,13 +15,8 @@ contract GetRandomnessRevertHelper {
   }
 }
 
-contract LibRNGTest is MudV2Test {
+contract LibRNGTest is MudTest {
   GetRandomnessRevertHelper revertHelper;
-
-  function setUp() public virtual override {
-    super.setUp();
-    vm.startPrank(worldAddress);
-  }
 
   function _initEntity() internal returns (bytes32 requestOwner, bytes32 notOwner) {
     requestOwner = getUniqueEntity();

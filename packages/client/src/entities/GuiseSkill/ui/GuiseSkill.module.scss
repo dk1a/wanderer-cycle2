@@ -1,0 +1,36 @@
+.GuiseSkill{
+  display: flex;
+  border: 1px solid var(--400-color);
+  padding: 5px;
+  background-color: var(--500-color);
+}
+
+.link{
+  color: var(--comment-color);
+}
+
+.tooltip{
+  z-index: 40;
+}
+
+.container{
+  display: flex;
+  cursor: pointer;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.containerName{
+  display: flex;
+}
+
+.name{
+  color: var(--method-color);
+  font-size: 16px;
+}
+
+.number{
+  color: var(--number-color);
+  font-size: 16px;
+  text-align: center;
+}

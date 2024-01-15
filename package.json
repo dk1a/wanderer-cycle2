@@ -3,30 +3,23 @@
   "private": true,
   "scripts": {
     "build": "pnpm recursive run build",
-    "dev": "concurrently -n contracts,client -c cyan,magenta \"cd packages/contracts && pnpm run dev\" \"cd packages/client && pnpm run dev\"",
+    "dev": "mprocs",
     "dev:client": "pnpm --filter 'client' run dev",
     "dev:contracts": "pnpm --filter 'contracts' dev",
     "foundry:up": "curl -L https://foundry.paradigm.xyz | bash && bash $HOME/.foundry/bin/foundryup",
-    "initialize": "pnpm recursive run initialize",
-    "mud:up": "pnpm recursive exec mud set-version -v canary && pnpm install",
-    "prepare": "husky install && (forge --version || pnpm foundry:up)",
+    "mud:up": "pnpm mud set-version --tag main && pnpm install",
+    "prepare": "(forge --version || pnpm foundry:up)",
     "test": "pnpm recursive run test"
   },
   "devDependencies": {
-    "@latticexyz/cli": "2.0.0-alpha.1.183+07a99974",
+    "@latticexyz/cli": "2.0.0-next.14",
+    "@types/debug": "^4.1.12",
     "@typescript-eslint/eslint-plugin": "5.46.1",
     "@typescript-eslint/parser": "5.46.1",
-    "concurrently": "^8.0.1",
     "eslint": "8.29.0",
-    "husky": "^8.0.3",
-    "lint-staged": "^13.2.2",
-    "prettier": "^2.6.2",
+    "mprocs": "^0.6.4",
     "rimraf": "^3.0.2",
-    "typescript": "^4.9.5"
-  },
-  "lint-staged": {
-    "*.{ts,tsx}": "eslint --cache --fix",
-    "*.{ts,tsx,css,md,sol}": "prettier --write"
+    "typescript": "5.1.6"
   },
   "engines": {
     "node": "18.x",

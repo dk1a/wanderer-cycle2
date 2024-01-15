@@ -6,14 +6,21 @@
     "module": "ESNext",
     "lib": ["ESNext", "DOM"],
     "moduleResolution": "Node",
-    "strict": true,
+    "strict": false,
     "resolveJsonModule": true,
     "isolatedModules": true,
     "esModuleInterop": true,
     "noEmit": true,
     "skipLibCheck": true,
     "jsx": "react-jsx",
-    "jsxImportSource": "react"
+    "jsxImportSource": "react",
+    "paths": {
+      "@/*": ["src/*"],
+      "shared/*": ["shared/*"],
+      "entities/*": ["entities/*"],
+      "pages/*": ["pages/*"],
+      "widgets/*": ["widgets/*"],
+    }
   },
   "include": ["src"]
 }
