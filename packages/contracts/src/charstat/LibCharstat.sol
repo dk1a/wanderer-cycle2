@@ -1,25 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.21;
 
-import { hasKey } from "@latticexyz/world-modules/src/modules/keysintable/hasKey.sol";
-
 import { Experience, LifeCurrent, ManaCurrent } from "../codegen/index.sol";
 
 import { Statmod } from "../statmod/Statmod.sol";
-import { StatmodTopics } from "../statmod/StatmodTopics.sol";
+import { StatmodTopics, StatmodTopic } from "../statmod/StatmodTopic.sol";
 import { LibExperience } from "./LibExperience.sol";
 
 import { StatmodOp, EleStat } from "../codegen/common.sol";
 import { PStat, PStat_length, EleStat_length } from "../CustomTypes.sol";
 
 library LibCharstat {
-  struct Self {
-    bytes32 targetEntity;
-    PStat pstatIndex;
-    StatmodOp statmodOp;
-    EleStat elestat;
-  }
-
   // ========== PRIMARY STATS (strength, arcana, dexterity) ==========
   function getBasePStat(
     bytes32 targetEntity,
@@ -32,7 +23,7 @@ library LibCharstat {
       return LibExperience.getPStat(targetEntity, pstatIndex);
     } else {
       // otherwise try a special statmod
-      return Statmod.getValuesFinal(targetEntity, StatmodTopics.LEVEL.toStatmodEntity(statmodOp, elestat), 0);
+      return Statmod.getValuesFinal(targetEntity, StatmodTopics.LEVEL, 0);
     }
   }
 
@@ -42,14 +33,9 @@ library LibCharstat {
     EleStat elestat,
     PStat pstat
   ) internal view returns (uint32) {
-    uint32 baseValue = getBasePStat(targetEntity, pstatIndex, statmodOp, elestat);
+    uint32 baseValue = getBasePStat(targetEntity, pstat, statmodOp, elestat);
 
-    return
-      Statmod.getValuesFinal(
-        targetEntity,
-        StatmodTopics.PSTAT()[uint256(pstat)].toStatmodEntity(statmodOp, elestat),
-        baseValue
-      );
+    return Statmod.getValuesFinal(targetEntity, StatmodTopics.PSTAT()[uint256(pstat)], baseValue);
   }
 
   function getPStats(
@@ -68,26 +54,26 @@ library LibCharstat {
     uint32 strength = getPStat(targetEntity, statmodOp, elestat, PStat.STRENGTH);
     uint32 baseValue = 2 + 2 * strength;
 
-    return Statmod.getValuesFinal(StatmodTopics.LIFE.toStatmodEntity(statmodOp, elestat), baseValue);
+    return Statmod.getValuesFinal(targetEntity, StatmodTopics.LIFE, baseValue);
   }
 
   function getMana(bytes32 targetEntity, StatmodOp statmodOp, EleStat elestat) internal view returns (uint32) {
     uint32 arcana = getPStat(targetEntity, statmodOp, elestat, PStat.ARCANA);
     uint32 baseValue = 4 * arcana;
 
-    return Statmod.getValuesFinal(StatmodTopics.MANA.toStatmodEntity(statmodOp, elestat), baseValue);
+    return Statmod.getValuesFinal(targetEntity, StatmodTopics.MANA, baseValue);
   }
 
   function getFortune(bytes32 targetEntity, StatmodOp statmodOp, EleStat elestat) internal view returns (uint32) {
-    return Statmod.getValuesFinal(StatmodTopics.FORTUNE.toStatmodEntity(statmodOp, elestat), 0);
+    return Statmod.getValuesFinal(targetEntity, StatmodTopics.FORTUNE, 0);
   }
 
   function getConnection(bytes32 targetEntity, StatmodOp statmodOp, EleStat elestat) internal view returns (uint32) {
-    return Statmod.getValuesFinal(StatmodTopics.CONNECTION.toStatmodEntity(statmodOp, elestat), 0);
+    return Statmod.getValuesFinal(targetEntity, StatmodTopics.CONNECTION, 0);
   }
 
   function getLifeRegen(bytes32 targetEntity, StatmodOp statmodOp, EleStat elestat) internal view returns (uint32) {
-    return Statmod.getValuesFinal(StatmodTopics.LIFE_GAINED_PER_TURN.toStatmodEntity(statmodOp, elestat), 0);
+    return Statmod.getValuesFinal(targetEntity, StatmodTopics.LIFE_GAINED_PER_TURN, 0);
   }
 
   // ========== ELEMENTAL ==========
@@ -100,7 +86,7 @@ library LibCharstat {
     // strength increases physical base attack damage
     uint32[EleStat_length] memory baseValues = [uint32(0), strength / 2 + 1, 0, 0, 0];
 
-    return Statmod.getValuesFinal(StatmodTopics.ATTACK.toStatmodEntity(statmodOp, elestat), baseValue);
+    return Statmod.getValuesElementalFinal(targetEntity, StatmodTopics.ATTACK, baseValues);
   }
 
   function getSpell(
@@ -118,7 +104,7 @@ library LibCharstat {
       }
     }
 
-    return Statmod.getValuesFinal(StatmodTopics.SPELL.toStatmodEntity(statmodOp, elestat), baseValue);
+    return Statmod.getValuesElementalFinal(targetEntity, StatmodTopics.SPELL, baseValues);
   }
 
   function getResistance(
@@ -130,7 +116,7 @@ library LibCharstat {
     // dexterity increases base physical resistance
     uint32[EleStat_length] memory baseValues = [uint32((dexterity / 4) * 4), 0, 0, 0, 0];
 
-    return Statmod.getValuesFinal(StatmodTopics.RESISTANCE.toStatmodEntity(statmodOp, elestat), baseValue);
+    return Statmod.getValuesElementalFinal(targetEntity, StatmodTopics.RESISTANCE, baseValues);
   }
 
   // ========== CURRENTS ==========
@@ -172,7 +158,11 @@ library LibCharstat {
   }
 
   // ========== ROUND DAMAGE ==========
-  function getRoundDamage(StatmodOp statmodOp, EleStat elestat) internal view returns (uint32[EleStat_length] memory) {
-    return Statmod.getValuesFinal(StatmodTopics.SPELL.toStatmodEntity(statmodOp, elestat), [uint32(0), 0, 0, 0, 0]);
+  function getRoundDamage(
+    bytes32 targetEntity,
+    StatmodOp statmodOp,
+    EleStat elestat
+  ) internal view returns (uint32[EleStat_length] memory) {
+    return Statmod.getValuesElementalFinal(targetEntity, StatmodTopics.SPELL, [uint32(0), 0, 0, 0, 0]);
   }
 }
