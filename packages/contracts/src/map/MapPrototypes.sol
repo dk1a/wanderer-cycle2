@@ -1,25 +1,24 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.21;
 
-// import { getUniqueEntity } from "@latticexyz/world-modules/src/modules/uniqueentity/getUniqueEntity.sol";
+type MapPrototype is bytes32;
 
-// import { MapBase, Name } from "../codegen/index.sol";
+library MapPrototypes {
+  MapPrototype constant GLOBAL_BASIC = MapPrototype.wrap("Global Basic");
+  MapPrototype constant GLOBAL_RANDOM = MapPrototype.wrap("Global Random");
+  MapPrototype constant GLOBAL_CYCLE_BOSS = MapPrototype.wrap("Global Cycle Boss");
+}
 
-// library MapPrototypes {
-//   string constant GLOBAL_BASIC = "Global Basic";
-//   string constant GLOBAL_RANDOM = "Global Random";
-//   string constant GLOBAL_CYCLE_BOSS = "Global Cycle Boss";
+using { toBytes32, eq as ==, ne as != } for MapPrototype global;
 
-//   function createNewMapPrototype() private {
-//     _createNewMapPrototype(GLOBAL_BASIC);
-//     _createNewMapPrototype(GLOBAL_RANDOM);
-//     _createNewMapPrototype(GLOBAL_CYCLE_BOSS);
-//   }
+function toBytes32(MapPrototype mapPrototype) pure returns (bytes32) {
+  return MapPrototype.unwrap(mapPrototype);
+}
 
-//   function _createNewMapPrototype(string memory mapName) private returns (bytes32 _mapProto) {
-//     bytes32 mapProto = getUniqueEntity();
-//     Name.set(mapProto, mapName);
-//     //TODO create new logic for MapBase.set()
-//     MapBase.set(mapProto, mapName);
-//   }
-// }
+function eq(MapPrototype a, MapPrototype b) pure returns (bool) {
+  return MapPrototype.unwrap(a) == MapPrototype.unwrap(b);
+}
+
+function ne(MapPrototype a, MapPrototype b) pure returns (bool) {
+  return MapPrototype.unwrap(a) != MapPrototype.unwrap(b);
+}
