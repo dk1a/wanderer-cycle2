@@ -160,6 +160,10 @@ export default mudConfig({
       ...entityKey,
       valueSchema: "bool",
     },
+    MapBase: {
+      ...entityKey,
+      valueSchema: "bytes32",
+    },
     // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time
     ActiveCombat: entityRelation,

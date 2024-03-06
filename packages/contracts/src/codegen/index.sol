@@ -26,6 +26,7 @@ import { CycleTurns, CycleTurnsTableId } from "./tables/CycleTurns.sol";
 import { CycleTurnsLastClaimed, CycleTurnsLastClaimedTableId } from "./tables/CycleTurnsLastClaimed.sol";
 import { ActiveWheel, ActiveWheelTableId } from "./tables/ActiveWheel.sol";
 import { Wanderer, WandererTableId } from "./tables/Wanderer.sol";
+import { MapBase, MapBaseTableId } from "./tables/MapBase.sol";
 import { ActiveCombat, ActiveCombatTableId } from "./tables/ActiveCombat.sol";
 import { RNGPrecommit, RNGPrecommitTableId } from "./tables/RNGPrecommit.sol";
 import { RNGRequestOwner, RNGRequestOwnerTableId } from "./tables/RNGRequestOwner.sol";
