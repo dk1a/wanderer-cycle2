@@ -93,7 +93,7 @@ export default mudConfig({
         targetEntity: EntityId,
         ilvl: "uint32",
       },
-      valueSchema: "uint256[]",
+      valueSchema: "bytes32[]",
     },
     AffixNaming: {
       keySchema: {

@@ -39,10 +39,10 @@ function tierToDefaultRequiredIlvl(uint32 tier) pure returns (uint32 requiredIlv
 }
 
 /// @dev Affixes have a complex structure, however most complexity is shoved into this BaseInit,
-/// so the child inits and affix components are relatively simple.
+/// so the child inits and affix tables are relatively simple.
 ///
 /// Each affix has: name, associated statmod, tier.
-/// Affixes with the same name (but different tiers) are grouped together via `AffixPrototypeGroupComponent`.
+/// Affixes with the same name (but different tiers) are grouped together via `AffixProtoGroup`.
 ///
 /// Tiers are 1,2,3,4..., higher means better affixes (tiers can be skipped).
 /// Each affix's tier has 1 min-max range and a set of affix parts.
@@ -72,10 +72,10 @@ library LibBaseInitAffix {
       if (affixParts.length == 0) continue;
       Range memory range = ranges[i];
 
-      AffixPrototypeData memory proto = AffixPrototype({
+      AffixPrototypeData memory proto = AffixPrototypeData({
         statmodProtoEntity: statmodProtoEntity,
         tier: tier,
-        requiredIlvl: tierToDefaultRequiredIlvl(tier),
+        requiredLevel: tierToDefaultRequiredIlvl(tier),
         min: range.min,
         max: range.max
       });
@@ -100,17 +100,18 @@ library LibBaseInitAffix {
     AffixPart[] memory affixParts,
     uint32 maxIlvl
   ) internal {
-    if (maxIlvl == 0 || affixProto.requiredIlvl > maxIlvl) {
+    bytes32 hashName = keccak256(abi.encodePacked(affixName));
+    if (maxIlvl == 0 || affixProto.requiredLevel > maxIlvl) {
       revert LibBaseInitAffix__MalformedInput(affixName, maxIlvl);
     }
-    if (!affixProto.statmodProtoEntity) {
+    if (affixProto.statmodProtoEntity == 0) {
       revert LibBaseInitAffix__InvalidStatmodPrototype();
     }
 
-    bytes32 protoEntity = AffixProtoIndex.get(affixName, affixProto.tier);
+    bytes32 protoEntity = AffixProtoIndex.get(hashName, affixProto.tier);
     AffixPrototype.set(protoEntity, affixProto);
     Name.set(protoEntity, affixName);
-    AffixProtoGroup.set(protoEntity, AffixProtoGroup.get(affixName));
+    AffixProtoGroup.set(protoEntity, AffixProtoGroup.get(hashName));
 
     for (uint256 i; i < affixParts.length; i++) {
       AffixPartId partId = affixParts[i].partId;
@@ -125,8 +126,8 @@ library LibBaseInitAffix {
       // availability component is basically a cache,
       // all its data is technically redundant, but greatly simplifies and speeds up queries.
       // target => partId => range(requiredIlvl, maxIlvl) => Set(affixProtos)
-      for (uint32 ilvl = affixProto.requiredIlvl; ilvl <= maxIlvl; ilvl++) {
-        uint256 availabilityEntity = AffixAvailable.getItem(partId, targetEntity, ilvl, i);
+      for (uint32 ilvl = affixProto.requiredLevel; ilvl <= maxIlvl; ilvl++) {
+        bytes32 availabilityEntity = AffixAvailable.getItem(partId, targetEntity, ilvl, i);
         AffixAvailable.push(partId, protoEntity, ilvl, availabilityEntity);
       }
     }

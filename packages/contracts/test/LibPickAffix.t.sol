@@ -9,7 +9,7 @@ import { AffixPrototype, AffixPrototypeData } from "../src/codegen/index.sol";
 contract LibPickAffixesTest is MudLibTest {
   bytes32 internal targetEntity = keccak256("targetEntity");
 
-  function setUp() public {
+  function setUp() public virtual override {
     super.setUp();
   }
 
@@ -18,7 +18,7 @@ contract LibPickAffixesTest is MudLibTest {
     affixPartIds[0] = AffixPartId.PREFIX;
     affixPartIds[1] = AffixPartId.SUFFIX;
 
-    uint32[] memory excludeAffixes = new uint32[](0);
+    // uint32[] memory excludeAffixes = new uint32[](0);
 
     bytes32[] memory availableEntities = new bytes32[](3);
     availableEntities[0] = keccak256("affix1");
@@ -29,7 +29,7 @@ contract LibPickAffixesTest is MudLibTest {
       bytes32[] memory statmodProtoEntities,
       bytes32[] memory affixProtoEntities,
       uint32[] memory affixValues
-    ) = LibPickAffixes.pickAffixes(affixPartIds, excludeAffixes, targetEntity, 1, 123);
+    ) = LibPickAffixes.pickAffixes(affixPartIds, targetEntity, 1, 123);
 
     assertEq(statmodProtoEntities.length, 2);
     assertEq(affixProtoEntities.length, 2);
@@ -46,8 +46,8 @@ contract LibPickAffixesTest is MudLibTest {
     tiers[1] = 2;
 
     (
-      uint32[] memory statmodProtoEntities,
-      uint32[] memory affixProtoEntities,
+      bytes32[] memory statmodProtoEntities,
+      bytes32[] memory affixProtoEntities,
       uint32[] memory affixValues
     ) = LibPickAffixes.manuallyPickAffixesMax(names, tiers);
 

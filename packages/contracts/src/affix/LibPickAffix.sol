@@ -16,7 +16,6 @@ library LibPickAffixes {
 
   function pickAffixes(
     AffixPartId[] memory affixPartIds,
-    uint32[] memory excludeAffixes,
     bytes32 targetEntity,
     uint32 ilvl,
     uint256 randomness
@@ -32,7 +31,7 @@ library LibPickAffixes {
     for (uint256 i; i < affixPartIds.length; i++) {
       randomness = uint256(keccak256(abi.encode(i, randomness)));
       // pick affix proto entity
-      bytes32 affixProtoEntity = _pickAffixProtoEntity(ilvl, affixPartIds[i], targetEntity, excludeAffixes, randomness);
+      bytes32 affixProtoEntity = _pickAffixProtoEntity(ilvl, affixPartIds[i], targetEntity, randomness);
       AffixPrototypeData memory affixProto = AffixPrototype.get(affixProtoEntity);
       // set the corresponding statmod
       statmodProtoEntities[i] = affixProto.statmodProtoEntity;
@@ -58,15 +57,15 @@ library LibPickAffixes {
   )
     internal
     view
-    returns (uint32[] memory statmodProtoEntities, uint32[] memory affixProtoEntities, uint32[] memory affixValues)
+    returns (bytes32[] memory statmodProtoEntities, bytes32[] memory affixProtoEntities, uint32[] memory affixValues)
   {
-    uint32 len = names.length;
-    statmodProtoEntities = new uint32[](len);
-    affixProtoEntities = new uint32[](len);
+    uint256 len = names.length;
+    statmodProtoEntities = new bytes32[](len);
+    affixProtoEntities = new bytes32[](len);
     affixValues = new uint32[](len);
 
     for (uint32 i; i < names.length; i++) {
-      affixProtoEntities[i] = AffixProtoIndex.get(names[i], tiers[i]);
+      affixProtoEntities[i] = AffixProtoIndex.get(keccak256(abi.encodePacked(names[i])), tiers[i]);
 
       AffixPrototypeData memory affixProto = AffixPrototype.get(affixProtoEntities[i]);
       statmodProtoEntities[i] = affixProto.statmodProtoEntity;
@@ -80,18 +79,16 @@ library LibPickAffixes {
     uint32 ilvl,
     AffixPartId affixPartId,
     bytes32 targetEntity,
-    uint32[] memory excludeAffixes,
     uint256 randomness
   ) internal view returns (bytes32) {
     randomness = uint256(keccak256(abi.encode(keccak256("pickAffixEntity"), randomness)));
 
     // TODO this can be significantly optimized if you need it
-    uint32 availabilityEntity = AffixAvailable.get(affixPartId, targetEntity, ilvl);
-    uint256[] memory entities = _getAvailableEntities(availabilityEntity, excludeAffixes);
-    if (entities.length == 0) revert LibPickAffixes__NoAvailableAffix(affixPartId, targetEntity, ilvl);
+    bytes32[] memory availableEntities = AffixAvailable.get(affixPartId, targetEntity, ilvl);
+    if (availableEntities.length == 0) revert LibPickAffixes__NoAvailableAffix(affixPartId, targetEntity, ilvl);
 
-    uint256 index = randomness % entities.length;
-    return entities[index];
+    uint256 index = randomness % availableEntities.length;
+    return availableEntities[index];
   }
 
   /// @dev Queries the default availability and removes `excludeEntities` from it.
@@ -100,7 +97,7 @@ library LibPickAffixes {
     AffixPartId affixPartId,
     bytes32 targetEntity,
     bytes32[] memory excludeEntities
-  ) private view returns (uint256[] memory availableEntities) {
+  ) private view returns (bytes32[] memory availableEntities) {
     // get default availability
     availableEntities = AffixAvailable.get(affixPartId, targetEntity, ilvl);
 
