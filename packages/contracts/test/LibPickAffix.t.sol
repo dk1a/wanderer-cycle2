@@ -1,9 +1,12 @@
-import { MudV2Test } from "@latticexyz/std-contracts/src/test/MudV2Test.t.sol";
-import { LibPickAffixes } from "../src/affix/LibPickAffix.sol";
-import { AffixPartId } from "../src/codegen/Types.sol";
-import { AffixPrototype, AffixPrototypeData } from "../src/codegen/Tables.sol";
+// SPDX-License-Identifier: MIT
+pragma solidity >=0.8.21;
 
-contract LibPickAffixesTest is MudV2Test {
+import { MudLibTest } from "./MudLibTest.t.sol";
+import { LibPickAffixes } from "../src/affix/LibPickAffix.sol";
+import { AffixPartId } from "../src/codegen/common.sol";
+import { AffixPrototype, AffixPrototypeData } from "../src/codegen/index.sol";
+
+contract LibPickAffixesTest is MudLibTest {
   bytes32 internal targetEntity = keccak256("targetEntity");
 
   function setUp() public {

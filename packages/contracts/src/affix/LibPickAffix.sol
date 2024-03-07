@@ -1,18 +1,12 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.21;
 
-import { getKeysWithValue } from "@latticexyz/world/src/modules/keyswithvalue/getKeysWithValue.sol";
+import { getKeysWithValue } from "@latticexyz/world-modules/src/modules/keyswithvalue/getKeysWithValue.sol";
+
+import { AffixPartId } from "../codegen/common.sol";
+import { AffixAvailable, AffixNaming, AffixPrototype, AffixPrototypeData, AffixProtoIndex, AffixProtoGroup, AffixProtoGroupTableId, Affix, AffixData } from "../codegen/index.sol";
 
 import { LibArray } from "../libraries/LibArray.sol";
-
-import { AffixPartId } from "../codegen/Types.sol";
-
-import { AffixAvailable } from "../codegen/Tables.sol";
-import { AffixNaming } from "../codegen/Tables.sol";
-import { AffixPrototype, AffixPrototypeData } from "../codegen/Tables.sol";
-import { AffixProtoIndex } from "../codegen/Tables.sol";
-import { AffixProtoGroup, AffixProtoGroupTableId } from "../codegen/Tables.sol";
-import { Affix, AffixData } from "../codegen/Tables.sol";
 
 /// @title Randomly pick affixes.
 library LibPickAffixes {
@@ -47,15 +41,14 @@ library LibPickAffixes {
       affixProtoEntities[i] = affixProtoEntity;
       affixValues[i] = _pickAffixValue(affixProto, randomness);
 
-      if (i != affixPartIds.length - 1) {
-        // exclude all affixes from the picked affix's group (skip for the last cycle)
-        bytes32[] memory newExcludeAffixes = getKeysWithValue(
-          world,
-          AffixProtoGroupTableId,
-          AffixProtoGroup.get(affixProtoEntity)
-        );
-        excludeAffixes = LibArray.concat(excludeAffixes, newExcludeAffixes);
-      }
+      // if (i != affixPartIds.length - 1) {
+      //   // exclude all affixes from the picked affix's group (skip for the last cycle)
+      //   bytes32[] memory newExcludeAffixes = getKeysWithValue(
+      //     AffixProtoGroupTableId,
+      //     AffixProtoGroup.get(affixProtoEntity)
+      //   );
+      //   excludeAffixes = LibArray.concat(excludeAffixes, newExcludeAffixes);
+      // }
     }
   }
 

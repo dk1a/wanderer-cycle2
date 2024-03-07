@@ -1,10 +1,9 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.21;
 
-import { Name } from "../codegen/Tables.sol";
-import { AffixAvailable, AffixNaming, AffixPrototype, AffixPrototypeData, AffixProtoIndex, AffixProtoGroup, Affix, AffixData } from "../codegen/Tables.sol";
+import { AffixAvailable, AffixNaming, AffixPrototype, AffixPrototypeData, AffixProtoIndex, AffixProtoGroup, Affix, AffixData, Name } from "../codegen/index.sol";
 
-import { AffixPartId } from "../codegen/Types.sol";
+import { AffixPartId } from "../codegen/common.sol";
 
 struct AffixPart {
   AffixPartId partId;
