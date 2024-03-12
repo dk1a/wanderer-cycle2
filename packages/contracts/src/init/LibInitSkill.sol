@@ -81,7 +81,7 @@ library LibInitSkill {
     // 4
     b.add(
       "Onslaught",
-      "Increase attack damage and recover some life per round",
+      "Increase physical attack damage and recover some life per round",
       SkillTemplateData({
         requiredLevel: 4,
         skillType: SkillType.NONCOMBAT,
@@ -98,7 +98,7 @@ library LibInitSkill {
       makeEffectTemplate(
         StatmodTopics.ATTACK,
         StatmodOp.MUL,
-        EleStat.NONE,
+        EleStat.PHYSICAL,
         32,
         StatmodTopics.LIFE_GAINED_PER_TURN,
         StatmodOp.ADD,
@@ -150,7 +150,7 @@ library LibInitSkill {
     // 7
     b.add(
       "Precise Strikes",
-      "Increase attack damage",
+      "Increase physical attack damage",
       SkillTemplateData({
         requiredLevel: 7,
         skillType: SkillType.PASSIVE,
@@ -164,7 +164,7 @@ library LibInitSkill {
       // duration
       b._noDuration(),
       // effect
-      makeEffectTemplate(StatmodTopics.ATTACK, StatmodOp.MUL, EleStat.NONE, 8)
+      makeEffectTemplate(StatmodTopics.ATTACK, StatmodOp.MUL, EleStat.PHYSICAL, 8)
     );
 
     // 8

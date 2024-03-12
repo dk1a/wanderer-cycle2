@@ -13,7 +13,7 @@ library LibInitGuise {
 
   function init() internal {
     // TODO maybe move guise skills init to LibInitSkill and have it depend on guise instead?
-    bytes32[] memory guiseSkills = new bytes32[](3);
+    bytes32[] memory guiseSkills = new bytes32[](11);
     guiseSkills[0] = ls.getSkillEntity("Cleave");
     guiseSkills[1] = ls.getSkillEntity("Charge");
     guiseSkills[2] = ls.getSkillEntity("Parry");
