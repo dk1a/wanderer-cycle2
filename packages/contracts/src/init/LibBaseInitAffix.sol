@@ -120,8 +120,7 @@ library LibBaseInitAffix {
 
       // which (partId+target) the affix is available for.
       // affixProto => target => AffixPartId => label
-      bytes32 namingEntity = AffixNaming.get(partId, targetEntity, protoEntity);
-      Name.set(namingEntity, label);
+      AffixNaming.set(partId, targetEntity, protoEntity, label);
 
       // availability component is basically a cache,
       // all its data is technically redundant, but greatly simplifies and speeds up queries.

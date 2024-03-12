@@ -33,12 +33,12 @@ const arrayPStat = `uint32[${enumPStat.length}]` as const;
 const enumEleStat = ["NONE", "PHYSICAL", "FIRE", "COLD", "POISON"];
 //const arrayEleStat = `uint32[${enumEleStat.length}]` as const;
 
-/*const keysWithValue = (tableNames: string[]) =>
+const keysWithValue = (tableNames: string[]) =>
   tableNames.map((tableName) => ({
     name: "KeysWithValueModule",
     root: true,
     args: [resolveTableId(tableName)],
-  }));*/
+  }));
 
 const durationTable = {
   keySchema: {
@@ -347,11 +347,7 @@ export default mudConfig({
 
   modules: [
     ...keysInTable(["Experience", "LearnedSkills", "EffectTemplate", "EffectApplied"]),
-    {
-      name: "KeysWithValueModule",
-      root: true,
-      args: [resolveTableId("AffixProtoGroup")],
-    },
+    ...keysWithValue(["AffixProtoGroup"]),
     {
       name: "UniqueEntityModule",
       root: true,
