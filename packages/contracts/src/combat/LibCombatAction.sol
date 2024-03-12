@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.21;
 
-import { SkillTemplate, SkillTemplateData, AttackerOptions, DefenderOptions } from "../codegen/index.sol";
+import { SkillTemplate, SkillTemplateData, SkillSpellDamage, AttackerOptions, DefenderOptions } from "../codegen/index.sol";
 import { ActionType } from "../codegen/common.sol";
 import { EleStat_length } from "../CustomTypes.sol";
 
@@ -35,14 +35,14 @@ library LibCombatAction {
     // use skill
     LibSkill.useSkill(userEntity, skillEntity, targetEntity);
     SkillTemplateData memory skill = SkillTemplate.get(skillEntity);
+    uint32[EleStat_length] spellDamage = SkillSpellDamage.get(skillEntity);
 
     // skill may need a follow-up attack and/or spell
     if (skill.withAttack) {
       _dealAttackDamage(targetEntity, userEntity);
     }
     if (skill.withSpell) {
-      // TODO need spell getter
-      // _dealSpellDamage(targetEntity, SpellDamage);
+      _dealSpellDamage(targetEntity, spellDamage);
     }
   }
 

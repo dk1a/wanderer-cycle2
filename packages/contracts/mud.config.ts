@@ -133,6 +133,10 @@ export default mudConfig({
         targetType: "TargetType",
       },
     },
+    SKillSpellDamage: {
+      ...entityKey,
+      valueSchema: "uint32[]",
+    },
     SkillTemplateCooldown: {
       ...entityKey,
       valueSchema: {
