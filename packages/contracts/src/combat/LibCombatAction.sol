@@ -35,14 +35,14 @@ library LibCombatAction {
     // use skill
     LibSkill.useSkill(userEntity, skillEntity, targetEntity);
     SkillTemplateData memory skill = SkillTemplate.get(skillEntity);
-    uint32[EleStat_length] spellDamage = SkillSpellDamage.get(skillEntity);
+    uint32[EleStat_length] memory spellDamage = SkillSpellDamage.get(skillEntity);
 
     // skill may need a follow-up attack and/or spell
     if (skill.withAttack) {
       _dealAttackDamage(targetEntity, userEntity);
     }
     if (skill.withSpell) {
-      _dealSpellDamage(targetEntity, spellDamage);
+      _dealSpellDamage(targetEntity, userEntity, spellDamage);
     }
   }
 

@@ -21,15 +21,15 @@ import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 import { RESOURCE_TABLE, RESOURCE_OFFCHAIN_TABLE } from "@latticexyz/store/src/storeResourceTypes.sol";
 
 ResourceId constant _tableId = ResourceId.wrap(
-  bytes32(abi.encodePacked(RESOURCE_TABLE, bytes14(""), bytes16("SKillSpellDamage")))
+  bytes32(abi.encodePacked(RESOURCE_TABLE, bytes14(""), bytes16("SkillSpellDamage")))
 );
-ResourceId constant SKillSpellDamageTableId = _tableId;
+ResourceId constant SkillSpellDamageTableId = _tableId;
 
 FieldLayout constant _fieldLayout = FieldLayout.wrap(
   0x0000000100000000000000000000000000000000000000000000000000000000
 );
 
-library SKillSpellDamage {
+library SkillSpellDamage {
   /**
    * @notice Get the table values' field layout.
    * @return _fieldLayout The field layout for the table.
@@ -95,137 +95,113 @@ library SKillSpellDamage {
   /**
    * @notice Get value.
    */
-  function getValue(bytes32 entity) internal view returns (uint32[] memory value) {
+  function getValue(bytes32 entity) internal view returns (uint32[5] memory value) {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = entity;
 
     bytes memory _blob = StoreSwitch.getDynamicField(_tableId, _keyTuple, 0);
-    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint32());
+    return toStaticArray_uint32_5(SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint32());
   }
 
   /**
    * @notice Get value.
    */
-  function _getValue(bytes32 entity) internal view returns (uint32[] memory value) {
+  function _getValue(bytes32 entity) internal view returns (uint32[5] memory value) {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = entity;
 
     bytes memory _blob = StoreCore.getDynamicField(_tableId, _keyTuple, 0);
-    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint32());
+    return toStaticArray_uint32_5(SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint32());
   }
 
   /**
    * @notice Get value.
    */
-  function get(bytes32 entity) internal view returns (uint32[] memory value) {
+  function get(bytes32 entity) internal view returns (uint32[5] memory value) {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = entity;
 
     bytes memory _blob = StoreSwitch.getDynamicField(_tableId, _keyTuple, 0);
-    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint32());
+    return toStaticArray_uint32_5(SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint32());
   }
 
   /**
    * @notice Get value.
    */
-  function _get(bytes32 entity) internal view returns (uint32[] memory value) {
+  function _get(bytes32 entity) internal view returns (uint32[5] memory value) {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = entity;
 
     bytes memory _blob = StoreCore.getDynamicField(_tableId, _keyTuple, 0);
-    return (SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint32());
+    return toStaticArray_uint32_5(SliceLib.getSubslice(_blob, 0, _blob.length).decodeArray_uint32());
   }
 
   /**
    * @notice Set value.
    */
-  function setValue(bytes32 entity, uint32[] memory value) internal {
+  function setValue(bytes32 entity, uint32[5] memory value) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = entity;
 
-    StoreSwitch.setDynamicField(_tableId, _keyTuple, 0, EncodeArray.encode((value)));
+    StoreSwitch.setDynamicField(_tableId, _keyTuple, 0, EncodeArray.encode(fromStaticArray_uint32_5(value)));
   }
 
   /**
    * @notice Set value.
    */
-  function _setValue(bytes32 entity, uint32[] memory value) internal {
+  function _setValue(bytes32 entity, uint32[5] memory value) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = entity;
 
-    StoreCore.setDynamicField(_tableId, _keyTuple, 0, EncodeArray.encode((value)));
+    StoreCore.setDynamicField(_tableId, _keyTuple, 0, EncodeArray.encode(fromStaticArray_uint32_5(value)));
   }
 
   /**
    * @notice Set value.
    */
-  function set(bytes32 entity, uint32[] memory value) internal {
+  function set(bytes32 entity, uint32[5] memory value) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = entity;
 
-    StoreSwitch.setDynamicField(_tableId, _keyTuple, 0, EncodeArray.encode((value)));
+    StoreSwitch.setDynamicField(_tableId, _keyTuple, 0, EncodeArray.encode(fromStaticArray_uint32_5(value)));
   }
 
   /**
    * @notice Set value.
    */
-  function _set(bytes32 entity, uint32[] memory value) internal {
+  function _set(bytes32 entity, uint32[5] memory value) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
     _keyTuple[0] = entity;
 
-    StoreCore.setDynamicField(_tableId, _keyTuple, 0, EncodeArray.encode((value)));
+    StoreCore.setDynamicField(_tableId, _keyTuple, 0, EncodeArray.encode(fromStaticArray_uint32_5(value)));
   }
 
   /**
    * @notice Get the length of value.
    */
-  function lengthValue(bytes32 entity) internal view returns (uint256) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    uint256 _byteLength = StoreSwitch.getDynamicFieldLength(_tableId, _keyTuple, 0);
-    unchecked {
-      return _byteLength / 4;
-    }
+  function lengthValue(bytes32 entity) internal pure returns (uint256) {
+    return 5;
   }
 
   /**
    * @notice Get the length of value.
    */
-  function _lengthValue(bytes32 entity) internal view returns (uint256) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    uint256 _byteLength = StoreCore.getDynamicFieldLength(_tableId, _keyTuple, 0);
-    unchecked {
-      return _byteLength / 4;
-    }
+  function _lengthValue(bytes32 entity) internal pure returns (uint256) {
+    return 5;
   }
 
   /**
    * @notice Get the length of value.
    */
-  function length(bytes32 entity) internal view returns (uint256) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    uint256 _byteLength = StoreSwitch.getDynamicFieldLength(_tableId, _keyTuple, 0);
-    unchecked {
-      return _byteLength / 4;
-    }
+  function length(bytes32 entity) internal pure returns (uint256) {
+    return 5;
   }
 
   /**
    * @notice Get the length of value.
    */
-  function _length(bytes32 entity) internal view returns (uint256) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    uint256 _byteLength = StoreCore.getDynamicFieldLength(_tableId, _keyTuple, 0);
-    unchecked {
-      return _byteLength / 4;
-    }
+  function _length(bytes32 entity) internal pure returns (uint256) {
+    return 5;
   }
 
   /**
@@ -282,86 +258,6 @@ library SKillSpellDamage {
       bytes memory _blob = StoreCore.getDynamicFieldSlice(_tableId, _keyTuple, 0, _index * 4, (_index + 1) * 4);
       return (uint32(bytes4(_blob)));
     }
-  }
-
-  /**
-   * @notice Push an element to value.
-   */
-  function pushValue(bytes32 entity, uint32 _element) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    StoreSwitch.pushToDynamicField(_tableId, _keyTuple, 0, abi.encodePacked((_element)));
-  }
-
-  /**
-   * @notice Push an element to value.
-   */
-  function _pushValue(bytes32 entity, uint32 _element) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    StoreCore.pushToDynamicField(_tableId, _keyTuple, 0, abi.encodePacked((_element)));
-  }
-
-  /**
-   * @notice Push an element to value.
-   */
-  function push(bytes32 entity, uint32 _element) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    StoreSwitch.pushToDynamicField(_tableId, _keyTuple, 0, abi.encodePacked((_element)));
-  }
-
-  /**
-   * @notice Push an element to value.
-   */
-  function _push(bytes32 entity, uint32 _element) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    StoreCore.pushToDynamicField(_tableId, _keyTuple, 0, abi.encodePacked((_element)));
-  }
-
-  /**
-   * @notice Pop an element from value.
-   */
-  function popValue(bytes32 entity) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    StoreSwitch.popFromDynamicField(_tableId, _keyTuple, 0, 4);
-  }
-
-  /**
-   * @notice Pop an element from value.
-   */
-  function _popValue(bytes32 entity) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    StoreCore.popFromDynamicField(_tableId, _keyTuple, 0, 4);
-  }
-
-  /**
-   * @notice Pop an element from value.
-   */
-  function pop(bytes32 entity) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    StoreSwitch.popFromDynamicField(_tableId, _keyTuple, 0, 4);
-  }
-
-  /**
-   * @notice Pop an element from value.
-   */
-  function _pop(bytes32 entity) internal {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
-
-    StoreCore.popFromDynamicField(_tableId, _keyTuple, 0, 4);
   }
 
   /**
@@ -440,7 +336,7 @@ library SKillSpellDamage {
    * @notice Tightly pack dynamic data lengths using this table's schema.
    * @return _encodedLengths The lengths of the dynamic fields (packed into a single bytes32 value).
    */
-  function encodeLengths(uint32[] memory value) internal pure returns (PackedCounter _encodedLengths) {
+  function encodeLengths(uint32[5] memory value) internal pure returns (PackedCounter _encodedLengths) {
     // Lengths are effectively checked during copy by 2**40 bytes exceeding gas limits
     unchecked {
       _encodedLengths = PackedCounterLib.pack(value.length * 4);
@@ -451,8 +347,8 @@ library SKillSpellDamage {
    * @notice Tightly pack dynamic (variable length) data using this table's schema.
    * @return The dynamic data, encoded into a sequence of bytes.
    */
-  function encodeDynamic(uint32[] memory value) internal pure returns (bytes memory) {
-    return abi.encodePacked(EncodeArray.encode((value)));
+  function encodeDynamic(uint32[5] memory value) internal pure returns (bytes memory) {
+    return abi.encodePacked(EncodeArray.encode(fromStaticArray_uint32_5(value)));
   }
 
   /**
@@ -461,7 +357,7 @@ library SKillSpellDamage {
    * @return The lengths of the dynamic fields (packed into a single bytes32 value).
    * @return The dynamic (variable length) data, encoded into a sequence of bytes.
    */
-  function encode(uint32[] memory value) internal pure returns (bytes memory, PackedCounter, bytes memory) {
+  function encode(uint32[5] memory value) internal pure returns (bytes memory, PackedCounter, bytes memory) {
     bytes memory _staticData;
     PackedCounter _encodedLengths = encodeLengths(value);
     bytes memory _dynamicData = encodeDynamic(value);
@@ -478,4 +374,43 @@ library SKillSpellDamage {
 
     return _keyTuple;
   }
+}
+
+/**
+ * @notice Cast a dynamic array to a static array.
+ * @dev In memory static arrays are just dynamic arrays without the 32 length bytes,
+ * so this function moves the pointer to the first element of the dynamic array.
+ * If the length of the dynamic array is smaller than the static length,
+ * the function returns an uninitialized array to avoid memory corruption.
+ * @param _value The dynamic array to cast.
+ * @return _result The static array.
+ */
+function toStaticArray_uint32_5(uint32[] memory _value) pure returns (uint32[5] memory _result) {
+  if (_value.length < 5) {
+    // return an uninitialized array if the length is smaller than the fixed length to avoid memory corruption
+    return _result;
+  } else {
+    // in memory static arrays are just dynamic arrays without the 32 length bytes
+    // (without the length check this could lead to memory corruption)
+    assembly {
+      _result := add(_value, 0x20)
+    }
+  }
+}
+
+/**
+ * @notice Copy a static array to a dynamic array.
+ * @dev Static arrays don't have a length prefix, so this function copies the memory from the static array to a new dynamic array.
+ * @param _value The static array to copy.
+ * @return _result The dynamic array.
+ */
+function fromStaticArray_uint32_5(uint32[5] memory _value) pure returns (uint32[] memory _result) {
+  _result = new uint32[](5);
+  uint256 fromPointer;
+  uint256 toPointer;
+  assembly {
+    fromPointer := _value
+    toPointer := add(_result, 0x20)
+  }
+  Memory.copy(fromPointer, toPointer, 160);
 }

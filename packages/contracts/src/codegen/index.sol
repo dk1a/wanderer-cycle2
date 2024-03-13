@@ -15,7 +15,7 @@ import { LearnedSkills, LearnedSkillsTableId } from "./tables/LearnedSkills.sol"
 import { LifeCurrent, LifeCurrentTableId } from "./tables/LifeCurrent.sol";
 import { ManaCurrent, ManaCurrentTableId } from "./tables/ManaCurrent.sol";
 import { SkillTemplate, SkillTemplateData, SkillTemplateTableId } from "./tables/SkillTemplate.sol";
-import { SKillSpellDamage, SKillSpellDamageTableId } from "./tables/SKillSpellDamage.sol";
+import { SkillSpellDamage, SkillSpellDamageTableId } from "./tables/SkillSpellDamage.sol";
 import { SkillTemplateCooldown, SkillTemplateCooldownData, SkillTemplateCooldownTableId } from "./tables/SkillTemplateCooldown.sol";
 import { SkillTemplateDuration, SkillTemplateDurationData, SkillTemplateDurationTableId } from "./tables/SkillTemplateDuration.sol";
 import { SkillDescription, SkillDescriptionTableId } from "./tables/SkillDescription.sol";
