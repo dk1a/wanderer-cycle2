@@ -33,3 +33,9 @@ enum ActionType {
   ATTACK,
   SKILL
 }
+
+enum AffixPartId {
+  IMPLICIT,
+  PREFIX,
+  SUFFIX
+}
