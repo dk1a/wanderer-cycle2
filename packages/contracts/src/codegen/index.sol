@@ -43,8 +43,6 @@ import { RNGRequestOwner, RNGRequestOwnerTableId } from "./tables/RNGRequestOwne
 import { SlotAllowedTypes, SlotAllowedTypesTableId } from "./tables/SlotAllowedTypes.sol";
 import { SlotEquipment, SlotEquipmentTableId } from "./tables/SlotEquipment.sol";
 import { OwnedBy, OwnedByTableId } from "./tables/OwnedBy.sol";
-import { AttackerOptions, AttackerOptionsTableId } from "./tables/AttackerOptions.sol";
-import { DefenderOptions, DefenderOptionsTableId } from "./tables/DefenderOptions.sol";
 import { GenericDuration, GenericDurationData } from "./tables/GenericDuration.sol";
 import { DurationIdxList, DurationIdxListTableId } from "./tables/DurationIdxList.sol";
 import { DurationIdxMap, DurationIdxMapTableId } from "./tables/DurationIdxMap.sol";

@@ -250,14 +250,6 @@ export default mudConfig({
       valueSchema: EntityId,
     },
     OwnedBy: entityRelation,
-    AttackerOptions: {
-      ...entityKey,
-      valueSchema: "uint32",
-    },
-    DefenderOptions: {
-      ...entityKey,
-      valueSchema: "uint32",
-    },
 
     /************************************************************************
      *

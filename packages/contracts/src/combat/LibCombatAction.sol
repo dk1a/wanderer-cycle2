@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.8.21;
 
-import { SkillTemplate, SkillTemplateData, SkillSpellDamage, AttackerOptions, DefenderOptions } from "../codegen/index.sol";
+import { SkillTemplate, SkillTemplateData, SkillSpellDamage } from "../codegen/index.sol";
 import { ActionType } from "../codegen/common.sol";
 import { EleStat_length } from "../CustomTypes.sol";
 
@@ -13,21 +13,36 @@ struct Action {
   bytes32 actionEntity;
 }
 
+struct ActorOpts {
+  uint32 maxResistance;
+}
+
 library LibCombatAction {
   error LibCombat__InvalidActionType();
 
-  function executeAction(bytes32 targetEntity, bytes32 userEntity, bytes32 enemyEntity, Action memory action) internal {
+  function executeAction(
+    bytes32 targetEntity,
+    bytes32 userEntity,
+    bytes32 enemyEntity,
+    Action memory action,
+    ActorOpts memory defenderOpts
+  ) internal {
     if (action.actionType == ActionType.ATTACK) {
       // deal damage to defender (updates currents)
-      _dealAttackDamage(targetEntity, userEntity);
+      _dealAttackDamage(targetEntity, userEntity, defenderOpts);
     } else if (action.actionType == ActionType.SKILL) {
-      _useSkill(userEntity, enemyEntity, action.actionEntity);
+      _useSkill(userEntity, enemyEntity, action.actionEntity, defenderOpts);
     } else {
       revert LibCombat__InvalidActionType();
     }
   }
 
-  function _useSkill(bytes32 userEntity, bytes32 enemyEntity, bytes32 skillEntity) private {
+  function _useSkill(
+    bytes32 userEntity,
+    bytes32 enemyEntity,
+    bytes32 skillEntity,
+    ActorOpts memory defenderOpts
+  ) private {
     LibSkill.requireCombat(skillEntity);
 
     // combat skills may target either self or enemy, depending on skill prototype
@@ -39,31 +54,36 @@ library LibCombatAction {
 
     // skill may need a follow-up attack and/or spell
     if (skill.withAttack) {
-      _dealAttackDamage(targetEntity, userEntity);
+      _dealAttackDamage(targetEntity, userEntity, defenderOpts);
     }
     if (skill.withSpell) {
-      _dealSpellDamage(targetEntity, userEntity, spellDamage);
+      _dealSpellDamage(targetEntity, userEntity, spellDamage, defenderOpts);
     }
   }
 
-  function _dealAttackDamage(bytes32 targetEntity, bytes32 userEntity) private {
-    _dealDamage(targetEntity, LibCharstat.getAttack(userEntity));
+  function _dealAttackDamage(bytes32 targetEntity, bytes32 userEntity, ActorOpts memory defenderOpts) private {
+    _dealDamage(targetEntity, LibCharstat.getAttack(userEntity), defenderOpts);
   }
 
   function _dealSpellDamage(
     bytes32 targetEntity,
     bytes32 userEntity,
-    uint32[EleStat_length] memory baseSpellDamage
+    uint32[EleStat_length] memory baseSpellDamage,
+    ActorOpts memory defenderOpts
   ) private {
-    _dealDamage(targetEntity, LibCharstat.getSpell(userEntity, baseSpellDamage));
+    _dealDamage(targetEntity, LibCharstat.getSpell(userEntity, baseSpellDamage), defenderOpts);
   }
 
   /**
    * @dev Modifies LifeCurrent according to elemental damage and resistance
    * Resistances are percentages (scaling of 1/100)
    */
-  function _dealDamage(bytes32 targetEntity, uint32[EleStat_length] memory elemDamage) private {
-    uint32 maxResistance = DefenderOptions.get(targetEntity);
+  function _dealDamage(
+    bytes32 targetEntity,
+    uint32[EleStat_length] memory elemDamage,
+    ActorOpts memory defenderOpts
+  ) private {
+    uint32 maxResistance = defenderOpts.maxResistance;
     assert(maxResistance <= 100);
 
     uint32[EleStat_length] memory resistance = LibCharstat.getResistance(targetEntity);
