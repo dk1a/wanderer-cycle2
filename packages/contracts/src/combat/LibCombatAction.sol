@@ -2,20 +2,11 @@
 pragma solidity >=0.8.21;
 
 import { SkillTemplate, SkillSpellDamage } from "../codegen/index.sol";
-import { ActionType } from "../codegen/common.sol";
-import { EleStat_length } from "../CustomTypes.sol";
+import { CombatActionType } from "../codegen/common.sol";
+import { EleStat_length, CombatAction, CombatActorOpts } from "../CustomTypes.sol";
 
 import { LibSkill } from "../skill/LibSkill.sol";
 import { LibCharstat } from "../charstat/LibCharstat.sol";
-
-struct Action {
-  ActionType actionType;
-  bytes32 actionEntity;
-}
-
-struct ActorOpts {
-  uint32 maxResistance;
-}
 
 library LibCombatAction {
   error LibCombat__InvalidActionType();
@@ -24,13 +15,13 @@ library LibCombatAction {
     bytes32 targetEntity,
     bytes32 userEntity,
     bytes32 enemyEntity,
-    Action memory action,
-    ActorOpts memory defenderOpts
+    CombatAction memory action,
+    CombatActorOpts memory defenderOpts
   ) internal {
-    if (action.actionType == ActionType.ATTACK) {
+    if (action.actionType == CombatActionType.ATTACK) {
       // deal damage to defender (updates currents)
       _dealAttackDamage(targetEntity, userEntity, defenderOpts);
-    } else if (action.actionType == ActionType.SKILL) {
+    } else if (action.actionType == CombatActionType.SKILL) {
       _useSkill(userEntity, enemyEntity, action.actionEntity, defenderOpts);
     } else {
       revert LibCombat__InvalidActionType();
@@ -41,7 +32,7 @@ library LibCombatAction {
     bytes32 userEntity,
     bytes32 enemyEntity,
     bytes32 skillEntity,
-    ActorOpts memory defenderOpts
+    CombatActorOpts memory defenderOpts
   ) private {
     LibSkill.requireCombat(skillEntity);
 
@@ -60,7 +51,7 @@ library LibCombatAction {
     }
   }
 
-  function _dealAttackDamage(bytes32 targetEntity, bytes32 userEntity, ActorOpts memory defenderOpts) private {
+  function _dealAttackDamage(bytes32 targetEntity, bytes32 userEntity, CombatActorOpts memory defenderOpts) private {
     _dealDamage(targetEntity, LibCharstat.getAttack(userEntity), defenderOpts);
   }
 
@@ -68,7 +59,7 @@ library LibCombatAction {
     bytes32 targetEntity,
     bytes32 userEntity,
     uint32[EleStat_length] memory baseSpellDamage,
-    ActorOpts memory defenderOpts
+    CombatActorOpts memory defenderOpts
   ) private {
     _dealDamage(targetEntity, LibCharstat.getSpell(userEntity, baseSpellDamage), defenderOpts);
   }
@@ -80,7 +71,7 @@ library LibCombatAction {
   function _dealDamage(
     bytes32 targetEntity,
     uint32[EleStat_length] memory elemDamage,
-    ActorOpts memory defenderOpts
+    CombatActorOpts memory defenderOpts
   ) private {
     uint32 maxResistance = defenderOpts.maxResistance;
     assert(maxResistance <= 100);

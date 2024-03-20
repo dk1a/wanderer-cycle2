@@ -237,9 +237,17 @@ export default mudConfig({
       },
       valueSchema: "uint32",
     },
-    // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time
-    ActiveCombat: entityRelation,
+    ActiveCombat: {
+      keySchema: {
+        initiatorEntity: EntityId,
+      },
+      valueSchema: {
+        retaliatorEntity: EntityId,
+        roundsSpent: "uint32",
+        roundsMax: "uint32",
+      },
+    },
     RNGPrecommit: {
       ...entityKey,
       valueSchema: "uint256",
@@ -364,7 +372,7 @@ export default mudConfig({
     SkillType: ["COMBAT", "NONCOMBAT", "PASSIVE"],
     TargetType: ["SELF", "ENEMY", "ALLY", "SELF_OR_ALLY"],
     StatmodOp: ["ADD", "MUL", "BADD"],
-    ActionType: ["ATTACK", "SKILL"],
+    CombatActionType: ["ATTACK", "SKILL"],
     AffixPartId: ["IMPLICIT", "PREFIX", "SUFFIX"],
   },
 
@@ -373,6 +381,13 @@ export default mudConfig({
     StatmodTopic: {
       filePath: "./src/modules/statmod/StatmodTopic.sol",
       internalType: "bytes32",
+    },
+  },
+
+  systems: {
+    CombatSystem: {
+      openAccess: false,
+      accessList: [],
     },
   },
 

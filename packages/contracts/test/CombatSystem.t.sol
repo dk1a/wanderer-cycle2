@@ -3,7 +3,7 @@ pragma solidity >=0.8.21;
 
 import { MudLibTest } from "./MudLibTest.t.sol";
 
-import { CombatSystem, Action, ActionType } from "../src/combat/CombatSystem.sol";
+import { CombatSystem, CombatAction, CombatActionType } from "../src/combat/CombatSystem.sol";
 import { LibActiveCombat } from "../src/combat/LibActiveCombat.sol";
 import { LibCharstat } from "../src/charstat/LibCharstat.sol";
 import { PStat, PStat_length, EleStat_length } from "../src/CustomTypes.sol";

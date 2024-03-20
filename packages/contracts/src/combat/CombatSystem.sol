@@ -3,43 +3,28 @@ pragma solidity >=0.8.21;
 
 import { System } from "@latticexyz/world/src/System.sol";
 
-import { ActiveCombat, ActiveCombatTableId, GenericDurationData } from "../codegen/index.sol";
+import { ActiveCombat, GenericDurationData } from "../codegen/index.sol";
+import { CombatActionType } from "../codegen/common.sol";
+import { CombatResult, CombatAction, CombatActorOpts, CombatActor } from "../CustomTypes.sol";
 
+import { LibTime } from "../LibTime.sol";
 import { Duration } from "../modules/duration/Duration.sol";
 import { LibActiveCombat } from "./LibActiveCombat.sol";
-import { LibCharstat, EL_L } from "../charstat/LibCharstat.sol";
-import { LibCombatAction, Action, ActionType, ActorOpts } from "./LibCombatAction.sol";
-
-/// @dev combatDurationEntity = hashed(salt, initiator)
-function getCombatDurationEntity(bytes32 initiatorEntity) pure returns (bytes32) {
-  return keccak256(abi.encodePacked(keccak256("getCombatDurationEntity"), initiatorEntity));
-}
+import { LibCharstat } from "../charstat/LibCharstat.sol";
+import { LibCombatAction } from "./LibCombatAction.sol";
+import { CombatResult } from "../CustomTypes.sol";
 
 /**
  * @title Subsystem to execute 1 combat round between 2 actors; extensively uses charstats.
  * @dev A combat may have multiple rounds, each executed separately.
- * `Action[]` in args allows multiple actions in 1 round. (For another round call execute again).
+ * `CombatAction[]` in args allows multiple actions in 1 round. (For another round call execute again).
  * `CombatSubsystem` has multi-actor multi-action interactions logic,
  * and uses `LibCombatAction` for reusable one-way action logic.
  */
 contract CombatSystem is System {
-  error CombatSystem__InvalidExecuteSelector();
-  error CombatSystem__InvalidActionsLength();
-  error CombatSystem__ResidualDuration();
-
-  struct CombatActor {
-    bytes32 entity;
-    Action[] actions;
-    ActorOpts opts;
-  }
-
-  // Result for initiator; it's based on who loses all life first.
-  // This just indicates how the combat concluded.
-  enum CombatResult {
-    NONE,
-    VICTORY,
-    DEFEAT
-  }
+  error CombatSystem_InvalidExecuteSelector();
+  error CombatSystem_InvalidActionsLength();
+  error CombatSystem_ResidualDuration();
 
   /**
    * @notice Execute a combat round with default PVE options
@@ -49,18 +34,18 @@ contract CombatSystem is System {
     bytes32 userEntity,
     bytes32 initiatorEntity,
     bytes32 retaliatorEntity,
-    Action[] memory initiatorActions,
-    Action[] memory retaliatorActions
+    CombatAction[] memory initiatorActions,
+    CombatAction[] memory retaliatorActions
   ) public returns (CombatResult result) {
     CombatActor memory initiator = CombatActor({
       entity: initiatorEntity,
       actions: initiatorActions,
-      opts: ActorOpts({ maxResistance: 80 })
+      opts: CombatActorOpts({ maxResistance: 80 })
     });
     CombatActor memory retaliator = CombatActor({
       entity: retaliatorEntity,
       actions: retaliatorActions,
-      opts: ActorOpts({ maxResistance: 99 })
+      opts: CombatActorOpts({ maxResistance: 99 })
     });
     result = executeCombatRound(initiator, retaliator, userEntity);
 
@@ -74,7 +59,7 @@ contract CombatSystem is System {
     CombatActor memory initiator,
     CombatActor memory retaliator,
     bytes32 userEntity
-  ) public onlyWriter returns (CombatResult result) {
+  ) public returns (CombatResult result) {
     // TODO (maybe this check doesn't need to be here?)
     // combat should be externally activated
     LibActiveCombat.requireActiveCombat(initiator.entity, retaliator.entity);
@@ -86,13 +71,11 @@ contract CombatSystem is System {
       executeDeactivateCombat(initiator.entity);
     } else {
       // combat keeps going - decrement round durations
-      Duration.decreaseApplications(
-        ActiveCombatTablId,
+      LibTime.decreaseApplications(
         initiator.entity,
         GenericDurationData({ timeScopeId: keccak256("round"), timeValue: 1 })
       );
-      Duration.decreaseApplications(
-        ActiveCombatTablId,
+      LibTime.decreaseApplications(
         initiator.entity,
         GenericDurationData({ timeScopeId: keccak256("round_persistent"), timeValue: 1 })
       );
@@ -110,11 +93,7 @@ contract CombatSystem is System {
   /**
    * @notice Combat must be activated first, then `executeCombatRound` can be called until it's over
    */
-  function executeActivateCombat(
-    bytes32 initiatorEntity,
-    bytes32 retaliatorEntity,
-    uint256 maxRounds
-  ) public onlyWriter {
+  function executeActivateCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity, uint256 maxRounds) public {
     LibActiveCombat.requireNotActiveCombat(initiatorEntity);
 
     ActiveCombat.set(initiatorEntity, retaliatorEntity);
@@ -122,7 +101,7 @@ contract CombatSystem is System {
     bytes32 durationEntity = getCombatDurationEntity(initiatorEntity);
     if (Duration.has(ActiveCombatTableId, initiatorEntity, durationEntity)) {
       // helps catch weird bugs where combat isn't active, but duration still is
-      revert CombatSystem__ResidualDuration();
+      revert CombatSystem_ResidualDuration();
     }
     Duration.decreaseApplications(
       ActiveCombatTableId,
@@ -134,16 +113,14 @@ contract CombatSystem is System {
   /**
    * @notice Mostly for internal use, but it can also be called to prematurely deactivate combat
    */
-  function executeDeactivateCombat(bytes32 initiatorEntity) public onlyWriter {
+  function executeDeactivateCombat(bytes32 initiatorEntity) public {
     ActiveCombat.deleteRecord(initiatorEntity);
 
-    Duration.decreaseApplications(
-      ActiveCombatTableId,
+    LibTime.decreaseApplications(
       initiatorEntity,
       GenericDurationData({ timeScopeId: keccak256("round"), timeValue: type(uint256).max })
     );
-    Duration.decreaseApplications(
-      ActiveCombatTableId,
+    LibTime.decreaseApplications(
       initiatorEntity,
       GenericDurationData({ timeScopeId: keccak256("turn"), timeValue: 1 })
     );
@@ -171,7 +148,7 @@ contract CombatSystem is System {
       executeDeactivateCombat(initiatorEntity);
       return "";
     } else {
-      revert CombatSubSystem__InvalidExecuteSelector();
+      revert CombatSystem_InvalidExecuteSelector();
     }
   }
 
@@ -212,7 +189,7 @@ contract CombatSystem is System {
     if (actor.actions.length > 1) {
       // TODO a way to do 2 actions in a round, like a special skill
       // (limited by actionType, 2 attacks in a round is too OP)
-      revert CombatSystem__InvalidActionsLength();
+      revert CombatSystem_InvalidActionsLength();
     }
   }
 }
