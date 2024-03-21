@@ -8,7 +8,6 @@ import { CombatActionType } from "../codegen/common.sol";
 import { CombatResult, CombatAction, CombatActorOpts, CombatActor } from "../CustomTypes.sol";
 
 import { LibTime } from "../LibTime.sol";
-import { Duration } from "../modules/duration/Duration.sol";
 import { LibActiveCombat } from "./LibActiveCombat.sol";
 import { LibCharstat } from "../charstat/LibCharstat.sol";
 import { LibCombatAction } from "./LibCombatAction.sol";
@@ -80,8 +79,10 @@ contract CombatSystem is System {
         GenericDurationData({ timeScopeId: keccak256("round_persistent"), timeValue: 1 })
       );
       // if combat duration ran out, initiator loses by default
-      bytes32 durationEntity = getCombatDurationEntity(initiator.entity);
-      if (!Duration.has(ActiveCombatTableId, initiatorEntity, durationEntity)) {
+      uint32 roundsSpent = ActiveCombat.getRoundsSpent(initiator.entity);
+      uint32 roundsMax = ActiveCombat.getRoundsMax(initiator.entity);
+
+      if (roundsSpen == roundsMax) {
         executeDeactivateCombat(initiator.entity);
         result = CombatResult.DEFEAT;
       }
@@ -93,20 +94,14 @@ contract CombatSystem is System {
   /**
    * @notice Combat must be activated first, then `executeCombatRound` can be called until it's over
    */
-  function executeActivateCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity, uint256 maxRounds) public {
+  function executeActivateCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity, uint32 maxRounds) public {
     LibActiveCombat.requireNotActiveCombat(initiatorEntity);
 
-    ActiveCombat.set(initiatorEntity, retaliatorEntity);
+    LibActiveCombat.spendingRounds(initiatorEntity, retaliatorEntity, 1);
 
-    bytes32 durationEntity = getCombatDurationEntity(initiatorEntity);
-    if (Duration.has(ActiveCombatTableId, initiatorEntity, durationEntity)) {
-      // helps catch weird bugs where combat isn't active, but duration still is
-      revert CombatSystem_ResidualDuration();
-    }
-    Duration.decreaseApplications(
-      ActiveCombatTableId,
-      durationEntity,
-      GenericDurationData({ timeScopeId: keccak256("round"), timeValue: maxRounds })
+    LibTime.decreaseApplications(
+      initiatorEntity,
+      GenericDurationData({ timeScopeId: keccak256("round"), timeValue: type(uint256).max })
     );
   }
 

@@ -28,7 +28,7 @@ interface ICombatSystem {
     bytes32 userEntity
   ) external returns (CombatResult result);
 
-  function executeActivateCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity, uint256 maxRounds) external;
+  function executeActivateCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity, uint32 maxRounds) external;
 
   function executeDeactivateCombat(bytes32 initiatorEntity) external;
 }
