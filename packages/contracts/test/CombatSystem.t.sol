@@ -182,5 +182,37 @@ contract CombatSystemTest is MudLibTest {
     assertEq(LibCharstat.getLifeCurrent(encounterEntity), 0);
   }
 
+  function testRoundDurationDecrease() public {
+    //Initialization and activation of combat
+    CombatSystem.executeActivateCombat(playerEntity, encounterEntity, maxRounds);
+
+    uint32 initialRoundsMax = ActiveCombat.getRoundsMax(playerEntity);
+
+    vm.prank(writer);
+    CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
+
+    uint32 roundsAfterOneFight = ActiveCombat.getRoundsMax(playerEntity);
+    assertEq(initialRoundsMax - 1, roundsAfterOneFight, "Round duration should decrease by 1");
+  }
+
+  function testCombatDeactivatesAfterMaxRounds() public {
+    uint32 oneRound = 1;
+    CombatSystem.executeActivateCombat(playerEntity, encounterEntity, oneRound);
+
+    vm.prank(writer);
+    CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
+
+    bool isActive = !ActiveCombat.getRetaliatorEntity(playerEntity) == bytes32(0);
+    assertFalse(isActive, "Combat should be deactivated after max rounds");
+  }
+
+  function testInvalidActionsLength() public {
+    Action[] memory actions = _actions2Attacks();
+
+    vm.prank(writer);
+    vm.expectRevert(CombatSystem.CombatSystem_InvalidActionsLength.selector);
+    CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, actions, _noActions);
+  }
+
   // TODO So far just basic physical attacks. More tests, with statmods and skills.
 }
