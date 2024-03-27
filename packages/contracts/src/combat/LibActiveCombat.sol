@@ -11,17 +11,18 @@ library LibActiveCombat {
   error LibActiveCombat__InvalidSpendingRounds();
 
   function getRetaliatorEntity(bytes32 initiatorEntity) internal view returns (bytes32 retaliatorEntity) {
-    if (ActiveCombat.getRetaliatorEntity(initiatorEntity) == bytes32(0)) {
+    retaliatorEntity = ActiveCombat.getRetaliatorEntity(initiatorEntity);
+    if (retaliatorEntity == bytes32(0)) {
       revert LibActiveCombat__CombatNotActive();
     }
-    return ActiveCombat.getRetaliatorEntity(initiatorEntity);
   }
 
   function requireActiveCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity) internal view {
-    if (ActiveCombat.getRetaliatorEntity(initiatorEntity) == bytes32(0)) {
+    bytes32 storedRetaliatorEntity = ActiveCombat.getRetaliatorEntity(initiatorEntity);
+    if (storedRetaliatorEntity == bytes32(0)) {
       revert LibActiveCombat__CombatNotActive();
     }
-    if (ActiveCombat.getRetaliatorEntity(initiatorEntity) != retaliatorEntity) {
+    if (storedRetaliatorEntity != retaliatorEntity) {
       revert LibActiveCombat__CombatActiveForDifferentRetaliator();
     }
   }

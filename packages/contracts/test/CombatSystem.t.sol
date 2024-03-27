@@ -3,10 +3,11 @@ pragma solidity >=0.8.21;
 
 import { MudLibTest } from "./MudLibTest.t.sol";
 
+import { ActiveCombat } from "../src/codegen/index.sol";
 import { CombatSystem, CombatAction, CombatActionType } from "../src/combat/CombatSystem.sol";
 import { LibActiveCombat } from "../src/combat/LibActiveCombat.sol";
 import { LibCharstat } from "../src/charstat/LibCharstat.sol";
-import { PStat, PStat_length, EleStat_length } from "../src/CustomTypes.sol";
+import { CombatResult, PStat, PStat_length, EleStat_length } from "../src/CustomTypes.sol";
 import { StatmodTopics } from "../src/modules/statmod/StatmodTopic.sol";
 import { Statmod } from "../src/modules/statmod/Statmod.sol";
 import { EleStat, StatmodOp } from "../src/codegen/common.sol";
@@ -17,13 +18,13 @@ contract CombatSystemTest is MudLibTest {
   bytes32 playerEntity = keccak256("playerEntity");
   bytes32 encounterEntity = keccak256("encounterEntity");
 
-  Action[] _noActions;
+  CombatAction[] _noActions;
 
   // default data
   uint32 constant initLevel = 2;
   uint32 initLife;
   uint32 initAttack;
-  uint256 maxRounds = 12;
+  uint32 maxRounds = 12;
 
   // statmod proto entities
   bytes32 levelPE = StatmodTopics.LEVEL.toStatmodEntity(StatmodOp.BADD, EleStat.NONE);
@@ -32,7 +33,7 @@ contract CombatSystemTest is MudLibTest {
     super.setUp();
 
     // authorize writer
-    CombatSystem.authorizeWriter(writer);
+    _grantRootAccess(writer);
 
     // give direct levels
     // (note: don't change statmods directly outside of tests, use effects)
@@ -44,7 +45,7 @@ contract CombatSystemTest is MudLibTest {
     LibCharstat.setFullCurrents(encounterEntity);
 
     // activate combat between player and encounter
-    CombatSystem.executeActivateCombat(playerEntity, encounterEntity, maxRounds);
+    world.executeActivateCombat(playerEntity, encounterEntity, maxRounds);
 
     initLife = LibCharstat.getLifeCurrent(playerEntity);
     initAttack = LibCharstat.getAttack(playerEntity)[uint256(EleStat.PHYSICAL)];
@@ -59,15 +60,15 @@ contract CombatSystemTest is MudLibTest {
     }
   }
 
-  function _actions1Attack() internal pure returns (Action[] memory result) {
-    result = new Action[](1);
-    result[0] = Action({ actionType: ActionType.ATTACK, actionEntity: 0 });
+  function _actions1Attack() internal pure returns (CombatAction[] memory result) {
+    result = new CombatAction[](1);
+    result[0] = CombatAction({ actionType: CombatActionType.ATTACK, actionEntity: 0 });
   }
 
-  function _actions2Attacks() internal pure returns (Action[] memory result) {
-    result = new Action[](2);
-    result[0] = Action({ actionType: ActionType.ATTACK, actionEntity: 0 });
-    result[1] = Action({ actionType: ActionType.ATTACK, actionEntity: 0 });
+  function _actions2Attacks() internal pure returns (CombatAction[] memory result) {
+    result = new CombatAction[](2);
+    result[0] = CombatAction({ actionType: CombatActionType.ATTACK, actionEntity: 0 });
+    result[1] = CombatAction({ actionType: CombatActionType.ATTACK, actionEntity: 0 });
   }
 
   // ================ TESTS ================
@@ -85,41 +86,35 @@ contract CombatSystemTest is MudLibTest {
   function test_combatPVERound_notWriter() public {
     vm.prank(address(bytes20(keccak256("notWriter"))));
     // vm.expectRevert(OwnableWritable.OwnableWritable__NotWriter.selector);
-    CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
+    world.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
   }
 
   // skipping a round is fine
   function test_combatPVERound_noActions() public {
     vm.prank(writer);
-    CombatSystem.CombatResult result = CombatSystem.executePVERound(
-      userEntity,
-      playerEntity,
-      encounterEntity,
-      _noActions,
-      _noActions
-    );
-    assertEq(uint8(result), uint8(CombatSystem.CombatResult.NONE));
+    CombatResult result = world.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
+    assertEq(uint8(result), uint8(CombatResult.NONE));
   }
 
   // by default entities can only do 1 action per round
   function test_combatPVERound_invalidActionsLength() public {
     vm.prank(writer);
-    vm.expectRevert(CombatSystem.CombatSystem__InvalidActionsLength.selector);
-    CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, _actions2Attacks(), _actions2Attacks());
+    vm.expectRevert(CombatSystem.CombatSystem_InvalidActionsLength.selector);
+    world.executePVERound(userEntity, playerEntity, encounterEntity, _actions2Attacks(), _actions2Attacks());
   }
 
   // an unopposed single attack
   function test_combatPVERound_playerAttacks_1() public {
     vm.prank(writer);
 
-    CombatSystem.CombatResult result = combatSubSystem.executePVERound(
+    CombatResult result = world.executePVERound(
       userEntity,
       playerEntity,
       encounterEntity,
       _actions1Attack(),
       _noActions
     );
-    assertEq(uint8(result), uint8(CombatSystem.CombatResult.NONE));
+    assertEq(uint8(result), uint8(CombatResult.NONE));
     assertEq(LibCharstat.getLifeCurrent(encounterEntity), initLife - initAttack);
   }
 
@@ -127,16 +122,16 @@ contract CombatSystemTest is MudLibTest {
   function test_combatPVERound_playerAttacks_victory() public {
     vm.prank(writer);
 
-    CombatSystem.CombatResult result;
+    CombatResult result;
     // do enough attacks to defeat encounter
     uint256 attacksNumber = initLife / initAttack;
     for (uint256 i; i < attacksNumber; i++) {
-      result = CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, _actions1Attack(), _noActions);
+      result = world.executePVERound(userEntity, playerEntity, encounterEntity, _actions1Attack(), _noActions);
       if (i != attacksNumber - 1) {
-        assertEq(uint8(result), uint8(CombatSystem.CombatResult.NONE));
+        assertEq(uint8(result), uint8(CombatResult.NONE));
       }
     }
-    assertEq(uint8(result), uint8(CombatSystem.CombatResult.VICTORY));
+    assertEq(uint8(result), uint8(CombatResult.VICTORY));
     assertEq(LibCharstat.getLifeCurrent(encounterEntity), 0);
   }
 
@@ -144,16 +139,16 @@ contract CombatSystemTest is MudLibTest {
   function test_combatPVERound_encounterAttacks_defeat() public {
     vm.prank(writer);
 
-    CombatSystem.CombatResult result;
+    CombatResult result;
     // do enough attacks to defeat player
     uint256 attacksNumber = initLife / initAttack;
     for (uint256 i; i < attacksNumber; i++) {
-      result = CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _actions1Attack());
+      result = world.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _actions1Attack());
       if (i != attacksNumber - 1) {
-        assertEq(uint8(result), uint8(CombatSystem.CombatResult.NONE));
+        assertEq(uint8(result), uint8(CombatResult.NONE));
       }
     }
-    assertEq(uint8(result), uint8(CombatSystem.CombatResult.DEFEAT));
+    assertEq(uint8(result), uint8(CombatResult.DEFEAT));
     assertEq(LibCharstat.getLifeCurrent(playerEntity), 0);
   }
 
@@ -161,22 +156,16 @@ contract CombatSystemTest is MudLibTest {
   function test_combatPVERound_opposedAttacks_victoryByInitiative() public {
     vm.prank(writer);
 
-    CombatSystem.CombatResult result;
+    CombatResult result;
     // do enough attacks to defeat encounter
     uint256 attacksNumber = initLife / initAttack;
     for (uint256 i; i < attacksNumber; i++) {
-      result = CombatSystem.executePVERound(
-        userEntity,
-        playerEntity,
-        encounterEntity,
-        _actions1Attack(),
-        _actions1Attack()
-      );
+      result = world.executePVERound(userEntity, playerEntity, encounterEntity, _actions1Attack(), _actions1Attack());
       if (i != attacksNumber - 1) {
-        assertEq(uint8(result), uint8(CombatSystem.CombatResult.NONE));
+        assertEq(uint8(result), uint8(CombatResult.NONE));
       }
     }
-    assertEq(uint8(result), uint8(CombatSystem.CombatResult.VICTORY));
+    assertEq(uint8(result), uint8(CombatResult.VICTORY));
     // also check that the last encounter action didn't go through, since it lost
     assertEq(LibCharstat.getLifeCurrent(playerEntity), initLife - initAttack * (attacksNumber - 1));
     assertEq(LibCharstat.getLifeCurrent(encounterEntity), 0);
@@ -184,12 +173,12 @@ contract CombatSystemTest is MudLibTest {
 
   function testRoundDurationDecrease() public {
     //Initialization and activation of combat
-    CombatSystem.executeActivateCombat(playerEntity, encounterEntity, maxRounds);
+    world.executeActivateCombat(playerEntity, encounterEntity, maxRounds);
 
     uint32 initialRoundsMax = ActiveCombat.getRoundsMax(playerEntity);
 
     vm.prank(writer);
-    CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
+    world.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
 
     uint32 roundsAfterOneFight = ActiveCombat.getRoundsMax(playerEntity);
     assertEq(initialRoundsMax - 1, roundsAfterOneFight, "Round duration should decrease by 1");
@@ -197,21 +186,21 @@ contract CombatSystemTest is MudLibTest {
 
   function testCombatDeactivatesAfterMaxRounds() public {
     uint32 oneRound = 1;
-    CombatSystem.executeActivateCombat(playerEntity, encounterEntity, oneRound);
+    world.executeActivateCombat(playerEntity, encounterEntity, oneRound);
 
     vm.prank(writer);
-    CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
+    world.executePVERound(userEntity, playerEntity, encounterEntity, _noActions, _noActions);
 
-    bool isActive = !ActiveCombat.getRetaliatorEntity(playerEntity) == bytes32(0);
+    bool isActive = ActiveCombat.getRetaliatorEntity(playerEntity) != bytes32(0);
     assertFalse(isActive, "Combat should be deactivated after max rounds");
   }
 
   function testInvalidActionsLength() public {
-    Action[] memory actions = _actions2Attacks();
+    CombatAction[] memory actions = _actions2Attacks();
 
     vm.prank(writer);
     vm.expectRevert(CombatSystem.CombatSystem_InvalidActionsLength.selector);
-    CombatSystem.executePVERound(userEntity, playerEntity, encounterEntity, actions, _noActions);
+    world.executePVERound(userEntity, playerEntity, encounterEntity, actions, _noActions);
   }
 
   // TODO So far just basic physical attacks. More tests, with statmods and skills.

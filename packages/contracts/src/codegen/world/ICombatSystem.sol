@@ -10,7 +10,6 @@ import { CombatAction, CombatResult, CombatActor } from "./../../CustomTypes.sol
  * @dev This interface is automatically generated from the corresponding system contract. Do not edit manually.
  */
 interface ICombatSystem {
-  error CombatSystem_InvalidExecuteSelector();
   error CombatSystem_InvalidActionsLength();
   error CombatSystem_ResidualDuration();
 

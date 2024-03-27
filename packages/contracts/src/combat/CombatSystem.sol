@@ -21,7 +21,6 @@ import { CombatResult } from "../CustomTypes.sol";
  * and uses `LibCombatAction` for reusable one-way action logic.
  */
 contract CombatSystem is System {
-  error CombatSystem_InvalidExecuteSelector();
   error CombatSystem_InvalidActionsLength();
   error CombatSystem_ResidualDuration();
 
@@ -70,19 +69,16 @@ contract CombatSystem is System {
       executeDeactivateCombat(initiator.entity);
     } else {
       // combat keeps going - decrement round durations
+      LibTime.decreaseApplications(initiator.entity, GenericDurationData({ timeId: keccak256("round"), timeValue: 1 }));
       LibTime.decreaseApplications(
         initiator.entity,
-        GenericDurationData({ timeScopeId: keccak256("round"), timeValue: 1 })
-      );
-      LibTime.decreaseApplications(
-        initiator.entity,
-        GenericDurationData({ timeScopeId: keccak256("round_persistent"), timeValue: 1 })
+        GenericDurationData({ timeId: keccak256("round_persistent"), timeValue: 1 })
       );
       // if combat duration ran out, initiator loses by default
       uint32 roundsSpent = ActiveCombat.getRoundsSpent(initiator.entity);
       uint32 roundsMax = ActiveCombat.getRoundsMax(initiator.entity);
 
-      if (roundsSpen == roundsMax) {
+      if (roundsSpent == roundsMax) {
         executeDeactivateCombat(initiator.entity);
         result = CombatResult.DEFEAT;
       }
@@ -101,7 +97,7 @@ contract CombatSystem is System {
 
     LibTime.decreaseApplications(
       initiatorEntity,
-      GenericDurationData({ timeScopeId: keccak256("round"), timeValue: type(uint256).max })
+      GenericDurationData({ timeId: keccak256("round"), timeValue: type(uint256).max })
     );
   }
 
@@ -113,39 +109,14 @@ contract CombatSystem is System {
 
     LibTime.decreaseApplications(
       initiatorEntity,
-      GenericDurationData({ timeScopeId: keccak256("round"), timeValue: type(uint256).max })
+      GenericDurationData({ timeId: keccak256("round"), timeValue: type(uint256).max })
     );
-    LibTime.decreaseApplications(
-      initiatorEntity,
-      GenericDurationData({ timeScopeId: keccak256("turn"), timeValue: 1 })
-    );
+    LibTime.decreaseApplications(initiatorEntity, GenericDurationData({ timeId: keccak256("turn"), timeValue: 1 }));
   }
 
   /*//////////////////////////////////////////////////////////////
                               INTERNAL
   //////////////////////////////////////////////////////////////*/
-
-  function _execute(bytes memory args) internal override returns (bytes memory) {
-    (bytes4 executeSelector, bytes memory innerArgs) = abi.decode(args, (bytes4, bytes));
-
-    if (executeSelector == this.executeCombatRound.selector) {
-      (CombatActor memory initiator, CombatActor memory retaliator) = abi.decode(innerArgs, (CombatActor, CombatActor));
-      return abi.encode(executeCombatRound(initiator, retaliator));
-    } else if (executeSelector == this.executeActivateCombat.selector) {
-      (bytes32 initiatorEntity, bytes32 retaliatorEntity, uint256 maxRounds) = abi.decode(
-        innerArgs,
-        (bytes32, bytes32, uint256)
-      );
-      executeActivateCombat(initiatorEntity, retaliatorEntity, maxRounds);
-      return "";
-    } else if (executeSelector == this.executeDeactivateCombat.selector) {
-      uint256 initiatorEntity = abi.decode(innerArgs, (uint256));
-      executeDeactivateCombat(initiatorEntity);
-      return "";
-    } else {
-      revert CombatSystem_InvalidExecuteSelector();
-    }
-  }
 
   function _bothActorsActions(
     CombatActor memory initiator,
