@@ -29,7 +29,7 @@ enum StatmodOp {
   BADD
 }
 
-enum ActionType {
+enum CombatActionType {
   ATTACK,
   SKILL
 }
