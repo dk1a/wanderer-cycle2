@@ -209,10 +209,15 @@ export default mudConfig({
     SkillDescription: "string",
     SkillNameToEntity: nameToEntityTable,
     SkillCooldown: durationTable,
+    FromTemplate: entityRelation,
     ActiveCycle: entityRelation,
     CycleToWanderer: entityRelation,
     CurrentCycle: entityRelation,
     PreviousCycle: entityRelation,
+    BossesDefeated: {
+      ...entityKey,
+      valueSchema: "bytes32[]",
+    },
     CycleTurns: {
       ...entityKey,
       valueSchema: "uint32",

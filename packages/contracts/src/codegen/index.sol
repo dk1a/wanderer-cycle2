@@ -29,10 +29,12 @@ import { SkillTemplateDuration, SkillTemplateDurationData, SkillTemplateDuration
 import { SkillDescription, SkillDescriptionTableId } from "./tables/SkillDescription.sol";
 import { SkillNameToEntity, SkillNameToEntityTableId } from "./tables/SkillNameToEntity.sol";
 import { SkillCooldown, SkillCooldownData, SkillCooldownTableId } from "./tables/SkillCooldown.sol";
+import { FromTemplate, FromTemplateTableId } from "./tables/FromTemplate.sol";
 import { ActiveCycle, ActiveCycleTableId } from "./tables/ActiveCycle.sol";
 import { CycleToWanderer, CycleToWandererTableId } from "./tables/CycleToWanderer.sol";
 import { CurrentCycle, CurrentCycleTableId } from "./tables/CurrentCycle.sol";
 import { PreviousCycle, PreviousCycleTableId } from "./tables/PreviousCycle.sol";
+import { BossesDefeated, BossesDefeatedTableId } from "./tables/BossesDefeated.sol";
 import { CycleTurns, CycleTurnsTableId } from "./tables/CycleTurns.sol";
 import { CycleTurnsLastClaimed, CycleTurnsLastClaimedTableId } from "./tables/CycleTurnsLastClaimed.sol";
 import { ActiveWheel, ActiveWheelTableId } from "./tables/ActiveWheel.sol";
