@@ -35,6 +35,7 @@ import { CycleToWanderer, CycleToWandererTableId } from "./tables/CycleToWandere
 import { CurrentCycle, CurrentCycleTableId } from "./tables/CurrentCycle.sol";
 import { PreviousCycle, PreviousCycleTableId } from "./tables/PreviousCycle.sol";
 import { BossesDefeated, BossesDefeatedTableId } from "./tables/BossesDefeated.sol";
+import { CycleCombatRReq, CycleCombatRReqData, CycleCombatRReqTableId } from "./tables/CycleCombatRReq.sol";
 import { CycleTurns, CycleTurnsTableId } from "./tables/CycleTurns.sol";
 import { CycleTurnsLastClaimed, CycleTurnsLastClaimedTableId } from "./tables/CycleTurnsLastClaimed.sol";
 import { ActiveWheel, ActiveWheelTableId } from "./tables/ActiveWheel.sol";

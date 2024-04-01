@@ -218,6 +218,18 @@ export default mudConfig({
       ...entityKey,
       valueSchema: "bytes32[]",
     },
+    CycleCombatRReq: {
+      keySchema: {
+        requestId: "bytes32",
+      },
+      valueSchema: {
+        mapEntity: EntityId,
+        connection: "uint32",
+        fortune: "uint32",
+        winnerPStat: arrayPStat,
+        loserPStat: arrayPStat,
+      },
+    },
     CycleTurns: {
       ...entityKey,
       valueSchema: "uint32",
