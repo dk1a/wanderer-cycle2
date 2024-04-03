@@ -9,6 +9,8 @@ enum PStat {
   DEXTERITY
 }
 
+bytes14 constant WANDERER_TOKEN = "WNFT";
+
 uint256 constant PStat_length = 3;
 
 uint256 constant StatmodOp_length = 3;
