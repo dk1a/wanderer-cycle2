@@ -12,7 +12,7 @@ import { LibCycle } from "./LibCycle.sol";
 import { LibCycleCombatRewardRequest } from "./LibCycleCombatRewardRequest.sol";
 
 contract CycleCombatSystem is System {
-  function execute(bytes memory args) public override returns (bytes memory) {
+  function processCombatRound(bytes memory args) public override returns (bytes memory) {
     (bytes32 wandererEntity, Action[] memory initiatorActions) = abi.decode(args, (bytes32, bytes32[]));
     // reverts if sender doesn't have permission
     bytes32 cycleEntity = LibCycle.getCycleEntityPermissioned(wandererEntity);

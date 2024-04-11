@@ -3,10 +3,7 @@ pragma solidity >=0.8.21;
 
 import { System } from "@latticexyz/world/src/System.sol";
 
-import { IWorld } from "solecs/interfaces/IWorld.sol";
-import { getAddressById } from "solecs/utils.sol";
-
-import { RandomEquipmentSubSystem, ID as RandomEquipmentSubSystemID } from "../loot/RandomEquipmentSubSystem.sol";
+import { RandomEquipmentSystem } from "../loot/RandomEquipmentSubSystem.sol";
 
 import { LibCycle } from "./LibCycle.sol";
 import { LibActiveCombat } from "../combat/LibActiveCombat.sol";
@@ -16,51 +13,38 @@ import { LibLootOwner } from "../loot/LibLootOwner.sol";
 import { LibGuiseLevel } from "../guise/LibGuiseLevel.sol";
 import { LibRNG } from "../rng/LibRNG.sol";
 
-uint256 constant ID = uint256(keccak256("system.CycleCombatReward"));
-
 contract CycleCombatRewardSystem is System {
-  using LibExperience for LibExperience.Self;
-
   error CycleCombatRewardSystem__UnknownMapPrototype();
 
-  constructor(IWorld _world, address _components) System(_world, _components) {}
-
-  function executeTyped(uint256 wandererEntity, uint256 requestId) public {
-    execute(abi.encode(wandererEntity, requestId));
-  }
-
-  function execute(bytes memory args) public override returns (bytes memory) {
-    (uint256 wandererEntity, uint256 requestId) = abi.decode(args, (uint256, uint256));
+  function reward(bytes memory args) public override returns (bytes memory) {
+    (bytes32 wandererEntity, bytes32 requestId) = abi.decode(args, (bytes32, bytes32));
     // reverts if sender doesn't have permission
-    uint256 cycleEntity = LibCycle.getCycleEntityPermissioned(components, wandererEntity);
+    bytes32 cycleEntity = LibCycle.getCycleEntityPermissioned(wandererEntity);
     // TODO decide if claiming exp during combat is actually bad and why
-    LibActiveCombat.requireNotActiveCombat(components, cycleEntity);
+    LibActiveCombat.requireNotActiveCombat(cycleEntity);
 
     (uint256 randomness, uint32[PS_L] memory exp, uint32 lootIlvl, uint256 lootCount) = LibCycleCombatRewardRequest
-      .popReward(components, cycleEntity, requestId);
+      .popReward(cycleEntity, requestId);
 
     // multiply awarded exp by guise's multiplier
-    exp = LibGuiseLevel.multiplyExperience(components, cycleEntity, exp);
+    exp = LibGuiseLevel.multiplyExperience(cycleEntity, exp);
 
     // give exp
-    LibExperience.__construct(components, cycleEntity).increaseExp(exp);
+    LibExperience.__construct(cycleEntity).increaseExp(exp);
 
     // give loot
-    RandomEquipmentSubSystem randomEquipmentSubSystem = RandomEquipmentSubSystem(
-      getAddressById(world.systems(), RandomEquipmentSubSystemID)
-    );
     for (uint256 i; i < lootCount; i++) {
-      uint256 lootEntity = randomEquipmentSubSystem.executeTyped(lootIlvl, randomness);
-      LibLootOwner.setSimpleOwnership(components, lootEntity, cycleEntity);
+      bytes32 lootEntity = RandomEquipmentSystem.executeTyped(lootIlvl, randomness);
+      LibLootOwner.setSimpleOwnership(lootEntity, cycleEntity);
     }
 
     return "";
   }
 
-  function cancelRequest(uint256 wandererEntity, uint256 requestId) public {
+  function cancelRequest(bytes32 wandererEntity, bytes32 requestId) public {
     // reverts if sender doesn't have permission
-    uint256 cycleEntity = LibCycle.getCycleEntityPermissioned(components, wandererEntity);
+    bytes32 cycleEntity = LibCycle.getCycleEntityPermissioned(wandererEntity);
     // remove the reward without claiming it
-    LibRNG.removeRequest(components, cycleEntity, requestId);
+    LibRNG.removeRequest(cycleEntity, requestId);
   }
 }

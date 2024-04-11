@@ -9,13 +9,11 @@ import { EquipmentSystem, EquipmentAction } from "../equipment/EquipmentSubSyste
 import { LibCycle } from "./LibCycle.sol";
 import { LibLootOwner } from "../loot/LibLootOwner.sol";
 
-// import { addressToEntity } from "solecs/utils.sol";
-
 contract CycleEquipmentSystem is System {
   error CycleEquipmentSystem__NotSlotOwner();
   error CycleEquipmentSystem__NotEquipmentOwner();
 
-  function execute(bytes memory args) public override returns (bytes memory) {
+  function manageEquipmentCycle(bytes memory args) public override returns (bytes memory) {
     (EquipmentAction equipmentAction, bytes32 wandererEntity, bytes32 equipmentSlot, bytes32 equipmentEntity) = abi
       .decode(args, (EquipmentAction, bytes32, bytes32, bytes32));
 
