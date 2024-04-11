@@ -6,7 +6,7 @@ import { getUniqueEntity } from "@latticexyz/world-modules/src/modules/uniqueent
 
 import { BossesDefeated, FromTemplate } from "../codegen/index.sol";
 
-import { ActionType } from "../common.sol";
+import { ActionType } from "../codegen/common.sol";
 import { Action } from "../combat/LibCombatAction.sol";
 import { CombatSystem } from "../combat/CombatSystem.sol";
 
