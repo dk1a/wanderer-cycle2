@@ -357,6 +357,12 @@ export default mudConfig({
         values: "uint32[]",
       },
     },
+    WNFTOwnership: {
+      keySchema: {
+        tokenEntity: "bytes32",
+      },
+      valueSchema: "address",
+    },
   },
 
   enums: {

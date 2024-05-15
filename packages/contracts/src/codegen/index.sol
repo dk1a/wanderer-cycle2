@@ -55,3 +55,4 @@ import { StatmodIdxMap, StatmodIdxMapTableId } from "./tables/StatmodIdxMap.sol"
 import { EffectDuration, EffectDurationData, EffectDurationTableId } from "./tables/EffectDuration.sol";
 import { EffectTemplate, EffectTemplateData, EffectTemplateTableId } from "./tables/EffectTemplate.sol";
 import { EffectApplied, EffectAppliedData, EffectAppliedTableId } from "./tables/EffectApplied.sol";
+import { WNFTOwnership, WNFTOwnershipTableId } from "./tables/WNFTOwnership.sol";
