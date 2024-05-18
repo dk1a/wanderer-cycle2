@@ -39,7 +39,7 @@ import { ActiveWheel, ActiveWheelTableId } from "./tables/ActiveWheel.sol";
 import { Identity, IdentityTableId } from "./tables/Identity.sol";
 import { Wanderer, WandererTableId } from "./tables/Wanderer.sol";
 import { WheelsCompleted, WheelsCompletedTableId } from "./tables/WheelsCompleted.sol";
-import { ActiveCombat, ActiveCombatTableId } from "./tables/ActiveCombat.sol";
+import { ActiveCombat, ActiveCombatData, ActiveCombatTableId } from "./tables/ActiveCombat.sol";
 import { RNGPrecommit, RNGPrecommitTableId } from "./tables/RNGPrecommit.sol";
 import { RNGRequestOwner, RNGRequestOwnerTableId } from "./tables/RNGRequestOwner.sol";
 import { SlotAllowedTypes, SlotAllowedTypesTableId } from "./tables/SlotAllowedTypes.sol";
