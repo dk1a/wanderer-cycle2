@@ -6,6 +6,7 @@ pragma solidity >=0.8.21;
 import { Name, NameTableId } from "./tables/Name.sol";
 import { DefaultWheel, DefaultWheelTableId } from "./tables/DefaultWheel.sol";
 import { Wheel, WheelData, WheelTableId } from "./tables/Wheel.sol";
+import { FromPrototype, FromPrototypeTableId } from "./tables/FromPrototype.sol";
 import { Experience, ExperienceTableId } from "./tables/Experience.sol";
 import { AffixAvailable, AffixAvailableTableId } from "./tables/AffixAvailable.sol";
 import { AffixNaming, AffixNamingTableId } from "./tables/AffixNaming.sol";
@@ -45,6 +46,8 @@ import { RNGRequestOwner, RNGRequestOwnerTableId } from "./tables/RNGRequestOwne
 import { SlotAllowedTypes, SlotAllowedTypesTableId } from "./tables/SlotAllowedTypes.sol";
 import { SlotEquipment, SlotEquipmentTableId } from "./tables/SlotEquipment.sol";
 import { OwnedBy, OwnedByTableId } from "./tables/OwnedBy.sol";
+import { MapBase, MapBaseTableId } from "./tables/MapBase.sol";
+import { FromMapBase, FromMapBaseTableId } from "./tables/FromMapBase.sol";
 import { GenericDuration, GenericDurationData } from "./tables/GenericDuration.sol";
 import { DurationIdxList, DurationIdxListTableId } from "./tables/DurationIdxList.sol";
 import { DurationIdxMap, DurationIdxMapTableId } from "./tables/DurationIdxMap.sol";

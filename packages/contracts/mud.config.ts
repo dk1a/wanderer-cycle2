@@ -73,6 +73,12 @@ const duration = (tableNames: string[]) =>
   }));
 
 export default mudConfig({
+  systems: {
+    RandomMapSubSystem: {
+      openAccess: false,
+      accessList: [],
+    },
+  },
   tables: {
     Name: {
       ...entityKey,
@@ -90,6 +96,7 @@ export default mudConfig({
         isIsolated: "bool",
       },
     },
+    FromPrototype: entityRelation,
     Experience: {
       ...entityKey,
       valueSchema: arrayPStat,
@@ -258,6 +265,11 @@ export default mudConfig({
       valueSchema: EntityId,
     },
     OwnedBy: entityRelation,
+    MapBase: {
+      ...entityKey,
+      valueSchema: "bytes32",
+    },
+    FromMapBase: entityRelation,
 
     /************************************************************************
      *
