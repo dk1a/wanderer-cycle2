@@ -9,7 +9,9 @@ enum PStat {
   DEXTERITY
 }
 
-bytes14 constant WANDERER_TOKEN = "WNFT";
+string constant wandererTokenName = "wanderer-cycle non-fungible tokens";
+string constant wandererTokenSymbol = "WNFT";
+string constant wandererTokenURI = "";
 
 uint256 constant PStat_length = 3;
 

@@ -9,6 +9,7 @@ import { LibInitStatmod } from "../src/init/LibInitStatmod.sol";
 import { LibInitSkill } from "../src/init/LibInitSkill.sol";
 import { LibInitGuise } from "../src/init/LibInitGuise.sol";
 import { LibInitWheel } from "../src/init/LibInitWheel.sol";
+import { LibInitToken } from "../src/init/LibInitToken.sol";
 
 import { IWorld } from "../src/codegen/world/IWorld.sol";
 
@@ -19,6 +20,7 @@ contract PostDeploy is Script {
 
     // Load the private key from the `PRIVATE_KEY` environment variable (in .env)
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
+    bytes14 namespace = WANDERER_CYCLE;
 
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
@@ -27,6 +29,7 @@ contract PostDeploy is Script {
     LibInitSkill.init();
     LibInitGuise.init();
     LibInitWheel.init();
+    LibInitToken.init(namespace);
 
     vm.stopBroadcast();
   }

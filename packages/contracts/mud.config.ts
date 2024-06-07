@@ -74,6 +74,15 @@ const duration = (tableNames: string[]) =>
 
 export default mudConfig({
   tables: {
+    GameConfig: {
+      keySchema: {},
+      valueSchema: {
+        owner: "address",
+        tokenAddress: "address",
+        tokenId: "uint256",
+        namespace: "bytes14",
+      },
+    },
     Name: {
       ...entityKey,
       valueSchema: "string",
