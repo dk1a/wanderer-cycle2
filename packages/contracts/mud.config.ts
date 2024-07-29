@@ -1,5 +1,5 @@
 import { defineWorld } from "@latticexyz/world";
-import { resolveTableId } from "@latticexyz/world/register";
+import { resolveTableId } from "@latticexyz/world/internal";
 import {
   ELE_STAT_ARRAY,
   SKILL_TYPE_ARRAY,
@@ -20,9 +20,10 @@ const entityKey = {
 } as const;
 
 const entityRelation = {
-  ...entityKey,
+  key: ["fromEntity"],
   schema: {
-    entity: EntityId,
+    fromEntity: EntityId,
+    toEntity: EntityId,
   },
 } as const;
 
@@ -41,7 +42,7 @@ const arrayPStat = `uint32[${PSTAT_ARRAY.length}]` as const;
 
 const keysWithValue = (tableNames: string[]) =>
   tableNames.map((tableName) => ({
-    name: "KeysWithValueModule",
+    artifactPath: "@latticexyz/world-modules/out/KeysWithValueModule.sol/KeysWithValueModule.json",
     root: true,
     args: [resolveTableId(tableName)],
   }));
@@ -66,14 +67,14 @@ const nameToEntityTable = {
 
 const keysInTable = (tableNames: string[]) =>
   tableNames.map((tableName) => ({
-    name: "KeysInTableModule",
+    artifactPath: "@latticexyz/world-modules/out/KeysInTableModule.sol/KeysInTableModule.json",
     root: true,
     args: [resolveTableId(tableName)],
   }));
 
 const duration = (tableNames: string[]) =>
   tableNames.map((tableName) => ({
-    name: "DurationModule",
+    artifactPath: "./out/DurationModule.sol/DurationModule.json",
     root: true,
     args: [resolveTableId(tableName)],
   }));
@@ -85,11 +86,12 @@ const enums = {
   StatmodOp: STATMOD_OP_ARRAY,
   ActionType: ACTION_TYPE_ARRAY,
   AffixPartId: AFFIX_PART_ID_ARRAY,
-};
+} as const;
+
 const userTypes = {
   ResourceId: { filePath: "@latticexyz/store/src/ResourceId.sol", type: "bytes32" },
   StatmodTopic: { filePath: "./src/modules/statmod/StatmodTopic.sol", type: "bytes32" },
-};
+} as const;
 
 export default defineWorld({
   enums,
@@ -335,13 +337,7 @@ export default defineWorld({
         equipmentTypes: "bytes32[]",
       },
     },
-    SlotEquipment: {
-      ...entityKey,
-      // equipment entity (not base)
-      schema: {
-        entity: EntityId,
-      },
-    },
+    SlotEquipment: entityRelation,
     OwnedBy: entityRelation,
 
     /************************************************************************
@@ -351,7 +347,9 @@ export default defineWorld({
      ************************************************************************/
     GenericDuration: {
       ...durationTable,
-      // tableIdArgument: true,
+      codegen: {
+        tableIdArgument: true,
+      },
     },
     DurationIdxList: {
       key: ["sourceTableId", "targetEntity", "timeId"],
@@ -361,7 +359,9 @@ export default defineWorld({
         timeId: "bytes32",
         applicationEntities: EntityIdArray,
       },
-      // dataStruct: false,
+      codegen: {
+        dataStruct: false,
+      },
     },
     DurationIdxMap: {
       key: ["sourceTableId", "targetEntity", "applicationEntity"],
@@ -372,7 +372,9 @@ export default defineWorld({
         has: "bool",
         index: "uint40",
       },
-      // dataStruct: false,
+      codegen: {
+        dataStruct: false,
+      },
     },
 
     /************************************************************************
@@ -404,6 +406,9 @@ export default defineWorld({
         statmodTopic: "StatmodTopic",
         baseEntities: EntityIdArray,
       },
+      codegen: {
+        dataStruct: false,
+      },
     },
     StatmodIdxMap: {
       key: ["targetEntity", "baseEntity"],
@@ -414,7 +419,9 @@ export default defineWorld({
         has: "bool",
         index: "uint40",
       },
-      // dataStruct: false,
+      codegen: {
+        dataStruct: false,
+      },
     },
 
     /************************************************************************
@@ -445,18 +452,18 @@ export default defineWorld({
     ...keysInTable(["Experience", "LearnedSkills", "EffectTemplate", "EffectApplied"]),
     ...keysWithValue(["AffixProtoGroup"]),
     {
-      name: "UniqueEntityModule",
+      artifactPath: "@latticexyz/world-modules/out/UniqueEntityModule.sol/UniqueEntityModule.json",
       root: true,
       args: [],
     },
     ...duration(["EffectDuration", "SkillCooldown"]),
     {
-      name: "StatmodModule",
+      artifactPath: "./out/StatmodModule.sol/StatmodModule.json",
       root: true,
       args: [],
     },
     {
-      name: "EffectModule",
+      artifactPath: "./out/EffectModule.sol/EffectModule.json",
       root: true,
       args: [],
     },

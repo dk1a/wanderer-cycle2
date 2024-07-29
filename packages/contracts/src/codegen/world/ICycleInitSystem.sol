@@ -9,7 +9,7 @@ pragma solidity >=0.8.24;
  * @dev This interface is automatically generated from the corresponding system contract. Do not edit manually.
  */
 interface ICycleInitSystem {
-  function app__initCycle(
+  function initCycle(
     bytes32 wandererEntity,
     bytes32 cycleEntity,
     bytes32 guiseProtoEntity,
