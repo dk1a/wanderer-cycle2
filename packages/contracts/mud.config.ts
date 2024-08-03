@@ -86,11 +86,16 @@ const enums = {
   StatmodOp: STATMOD_OP_ARRAY,
   ActionType: ACTION_TYPE_ARRAY,
   AffixPartId: AFFIX_PART_ID_ARRAY,
-} as const;
+};
 
 const userTypes = {
   ResourceId: { filePath: "@latticexyz/store/src/ResourceId.sol", type: "bytes32" },
   StatmodTopic: { filePath: "./src/modules/statmod/StatmodTopic.sol", type: "bytes32" },
+  AffixPartId: { filePath: "./src/affix/LibPickAffix.sol", type: "bytes32" },
+  SkillType: { filePath: "./src/skill/LibSkill.sol", type: "bytes32" },
+  TargetType: { filePath: "./src/skill/LibSkill..sol", type: "bytes32" },
+  StatmodOp: { filePath: "./src/statmod/StatmodTopic.sol", type: "bytes32" },
+  EleStat: { filePath: "./src/statmod/StatmodTopic.sol", type: "bytes32" },
 } as const;
 
 export default defineWorld({
