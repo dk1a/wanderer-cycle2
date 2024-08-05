@@ -2,7 +2,7 @@
 pragma solidity >=0.8.21;
 
 import { LibExperience } from "../src/charstat/LibExperience.sol";
-import { Experience, ExperienceTableId } from "../src/codegen/index.sol";
+import { Experience } from "../src/codegen/index.sol";
 import { PStat_length } from "../src/CustomTypes.sol";
 import { MudLibTest } from "./MudLibTest.t.sol";
 
@@ -62,9 +62,16 @@ contract LibExperienceTest is MudLibTest {
     assertEq(LibExperience.getAggregateLevel(targetEntity, maxExp), 16);
   }
 
-  function testFuzzPStats(uint32[PStat_length] memory pstats) public {
-    for (uint32 i = 0; i < pstats.length; i++) {
-      vm.assume(pstats[i] > 0 && pstats[i] <= LibExperience.MAX_LEVEL);
+  function testFuzzPStats(uint8[PStat_length] memory rawPstats) public {
+    uint32[PStat_length] memory pstats;
+    for (uint32 i = 0; i < rawPstats.length; i++) {
+      if (rawPstats[i] > LibExperience.MAX_LEVEL) {
+        pstats[i] = (rawPstats[i] % LibExperience.MAX_LEVEL) + 1;
+      } else if (rawPstats[i] == 0) {
+        pstats[i] = 1;
+      } else {
+        pstats[i] = rawPstats[i];
+      }
     }
 
     LibExperience.initExp(targetEntity);
