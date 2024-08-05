@@ -91,11 +91,6 @@ const enums = {
 const userTypes = {
   ResourceId: { filePath: "@latticexyz/store/src/ResourceId.sol", type: "bytes32" },
   StatmodTopic: { filePath: "./src/modules/statmod/StatmodTopic.sol", type: "bytes32" },
-  AffixPartId: { filePath: "./src/affix/LibPickAffix.sol", type: "bytes32" },
-  SkillType: { filePath: "./src/skill/LibSkill.sol", type: "bytes32" },
-  TargetType: { filePath: "./src/skill/LibSkill.sol", type: "bytes32" },
-  StatmodOp: { filePath: "./src/modules/statmod/StatmodTopic.sol", type: "bytes32" },
-  EleStat: { filePath: "./src/modules/statmod/StatmodTopic.sol", type: "bytes32" },
 } as const;
 
 export default defineWorld({
