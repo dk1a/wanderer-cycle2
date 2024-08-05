@@ -3,7 +3,7 @@ pragma solidity >=0.8.21;
 
 import { System } from "@latticexyz/world/src/System.sol";
 
-import { ActiveCycle, GenericDurationData, ActiveCycleTableId } from "../codegen/index.sol";
+import { ActiveCycle, GenericDurationData } from "../codegen/index.sol";
 import { Duration } from "../modules/duration/Duration.sol";
 
 import { LibCycle } from "./LibCycle.sol";
@@ -12,7 +12,7 @@ import { LibCharstat } from "../charstat/LibCharstat.sol";
 import { LibActiveCombat } from "../combat/LibActiveCombat.sol";
 
 contract PassCycleTurnSystem is System {
-  function passCycle(bytes memory args) public override returns (bytes memory) {
+  function passCycle(bytes memory args) public returns (bytes memory) {
     bytes32 wandererEntity = abi.decode(args, (bytes32));
     // reverts if sender doesn't have permission
     bytes32 cycleEntity = LibCycle.getCycleEntityPermissioned(wandererEntity);
@@ -22,7 +22,7 @@ contract PassCycleTurnSystem is System {
     // subtract 1 turn
     LibCycleTurns.decreaseTurns(cycleEntity, 1);
     Duration.decreaseApplications(
-      ActiveCycleTableId,
+      ActiveCycle._tableId,
       cycleEntity,
       GenericDurationData({ timeId: keccak256("turn"), timeValue: 1 })
     );
