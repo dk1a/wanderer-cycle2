@@ -15,11 +15,11 @@ contract RandomEquipmentSubSystem is System {
   /// @param randomness used to randomly pick equipment prototype and affixes.
   /// @return lootEntity a new entity.
 
-  function execute(uint32 ilvl, uint256 randomness) internal override returns (uint256 lootEntity) {
+  function execute(uint32 ilvl, uint256 randomness) internal returns (bytes32 lootEntity) {
     // pick equipment prototype (it's the targetEntity when getting affix availability)
     //    bytes32 equipmentProtoEntity = LibLootEquipment.pickEquipmentPrototype(ilvl, randomness);
     // get a new unique id
-    bytes32 lootEntity = getUniqueEntity();
+    lootEntity = getUniqueEntity();
     // make random loot (affixes and effect)
     //    LibLootMint.randomLootMint(
     //      LibLootEquipment.getAffixPartIds(ilvl),
