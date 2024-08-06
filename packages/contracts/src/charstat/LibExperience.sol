@@ -1,13 +1,13 @@
 // SPDX-License-Identifier: MIT
-pragma solidity >=0.8.0;
+pragma solidity >=0.8.21;
 
-import { hasKey } from "@latticexyz/world/src/modules/keysintable/hasKey.sol";
-import { Experience, ExperienceTableId } from "../codegen/Tables.sol";
+import { hasKey } from "@latticexyz/world-modules/src/modules/keysintable/hasKey.sol";
+import { Experience } from "../codegen/index.sol";
 import { PStat, PStat_length } from "../CustomTypes.sol";
 
 library LibExperience {
-  error LibExperience__InvalidLevel();
-  error LibExperience__ExpNotInitialized();
+  error LibExperience_InvalidLevel(uint32 level);
+  error LibExperience_ExpNotInitialized();
 
   uint32 internal constant MAX_LEVEL = 16;
 
@@ -26,7 +26,7 @@ library LibExperience {
   function hasExp(bytes32 targetEntity) internal view returns (bool) {
     bytes32[] memory keyTuple = new bytes32[](1);
     keyTuple[0] = targetEntity;
-    return hasKey(ExperienceTableId, keyTuple);
+    return hasKey(Experience._tableId, keyTuple);
   }
 
   function getExp(bytes32 targetEntity) internal view returns (uint32[PStat_length] memory) {
@@ -48,7 +48,7 @@ library LibExperience {
   function increaseExp(bytes32 targetEntity, uint32[PStat_length] memory addExp) internal {
     // get current exp, or revert if it doesn't exist
     if (!hasExp(targetEntity)) {
-      revert LibExperience__ExpNotInitialized();
+      revert LibExperience_ExpNotInitialized();
     }
     uint32[PStat_length] memory exp = Experience.get(targetEntity);
 
@@ -63,11 +63,10 @@ library LibExperience {
   /**
    * @dev Calculate aggregate level based on weighted sum of pstat exp
    */
-  function getAggregateLevel(bytes32 targetEntity, uint32[PStat_length] memory levelMul)
-    internal
-    view
-    returns (uint32)
-  {
+  function getAggregateLevel(
+    bytes32 targetEntity,
+    uint32[PStat_length] memory levelMul
+  ) internal view returns (uint32) {
     uint32[PStat_length] memory exp = getExp(targetEntity);
     uint256 expTotal;
     uint256 mulTotal;
@@ -100,7 +99,7 @@ library LibExperience {
    * @dev Utility function to reverse a level into its required exp
    */
   function _getExpForLevel(uint32 level) private pure returns (uint32) {
-    if (level < 1 || level > MAX_LEVEL) revert LibExperience__InvalidLevel();
+    if (level < 1 || level > MAX_LEVEL) revert LibExperience_InvalidLevel(level);
 
     // this formula starts from 0, so adjust the arg
     if (level == 1) {
@@ -109,7 +108,7 @@ library LibExperience {
       level -= 1;
     }
 
-    return uint32(8 * (1 << level) - level**6 / 1024 + level * 200 - 120);
+    return uint32(8 * (1 << level) - level ** 6 / 1024 + level * 200 - 120);
   }
 
   /**
