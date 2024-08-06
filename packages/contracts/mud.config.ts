@@ -376,6 +376,14 @@ export default defineWorld({
         dataStruct: false,
       },
     },
+    EqptBase: {
+      ...entityKey,
+      schema: {
+        entity: EntityId,
+      },
+    },
+    FromEqptBase: entityRelation,
+    FromPrototype: entityRelation,
 
     /************************************************************************
      *
@@ -446,6 +454,13 @@ export default defineWorld({
         entities: EntityIdArray,
         values: "uint32[]",
       },
+    },
+  },
+  systems: {
+    RandomEquipmentSubSystem: {
+      name: "RandomEquipmentSubSystem",
+      openAccess: false,
+      accessList: [],
     },
   },
   modules: [
