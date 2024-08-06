@@ -8,6 +8,7 @@ import {
   ACTION_TYPE_ARRAY,
   AFFIX_PART_ID_ARRAY,
   PSTAT_ARRAY,
+  COMBAT_ACTION_TYPE_ARRAY,
 } from "./enums";
 
 const EntityId = "bytes32" as const;
@@ -86,6 +87,7 @@ const enums = {
   StatmodOp: STATMOD_OP_ARRAY,
   ActionType: ACTION_TYPE_ARRAY,
   AffixPartId: AFFIX_PART_ID_ARRAY,
+  CombatActionType: COMBAT_ACTION_TYPE_ARRAY,
 };
 
 const userTypes = {
