@@ -9,8 +9,8 @@ import { ICycleInitSystem } from "../src/codegen/world/ICycleInitSystem.sol";
 
 import { LibCharstat } from "../src/charstat/LibCharstat.sol";
 import { LibExperience } from "../src/charstat/LibExperience.sol";
-import { LibCycleTurns } from "./src/cycle/LibCycleTurns.sol";
-import { LibCycle } from "./src/cycle/LibCycle.sol";
+import { LibCycleTurns } from "../src/cycle/LibCycleTurns.sol";
+import { LibCycle } from "../src/cycle/LibCycle.sol";
 import { LibLearnedSkills } from "../src/skill/LibLearnedSkills.sol";
 
 contract LibCycleTest is MudLibTest {
@@ -19,7 +19,7 @@ contract LibCycleTest is MudLibTest {
   bytes32 internal wheelEntity = keccak256("wheelEntity");
   bytes32 internal cycleEntity;
 
-  function setUp() public {
+  function setUp() public virtual override {
     // Set up initial state
     cycleEntity = LibCycle.initCycle(wandererEntity, guiseProtoEntity, wheelEntity);
   }
