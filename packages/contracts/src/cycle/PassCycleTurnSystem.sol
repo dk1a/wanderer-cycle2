@@ -12,8 +12,7 @@ import { LibCharstat } from "../charstat/LibCharstat.sol";
 import { LibActiveCombat } from "../combat/LibActiveCombat.sol";
 
 contract PassCycleTurnSystem is System {
-  function passCycle(bytes memory args) public returns (bytes memory) {
-    bytes32 wandererEntity = abi.decode(args, (bytes32));
+  function passCycle(bytes32 wandererEntity) public {
     // reverts if sender doesn't have permission
     bytes32 cycleEntity = LibCycle.getCycleEntityPermissioned(wandererEntity);
     // not available during combat (since it fully heals)
@@ -28,7 +27,5 @@ contract PassCycleTurnSystem is System {
     );
     // fill up currents
     LibCharstat.setFullCurrents(cycleEntity);
-
-    return "";
   }
 }

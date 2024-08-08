@@ -8,13 +8,13 @@ import { PassCycleTurnSystem } from "../src/cycle/PassCycleTurnSystem.sol";
 
 import { LibGuise } from "../src/guise/LibGuise.sol";
 import { LibCycle } from "../src/cycle/LibCycle.sol";
+import { LibCycleTurns } from "../src/cycle/LibCycleTurns.sol";
 
 contract LibCycleTest is MudLibTest {
   bytes32 internal wandererEntity;
   bytes32 internal guiseProtoEntity;
   bytes32 internal wheelEntity;
   bytes32 internal cycleEntity;
-  PassCycleTurnSystem internal passCycleTurnSystem;
 
   function setUp() public virtual override {
     super.setUp();
@@ -26,9 +26,6 @@ contract LibCycleTest is MudLibTest {
 
     // Simulate existing cycle entity
     cycleEntity = LibCycle.initCycle(wandererEntity, guiseProtoEntity, wheelEntity);
-
-    // Initialize the PassCycleTurnSystem
-    passCycleTurnSystem = new PassCycleTurnSystem();
   }
 
   function testInitCycle() public {
@@ -36,8 +33,7 @@ contract LibCycleTest is MudLibTest {
   }
 
   function testPassCycle() public {
-    bytes memory args = abi.encode(wandererEntity);
-    passCycleTurnSystem.passCycle(args);
+    world.passCycle(wandererEntity);
 
     uint32 turns = CycleTurns.get(cycleEntity);
     assertEq(turns, LibCycleTurns.TURNS_PER_PERIOD - 1);
