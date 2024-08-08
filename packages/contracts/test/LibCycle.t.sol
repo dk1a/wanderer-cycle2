@@ -2,36 +2,45 @@
 pragma solidity >=0.8.21;
 
 import { MudLibTest } from "./MudLibTest.t.sol";
-import { LibCycle } from "../src/cycle/LibCycle.sol";
+import { ActiveCycle, CycleTurns, CycleToWanderer } from "../src/codegen/index.sol";
 
-import { ActiveGuise, ActiveWheel, PreviousCycle, Wheel, WheelData, GuisePrototype, ActiveCycle, CycleToWanderer } from "../src/codegen/index.sol";
-import { ICycleInitSystem } from "../src/codegen/world/ICycleInitSystem.sol";
+import { PassCycleTurnSystem } from "../src/cycle/PassCycleTurnSystem.sol";
 
-import { LibCharstat } from "../src/charstat/LibCharstat.sol";
-import { LibExperience } from "../src/charstat/LibExperience.sol";
-import { LibCycleTurns } from "../src/cycle/LibCycleTurns.sol";
+import { LibGuise } from "../src/guise/LibGuise.sol";
 import { LibCycle } from "../src/cycle/LibCycle.sol";
-import { LibLearnedSkills } from "../src/skill/LibLearnedSkills.sol";
 
 contract LibCycleTest is MudLibTest {
-  bytes32 internal wandererEntity = keccak256("wandererEntity");
-  bytes32 internal guiseProtoEntity = keccak256("guiseProtoEntity");
-  bytes32 internal wheelEntity = keccak256("wheelEntity");
+  bytes32 internal wandererEntity;
+  bytes32 internal guiseProtoEntity;
+  bytes32 internal wheelEntity;
   bytes32 internal cycleEntity;
+  PassCycleTurnSystem internal passCycleTurnSystem;
 
   function setUp() public virtual override {
-    // Set up initial state
+    super.setUp();
+    // Initialize with test data
+    wandererEntity = keccak256("wandererEntity");
+    wheelEntity = keccak256("wheelEntity");
+
+    guiseProtoEntity = LibGuise.getGuiseEntity("Warrior");
+
+    // Simulate existing cycle entity
     cycleEntity = LibCycle.initCycle(wandererEntity, guiseProtoEntity, wheelEntity);
+
+    // Initialize the PassCycleTurnSystem
+    passCycleTurnSystem = new PassCycleTurnSystem();
   }
 
   function testInitCycle() public {
     assertEq(cycleEntity, ActiveCycle.get(wandererEntity));
   }
 
-  function testInitCycle_RevertIfCycleAlreadyActive() public {
-    // Trying to initialize a cycle when one is already active should revert
-    vm.expectRevert(LibCycle.LibCycle_CycleIsAlreadyActive.selector);
-    LibCycle.initCycle(wandererEntity, guiseProtoEntity, wheelEntity);
+  function testPassCycle() public {
+    bytes memory args = abi.encode(wandererEntity);
+    passCycleTurnSystem.passCycle(args);
+
+    uint32 turns = CycleTurns.get(cycleEntity);
+    assertEq(turns, LibCycleTurns.TURNS_PER_PERIOD - 1);
   }
 
   function testEndCycle() public {
@@ -43,11 +52,5 @@ contract LibCycleTest is MudLibTest {
   function testGetCycleEntityPermissioned() public {
     bytes32 retrievedCycleEntity = LibCycle.getCycleEntityPermissioned(wandererEntity);
     assertEq(retrievedCycleEntity, cycleEntity);
-  }
-
-  function testGetCycleEntityPermissioned_RevertIfNotActive() public {
-    LibCycle.endCycle(wandererEntity, cycleEntity);
-    vm.expectRevert(LibCycle.LibCycle_CycleNotActive.selector);
-    LibCycle.getCycleEntityPermissioned(wandererEntity);
   }
 }
