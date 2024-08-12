@@ -4,56 +4,46 @@ pragma solidity >=0.8.21;
 import { ActiveCombat } from "../codegen/index.sol";
 
 library LibActiveCombat {
-  error LibActiveCombat__CombatActive();
-  error LibActiveCombat__CombatNotActive();
-  error LibActiveCombat__CombatActiveForDifferentRetaliator();
-  error LibActiveCombat__RoundsAreOver();
-  error LibActiveCombat__InvalidSpendingRounds();
+  error LibActiveCombat_CombatActive();
+  error LibActiveCombat_CombatNotActive();
+  error LibActiveCombat_CombatActiveForDifferentRetaliator();
+  error LibActiveCombat_RoundsOverMax();
 
   function getRetaliatorEntity(bytes32 initiatorEntity) internal view returns (bytes32 retaliatorEntity) {
     retaliatorEntity = ActiveCombat.getRetaliatorEntity(initiatorEntity);
     if (retaliatorEntity == bytes32(0)) {
-      revert LibActiveCombat__CombatNotActive();
+      revert LibActiveCombat_CombatNotActive();
     }
   }
 
   function requireActiveCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity) internal view {
     bytes32 storedRetaliatorEntity = ActiveCombat.getRetaliatorEntity(initiatorEntity);
     if (storedRetaliatorEntity == bytes32(0)) {
-      revert LibActiveCombat__CombatNotActive();
+      revert LibActiveCombat_CombatNotActive();
     }
     if (storedRetaliatorEntity != retaliatorEntity) {
-      revert LibActiveCombat__CombatActiveForDifferentRetaliator();
+      revert LibActiveCombat_CombatActiveForDifferentRetaliator();
     }
   }
 
   function requireNotActiveCombat(bytes32 initiatorEntity) internal view {
     if (ActiveCombat.getRetaliatorEntity(initiatorEntity) != bytes32(0)) {
-      revert LibActiveCombat__CombatActive();
+      revert LibActiveCombat_CombatActive();
     }
   }
 
-  function requireRoundsAreOver(uint32 roundsSpent, uint32 roundsMax) internal pure {
-    if (roundsSpent == roundsMax) {
-      revert LibActiveCombat__RoundsAreOver();
-    }
-  }
-
-  function requireInvalidSpendingRounds(uint32 roundsSpent, uint32 roundsMax, uint32 round) internal pure {
-    if (roundsSpent + round > roundsMax) {
-      revert LibActiveCombat__InvalidSpendingRounds();
-    }
-  }
-
-  function spendingRounds(bytes32 initiatorEntity, bytes32 retaliatorEntity, uint32 round) public {
+  function spendRound(bytes32 initiatorEntity, bytes32 retaliatorEntity) public returns (bool isFinalRound) {
     requireActiveCombat(initiatorEntity, retaliatorEntity);
 
     uint32 roundsSpent = ActiveCombat.getRoundsSpent(initiatorEntity);
     uint32 roundsMax = ActiveCombat.getRoundsMax(initiatorEntity);
 
-    requireRoundsAreOver(roundsSpent, roundsMax);
-    requireInvalidSpendingRounds(roundsSpent, roundsMax, round);
+    if (roundsSpent + 1 > roundsMax) {
+      revert LibActiveCombat_RoundsOverMax();
+    }
 
-    ActiveCombat.setRoundsSpent(initiatorEntity, round + roundsSpent);
+    ActiveCombat.setRoundsSpent(initiatorEntity, roundsSpent + 1);
+
+    return roundsSpent + 1 == roundsMax;
   }
 }

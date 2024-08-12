@@ -12,56 +12,59 @@ library LibCombatAction {
   error LibCombat__InvalidActionType();
 
   function executeAction(
-    bytes32 targetEntity,
-    bytes32 userEntity,
-    bytes32 enemyEntity,
+    bytes32 attackerEntity,
+    bytes32 defenderEntity,
     CombatAction memory action,
     CombatActorOpts memory defenderOpts
   ) internal {
     if (action.actionType == CombatActionType.ATTACK) {
       // deal damage to defender (updates currents)
-      _dealAttackDamage(targetEntity, userEntity, defenderOpts);
+      _dealAttackDamage(attackerEntity, defenderEntity, defenderOpts);
     } else if (action.actionType == CombatActionType.SKILL) {
-      _useSkill(userEntity, enemyEntity, action.actionEntity, defenderOpts);
+      _useSkill(attackerEntity, defenderEntity, action.actionEntity, defenderOpts);
     } else {
       revert LibCombat__InvalidActionType();
     }
   }
 
   function _useSkill(
-    bytes32 userEntity,
-    bytes32 enemyEntity,
+    bytes32 attackerEntity,
+    bytes32 defenderEntity,
     bytes32 skillEntity,
     CombatActorOpts memory defenderOpts
   ) private {
     LibSkill.requireCombat(skillEntity);
 
     // combat skills may target either self or enemy, depending on skill prototype
-    bytes32 targetEntity = LibSkill.chooseCombatTarget(userEntity, skillEntity, enemyEntity);
+    bytes32 targetEntity = LibSkill.chooseCombatTarget(attackerEntity, skillEntity, defenderEntity);
     // use skill
-    LibSkill.useSkill(userEntity, skillEntity, targetEntity);
+    LibSkill.useSkill(attackerEntity, skillEntity, targetEntity);
     uint32[EleStat_length] memory spellDamage = SkillSpellDamage.get(skillEntity);
 
     // skill may need a follow-up attack and/or spell
     if (SkillTemplate.getWithAttack(skillEntity)) {
-      _dealAttackDamage(targetEntity, userEntity, defenderOpts);
+      _dealAttackDamage(attackerEntity, defenderEntity, defenderOpts);
     }
     if (SkillTemplate.getWithSpell(skillEntity)) {
-      _dealSpellDamage(targetEntity, userEntity, spellDamage, defenderOpts);
+      _dealSpellDamage(attackerEntity, defenderEntity, spellDamage, defenderOpts);
     }
   }
 
-  function _dealAttackDamage(bytes32 targetEntity, bytes32 userEntity, CombatActorOpts memory defenderOpts) private {
-    _dealDamage(targetEntity, LibCharstat.getAttack(userEntity), defenderOpts);
+  function _dealAttackDamage(
+    bytes32 attackerEntity,
+    bytes32 defenderEntity,
+    CombatActorOpts memory defenderOpts
+  ) private {
+    _dealDamage(defenderEntity, LibCharstat.getAttack(attackerEntity), defenderOpts);
   }
 
   function _dealSpellDamage(
-    bytes32 targetEntity,
-    bytes32 userEntity,
+    bytes32 attackerEntity,
+    bytes32 defenderEntity,
     uint32[EleStat_length] memory baseSpellDamage,
     CombatActorOpts memory defenderOpts
   ) private {
-    _dealDamage(targetEntity, LibCharstat.getSpell(userEntity, baseSpellDamage), defenderOpts);
+    _dealDamage(defenderEntity, LibCharstat.getSpell(attackerEntity, baseSpellDamage), defenderOpts);
   }
 
   /**
@@ -69,14 +72,14 @@ library LibCombatAction {
    * Resistances are percentages (scaling of 1/100)
    */
   function _dealDamage(
-    bytes32 targetEntity,
+    bytes32 defenderEntity,
     uint32[EleStat_length] memory elemDamage,
     CombatActorOpts memory defenderOpts
   ) private {
     uint32 maxResistance = defenderOpts.maxResistance;
     assert(maxResistance <= 100);
 
-    uint32[EleStat_length] memory resistance = LibCharstat.getResistance(targetEntity);
+    uint32[EleStat_length] memory resistance = LibCharstat.getResistance(defenderEntity);
 
     // calculate total damage (elemental, 0 index isn't used)
     uint32 totalDamage = 0;
@@ -90,7 +93,7 @@ library LibCombatAction {
     if (totalDamage == 0) return;
 
     // get life
-    uint32 lifeCurrent = LibCharstat.getLifeCurrent(targetEntity);
+    uint32 lifeCurrent = LibCharstat.getLifeCurrent(defenderEntity);
     // subtract damage
     if (totalDamage >= lifeCurrent) {
       // life can't be negative
@@ -99,6 +102,6 @@ library LibCombatAction {
       lifeCurrent -= totalDamage;
     }
     // update life
-    LibCharstat.setLifeCurrent(targetEntity, lifeCurrent);
+    LibCharstat.setLifeCurrent(defenderEntity, lifeCurrent);
   }
 }

@@ -15,7 +15,6 @@ interface ICombatSystem {
   error CombatSystem_ResidualDuration();
 
   function executePVERound(
-    bytes32 userEntity,
     bytes32 initiatorEntity,
     bytes32 retaliatorEntity,
     CombatAction[] memory initiatorActions,
@@ -24,8 +23,7 @@ interface ICombatSystem {
 
   function executeCombatRound(
     CombatActor memory initiator,
-    CombatActor memory retaliator,
-    bytes32 userEntity
+    CombatActor memory retaliator
   ) external returns (CombatResult result);
 
   function executeActivateCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity, uint32 maxRounds) external;

@@ -3,7 +3,7 @@ pragma solidity >=0.8.21;
 
 import { System } from "@latticexyz/world/src/System.sol";
 
-import { ActiveCombat, GenericDurationData } from "../codegen/index.sol";
+import { ActiveCombat, ActiveCombatData, GenericDurationData } from "../codegen/index.sol";
 import { CombatActionType } from "../codegen/common.sol";
 import { CombatResult, CombatAction, CombatActorOpts, CombatActor } from "../CustomTypes.sol";
 
@@ -29,7 +29,6 @@ contract CombatSystem is System {
    * @dev Player must be the initiator
    */
   function executePVERound(
-    bytes32 userEntity,
     bytes32 initiatorEntity,
     bytes32 retaliatorEntity,
     CombatAction[] memory initiatorActions,
@@ -45,7 +44,7 @@ contract CombatSystem is System {
       actions: retaliatorActions,
       opts: CombatActorOpts({ maxResistance: 99 })
     });
-    result = executeCombatRound(initiator, retaliator, userEntity);
+    result = executeCombatRound(initiator, retaliator);
 
     return result;
   }
@@ -55,14 +54,11 @@ contract CombatSystem is System {
    */
   function executeCombatRound(
     CombatActor memory initiator,
-    CombatActor memory retaliator,
-    bytes32 userEntity
+    CombatActor memory retaliator
   ) public returns (CombatResult result) {
-    // TODO (maybe this check doesn't need to be here?)
-    // combat should be externally activated
-    LibActiveCombat.requireActiveCombat(initiator.entity, retaliator.entity);
+    bool isFinalRound = LibActiveCombat.spendRound(initiator.entity, retaliator.entity);
 
-    result = _bothActorsActions(initiator, retaliator, userEntity);
+    result = _bothActorsActions(initiator, retaliator);
 
     if (result != CombatResult.NONE) {
       // combat ended - deactivate it
@@ -75,10 +71,7 @@ contract CombatSystem is System {
         GenericDurationData({ timeId: keccak256("round_persistent"), timeValue: 1 })
       );
       // if combat duration ran out, initiator loses by default
-      uint32 roundsSpent = ActiveCombat.getRoundsSpent(initiator.entity);
-      uint32 roundsMax = ActiveCombat.getRoundsMax(initiator.entity);
-
-      if (roundsSpent == roundsMax) {
+      if (isFinalRound) {
         executeDeactivateCombat(initiator.entity);
         result = CombatResult.DEFEAT;
       }
@@ -93,11 +86,9 @@ contract CombatSystem is System {
   function executeActivateCombat(bytes32 initiatorEntity, bytes32 retaliatorEntity, uint32 maxRounds) public {
     LibActiveCombat.requireNotActiveCombat(initiatorEntity);
 
-    LibActiveCombat.spendingRounds(initiatorEntity, retaliatorEntity, 1);
-
-    LibTime.decreaseApplications(
+    ActiveCombat.set(
       initiatorEntity,
-      GenericDurationData({ timeId: keccak256("round"), timeValue: type(uint256).max })
+      ActiveCombatData({ retaliatorEntity: retaliatorEntity, roundsSpent: 0, roundsMax: maxRounds })
     );
   }
 
@@ -120,20 +111,19 @@ contract CombatSystem is System {
 
   function _bothActorsActions(
     CombatActor memory initiator,
-    CombatActor memory retaliator,
-    bytes32 userEntity
+    CombatActor memory retaliator
   ) internal returns (CombatResult) {
     // instant loss if initiator somehow started with 0 life
     if (LibCharstat.getLifeCurrent(initiator.entity) == 0) return CombatResult.DEFEAT;
 
     // initiator's actions
-    _oneActorActions(userEntity, initiator, retaliator);
+    _oneActorActions(initiator, retaliator);
 
     // win if retaliator is dead; this interrupts retaliator's actions
     if (LibCharstat.getLifeCurrent(retaliator.entity) == 0) return CombatResult.VICTORY;
 
     // retaliator's actions
-    _oneActorActions(userEntity, retaliator, initiator);
+    _oneActorActions(retaliator, initiator);
 
     // loss if initiator is dead
     if (LibCharstat.getLifeCurrent(initiator.entity) == 0) return CombatResult.DEFEAT;
@@ -143,11 +133,11 @@ contract CombatSystem is System {
     return CombatResult.NONE;
   }
 
-  function _oneActorActions(bytes32 userEntity, CombatActor memory attacker, CombatActor memory defender) internal {
+  function _oneActorActions(CombatActor memory attacker, CombatActor memory defender) internal {
     _checkActionsLength(attacker);
 
     for (uint256 i; i < attacker.actions.length; i++) {
-      LibCombatAction.executeAction(defender.entity, userEntity, attacker.entity, attacker.actions[i], defender.opts);
+      LibCombatAction.executeAction(attacker.entity, defender.entity, attacker.actions[i], defender.opts);
     }
   }
 
