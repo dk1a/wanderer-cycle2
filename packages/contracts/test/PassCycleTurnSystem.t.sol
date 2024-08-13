@@ -2,9 +2,7 @@
 pragma solidity >=0.8.21;
 
 import { MudLibTest } from "./MudLibTest.t.sol";
-import { ActiveCycle, CycleTurns, CycleToWanderer } from "../src/codegen/index.sol";
-
-import { PassCycleTurnSystem } from "../src/cycle/PassCycleTurnSystem.sol";
+import { CycleTurns } from "../src/codegen/index.sol";
 
 import { LibGuise } from "../src/guise/LibGuise.sol";
 import { LibCycle } from "../src/cycle/LibCycle.sol";
