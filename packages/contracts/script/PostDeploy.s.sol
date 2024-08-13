@@ -20,7 +20,7 @@ contract PostDeploy is Script {
 
     // Load the private key from the `PRIVATE_KEY` environment variable (in .env)
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
-    bytes14 namespace = WANDERER_CYCLE;
+    bytes14 namespace = bytes14("WANDERER_CYCLE");
 
     // Start broadcasting transactions from the deployer account
     vm.startBroadcast(deployerPrivateKey);
@@ -29,7 +29,7 @@ contract PostDeploy is Script {
     LibInitSkill.init();
     LibInitGuise.init();
     LibInitWheel.init();
-    LibInitToken.init(namespace);
+    LibInitToken.init(namespace, worldAddress);
 
     vm.stopBroadcast();
   }
