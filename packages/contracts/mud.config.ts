@@ -93,6 +93,7 @@ const enums = {
 const userTypes = {
   ResourceId: { filePath: "@latticexyz/store/src/ResourceId.sol", type: "bytes32" },
   StatmodTopic: { filePath: "./src/modules/statmod/StatmodTopic.sol", type: "bytes32" },
+  MapType: { filePath: "./src/map/MapType.sol", type: "bytes32" },
 } as const;
 
 export default defineWorld({
@@ -348,14 +349,13 @@ export default defineWorld({
     },
     SlotEquipment: entityRelation,
     OwnedBy: entityRelation,
-    MapBase: {
+    MapTypeComponent: {
       ...entityKey,
       schema: {
         entity: EntityId,
-        value: "bytes32[]",
+        value: "MapType",
       },
     },
-    FromMapBase: entityRelation,
 
     /************************************************************************
      *
