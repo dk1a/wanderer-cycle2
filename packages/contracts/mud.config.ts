@@ -1,4 +1,15 @@
-import { mudConfig, resolveTableId } from "@latticexyz/world/register";
+import { defineWorld } from "@latticexyz/world";
+import { resolveTableId } from "@latticexyz/world/internal";
+import {
+  ELE_STAT_ARRAY,
+  SKILL_TYPE_ARRAY,
+  TARGET_TYPE_ARRAY,
+  STATMOD_OP_ARRAY,
+  ACTION_TYPE_ARRAY,
+  AFFIX_PART_ID_ARRAY,
+  PSTAT_ARRAY,
+  COMBAT_ACTION_TYPE_ARRAY,
+} from "./enums";
 
 const EntityId = "bytes32" as const;
 const EntityIdArray = "bytes32[]" as const;
@@ -6,14 +17,15 @@ const EntityIdArray = "bytes32[]" as const;
 const EntityIdSet = "bytes32[]" as const;
 
 const entityKey = {
-  keySchema: {
-    entity: EntityId,
-  },
+  key: ["entity"],
 } as const;
 
 const entityRelation = {
-  ...entityKey,
-  valueSchema: EntityId,
+  key: ["fromEntity"],
+  schema: {
+    fromEntity: EntityId,
+    toEntity: EntityId,
+  },
 } as const;
 
 /*const systemCallbackSchema = {
@@ -27,99 +39,120 @@ const scopedDurationSchema = {
   value: "uint48",
 } as const;*/
 
-const enumPStat = ["STRENGTH", "ARCANA", "DEXTERITY"];
-const arrayPStat = `uint32[${enumPStat.length}]` as const;
-
-const enumEleStat = ["NONE", "PHYSICAL", "FIRE", "COLD", "POISON"];
-//const arrayEleStat = `uint32[${enumEleStat.length}]` as const;
+const arrayPStat = `uint32[${PSTAT_ARRAY.length}]` as const;
 
 const keysWithValue = (tableNames: string[]) =>
   tableNames.map((tableName) => ({
-    name: "KeysWithValueModule",
+    artifactPath: "@latticexyz/world-modules/out/KeysWithValueModule.sol/KeysWithValueModule.json",
     root: true,
     args: [resolveTableId(tableName)],
   }));
 
 const durationTable = {
-  keySchema: {
+  key: ["targetEntity", "applicationEntity"],
+  schema: {
     targetEntity: EntityId,
     applicationEntity: EntityId,
-  },
-  valueSchema: {
     timeId: "bytes32",
     timeValue: "uint256",
   },
 } as const;
 
 const nameToEntityTable = {
-  keySchema: {
+  key: ["name"],
+  schema: {
     name: "bytes32",
+    entity: EntityId,
   },
-  valueSchema: EntityId,
 } as const;
 
 const keysInTable = (tableNames: string[]) =>
   tableNames.map((tableName) => ({
-    name: "KeysInTableModule",
+    artifactPath: "@latticexyz/world-modules/out/KeysInTableModule.sol/KeysInTableModule.json",
     root: true,
     args: [resolveTableId(tableName)],
   }));
 
 const duration = (tableNames: string[]) =>
   tableNames.map((tableName) => ({
-    name: "DurationModule",
+    artifactPath: "./out/DurationModule.sol/DurationModule.json",
     root: true,
     args: [resolveTableId(tableName)],
   }));
 
-export default mudConfig({
-  systems: {
-    RandomMapSubSystem: {
-      openAccess: false,
-      accessList: [],
-    },
-  },
+const enums = {
+  EleStat: ELE_STAT_ARRAY,
+  SkillType: SKILL_TYPE_ARRAY,
+  TargetType: TARGET_TYPE_ARRAY,
+  StatmodOp: STATMOD_OP_ARRAY,
+  ActionType: ACTION_TYPE_ARRAY,
+  AffixPartId: AFFIX_PART_ID_ARRAY,
+  CombatActionType: COMBAT_ACTION_TYPE_ARRAY,
+};
+
+const userTypes = {
+  ResourceId: { filePath: "@latticexyz/store/src/ResourceId.sol", type: "bytes32" },
+  StatmodTopic: { filePath: "./src/modules/statmod/StatmodTopic.sol", type: "bytes32" },
+} as const;
+
+export default defineWorld({
+  enums,
+  userTypes,
   tables: {
-    Name: {
-      ...entityKey,
-      valueSchema: "string",
+    Tasks: {
+      schema: {
+        id: "bytes32",
+        createdAt: "uint256",
+        completedAt: "uint256",
+        description: "string",
+      },
+      key: ["id"],
     },
+    Name: "string",
     DefaultWheel: {
-      keySchema: {},
-      valueSchema: EntityId,
+      key: [],
+      schema: {
+        entity: EntityId,
+      },
     },
     Wheel: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         totalIdentityRequired: "uint32",
         charges: "uint32",
         isIsolated: "bool",
       },
     },
-    FromPrototype: entityRelation,
     Experience: {
       ...entityKey,
-      valueSchema: arrayPStat,
+      schema: {
+        entity: EntityId,
+        arrayPStat: arrayPStat,
+      },
     },
     AffixAvailable: {
-      keySchema: {
+      key: ["affixPart", "targetEntity", "ilvl"],
+      schema: {
         affixPart: "AffixPartId",
         targetEntity: EntityId,
         ilvl: "uint32",
+        affixes: "bytes32[]",
       },
-      valueSchema: "bytes32[]",
     },
     AffixNaming: {
-      keySchema: {
+      key: ["affixPart", "targetEntity", "protoEntity"],
+      schema: {
         affixPart: "AffixPartId",
         targetEntity: EntityId,
         protoEntity: EntityId,
+        name: "string",
       },
-      valueSchema: "string",
     },
     AffixPrototype: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         statmodProtoEntity: EntityId,
         tier: "uint32",
         requiredLevel: "uint32",
@@ -128,21 +161,24 @@ export default mudConfig({
       },
     },
     AffixProtoIndex: {
-      keySchema: {
+      key: ["nameHash", "tier"],
+      schema: {
         nameHash: "bytes32",
         tier: "uint32",
+        entity: EntityId,
       },
-      valueSchema: EntityId,
     },
     AffixProtoGroup: {
-      keySchema: {
+      key: ["nameHash"],
+      schema: {
         nameHash: "bytes32",
+        entity: EntityId,
       },
-      valueSchema: EntityId,
     },
     Affix: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         partId: "AffixPartId",
         protoEntity: EntityId,
         value: "uint32",
@@ -151,36 +187,58 @@ export default mudConfig({
     ActiveGuise: entityRelation,
     GuisePrototype: {
       ...entityKey,
-      valueSchema: arrayPStat,
+      schema: {
+        entity: EntityId,
+        affixPart: arrayPStat,
+      },
     },
     GuiseSkills: {
       ...entityKey,
-      valueSchema: EntityIdArray,
+      schema: {
+        entity: EntityId,
+        entityArray: EntityIdArray,
+      },
     },
     GuiseNameToEntity: nameToEntityTable,
     LearnedSkills: {
       ...entityKey,
-      valueSchema: EntityIdSet,
+      schema: {
+        entity: EntityId,
+        entityIdSet: EntityIdSet,
+      },
     },
     LifeCurrent: {
       ...entityKey,
-      valueSchema: "uint32",
+      schema: {
+        entity: EntityId,
+        value: "uint32",
+      },
     },
     ManaCurrent: {
       ...entityKey,
-      valueSchema: "uint32",
+      schema: {
+        entity: EntityId,
+        value: "uint32",
+      },
     },
     LootAffixes: {
       ...entityKey,
-      valueSchema: EntityIdArray,
+      schema: {
+        entity: EntityId,
+        entityArray: EntityIdArray,
+      },
     },
     LootIlvl: {
       ...entityKey,
-      valueSchema: "uint32",
+      schema: {
+        entity: EntityId,
+        value: "uint32",
+      },
     },
     SkillTemplate: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         // level required to learn it
         requiredLevel: "uint8",
         // when/how it can be used
@@ -197,18 +255,23 @@ export default mudConfig({
     },
     SkillSpellDamage: {
       ...entityKey,
-      valueSchema: "uint32[5]",
+      schema: {
+        entity: EntityId,
+        value: "uint32[5]",
+      },
     },
     SkillTemplateCooldown: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         timeId: "bytes32",
         timeValue: "uint256",
       },
     },
     SkillTemplateDuration: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         timeId: "bytes32",
         timeValue: "uint256",
       },
@@ -222,52 +285,75 @@ export default mudConfig({
     PreviousCycle: entityRelation,
     CycleTurns: {
       ...entityKey,
-      valueSchema: "uint32",
+      schema: {
+        entity: EntityId,
+        value: "uint32",
+      },
     },
     CycleTurnsLastClaimed: {
       ...entityKey,
-      valueSchema: "uint48",
+      schema: {
+        entity: EntityId,
+        value: "uint48",
+      },
     },
     ActiveWheel: entityRelation,
     Identity: {
       ...entityKey,
-      valueSchema: "uint32",
+      schema: {
+        entity: EntityId,
+        value: "uint32",
+      },
     },
     Wanderer: {
       ...entityKey,
-      valueSchema: "bool",
+      schema: {
+        entity: EntityId,
+        spawn: "bool",
+      },
     },
     WheelsCompleted: {
-      keySchema: {
+      key: ["wandererEntity", "wheelEntity"],
+      schema: {
         wandererEntity: EntityId,
         wheelEntity: EntityId,
+        value: "uint32",
       },
-      valueSchema: "uint32",
     },
-    // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time
-    ActiveCombat: entityRelation,
+    ActiveCombat: {
+      key: ["initiatorEntity"],
+      schema: {
+        initiatorEntity: EntityId,
+        retaliatorEntity: EntityId,
+        roundsSpent: "uint32",
+        roundsMax: "uint32",
+      },
+    },
     RNGPrecommit: {
       ...entityKey,
-      valueSchema: "uint256",
+      schema: {
+        entity: EntityId,
+        value: "uint256",
+      },
     },
     // requestId => ownerEntity
     RNGRequestOwner: entityRelation,
     SlotAllowedTypes: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         equipmentTypes: "bytes32[]",
       },
     },
-    SlotEquipment: {
-      ...entityKey,
-      // equipment entity (not base)
-      valueSchema: EntityId,
-    },
+    SlotEquipment: entityRelation,
     OwnedBy: entityRelation,
     MapBase: {
       ...entityKey,
-      valueSchema: "bytes32",
+      schema: {
+        entity: EntityId,
+        value: "bytes32[]",
+      },
     },
     FromMapBase: entityRelation,
 
@@ -278,30 +364,34 @@ export default mudConfig({
      ************************************************************************/
     GenericDuration: {
       ...durationTable,
-      tableIdArgument: true,
+      codegen: {
+        tableIdArgument: true,
+      },
     },
     DurationIdxList: {
-      keySchema: {
+      key: ["sourceTableId", "targetEntity", "timeId"],
+      schema: {
         sourceTableId: "ResourceId",
         targetEntity: EntityId,
         timeId: "bytes32",
-      },
-      valueSchema: {
         applicationEntities: EntityIdArray,
       },
-      dataStruct: false,
+      codegen: {
+        dataStruct: false,
+      },
     },
     DurationIdxMap: {
-      keySchema: {
+      key: ["sourceTableId", "targetEntity", "applicationEntity"],
+      schema: {
         sourceTableId: "ResourceId",
         targetEntity: EntityId,
         applicationEntity: EntityId,
-      },
-      valueSchema: {
         has: "bool",
         index: "uint40",
       },
-      dataStruct: false,
+      codegen: {
+        dataStruct: false,
+      },
     },
 
     /************************************************************************
@@ -311,39 +401,44 @@ export default mudConfig({
      ************************************************************************/
     StatmodBase: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         statmodTopic: "StatmodTopic",
         statmodOp: "StatmodOp",
         eleStat: "EleStat",
       },
     },
     StatmodValue: {
-      keySchema: {
+      key: ["targetEntity", "baseEntity"],
+      schema: {
         targetEntity: EntityId,
         baseEntity: EntityId,
+        value: "uint32",
       },
-      valueSchema: "uint32",
     },
     StatmodIdxList: {
-      keySchema: {
+      key: ["targetEntity", "statmodTopic"],
+      schema: {
         targetEntity: EntityId,
         statmodTopic: "StatmodTopic",
-      },
-      valueSchema: {
         baseEntities: EntityIdArray,
+      },
+      codegen: {
+        dataStruct: false,
       },
     },
     StatmodIdxMap: {
-      keySchema: {
+      key: ["targetEntity", "baseEntity"],
+      schema: {
         targetEntity: EntityId,
         baseEntity: EntityId,
-      },
-      valueSchema: {
         statmodTopic: "StatmodTopic",
         has: "bool",
         index: "uint40",
       },
-      dataStruct: false,
+      codegen: {
+        dataStruct: false,
+      },
     },
 
     /************************************************************************
@@ -354,56 +449,48 @@ export default mudConfig({
     EffectDuration: durationTable,
     EffectTemplate: {
       ...entityKey,
-      valueSchema: {
+      schema: {
+        entity: EntityId,
         entities: EntityIdArray,
         values: "uint32[]",
       },
     },
     EffectApplied: {
-      keySchema: {
+      key: ["targetEntity", "applicationEntity"],
+      schema: {
         targetEntity: EntityId,
         applicationEntity: EntityId,
-      },
-      valueSchema: {
         entities: EntityIdArray,
         values: "uint32[]",
       },
     },
   },
-
-  enums: {
-    EleStat: enumEleStat,
-    SkillType: ["COMBAT", "NONCOMBAT", "PASSIVE"],
-    TargetType: ["SELF", "ENEMY", "ALLY", "SELF_OR_ALLY"],
-    StatmodOp: ["ADD", "MUL", "BADD"],
-    ActionType: ["ATTACK", "SKILL"],
-    AffixPartId: ["IMPLICIT", "PREFIX", "SUFFIX"],
-  },
-
-  userTypes: {
-    ResourceId: { filePath: "@latticexyz/store/src/ResourceId.sol", internalType: "bytes32" },
-    StatmodTopic: {
-      filePath: "./src/modules/statmod/StatmodTopic.sol",
-      internalType: "bytes32",
+  systems: {
+    CombatSystem: {
+      openAccess: false,
+      accessList: [],
+    },
+    RandomMapSystem: {
+      openAccess: false,
+      accessList: [],
     },
   },
-
   modules: [
     ...keysInTable(["Experience", "LearnedSkills", "EffectTemplate", "EffectApplied"]),
     ...keysWithValue(["AffixProtoGroup"]),
     {
-      name: "UniqueEntityModule",
+      artifactPath: "@latticexyz/world-modules/out/UniqueEntityModule.sol/UniqueEntityModule.json",
       root: true,
       args: [],
     },
     ...duration(["EffectDuration", "SkillCooldown"]),
     {
-      name: "StatmodModule",
+      artifactPath: "./out/StatmodModule.sol/StatmodModule.json",
       root: true,
       args: [],
     },
     {
-      name: "EffectModule",
+      artifactPath: "./out/EffectModule.sol/EffectModule.json",
       root: true,
       args: [],
     },
