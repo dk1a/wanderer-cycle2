@@ -15,7 +15,7 @@ import { GameConfig } from "../codegen/index.sol";
 import { wandererTokenName, wandererTokenSymbol, wandererTokenURI } from "../CustomTypes.sol";
 
 library LibInitToken {
-  function init(bytes14 namespace, address worldAddress) public {
+  function init(bytes14 namespace, address worldAddress) internal {
     IERC721Mintable tokenAddress = _add(
       wandererTokenName,
       wandererTokenSymbol,
