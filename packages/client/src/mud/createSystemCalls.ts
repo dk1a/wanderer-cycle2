@@ -31,22 +31,22 @@ export function createSystemCalls(
   { tables, useStore, worldContract, waitForTransaction }: SetupNetworkResult,
 ) {
   const addTask = async (label: string) => {
-    const tx = await worldContract.write.addTask([label]);
+    const tx = await worldContract.write.app__addTask([label]);
     await waitForTransaction(tx);
   };
 
-  const toggleTask = async (key: Hex) => {
+  const toggleTask = async (id: Hex) => {
     const isComplete =
-      (useStore.getState().getValue(tables.Tasks, { key })?.completedAt ?? 0n) >
+      (useStore.getState().getValue(tables.Tasks, { id })?.completedAt ?? 0n) >
       0n;
     const tx = isComplete
-      ? await worldContract.write.resetTask([key])
-      : await worldContract.write.completeTask([key]);
+      ? await worldContract.write.app__resetTask([id])
+      : await worldContract.write.app__completeTask([id]);
     await waitForTransaction(tx);
   };
 
-  const deleteTask = async (key: Hex) => {
-    const tx = await worldContract.write.deleteTask([key]);
+  const deleteTask = async (id: Hex) => {
+    const tx = await worldContract.write.app__deleteTask([id]);
     await waitForTransaction(tx);
   };
 
