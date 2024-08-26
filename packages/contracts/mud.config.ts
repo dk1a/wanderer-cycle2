@@ -112,10 +112,8 @@ export default defineWorld({
     GameConfig: {
       key: [],
       schema: {
-        owner: "address",
         tokenAddress: "address",
-        tokenId: "uint256",
-        namespace: "bytes14",
+        tokenNamespace: "bytes14",
       },
     },
     Name: "string",

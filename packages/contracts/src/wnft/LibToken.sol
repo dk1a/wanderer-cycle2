@@ -12,24 +12,22 @@ import { GameConfig } from "../codegen/index.sol";
 library LibToken {
   error LibToken_MustBeTokenOwner();
 
-  function tokenURI() internal view returns (string memory) {
-    uint256 tokenId = GameConfig.getTokenId();
-    bytes14 namespace = GameConfig.getNamespace();
+  function tokenURI(uint256 tokenId) internal view returns (string memory) {
+    bytes14 namespace = GameConfig.getTokenNamespace();
 
     string memory uri = TokenURI.get(_tokenUriTableId(namespace), tokenId);
     return uri;
   }
 
-  function ownerOf() internal view returns (address) {
-    uint256 tokenId = GameConfig.getTokenId();
-    bytes14 namespace = GameConfig.getNamespace();
+  function ownerOf(uint256 tokenId) internal view returns (address) {
+    bytes14 namespace = GameConfig.getTokenNamespace();
 
     address addr = Owners.get(_ownersTableId(namespace), tokenId);
     return addr;
   }
 
-  function requireOwner(address account) internal view {
-    if (account != ownerOf()) {
+  function requireOwner(address account, uint256 tokenId) internal view {
+    if (account != ownerOf(tokenId)) {
       revert LibToken_MustBeTokenOwner();
     }
   }

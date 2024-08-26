@@ -24,9 +24,8 @@ library LibInitToken {
       worldAddress
     );
     uint256 tokenId = uint256(uint160(address(tokenAddress)));
-    address admin = NamespaceOwner.get(ROOT_NAMESPACE_ID);
 
-    GameConfig.set(admin, address(tokenAddress), tokenId, namespace);
+    GameConfig.set(address(tokenAddress), namespace);
   }
 
   function _add(
@@ -35,13 +34,9 @@ library LibInitToken {
     string memory URI,
     bytes14 namespace,
     address worldAddress
-  ) private returns (IERC721Mintable escapedStumpToken) {
+  ) private returns (IERC721Mintable tokenAddress) {
     IWorld world = IWorld(worldAddress);
 
-    escapedStumpToken = registerERC721(
-      world,
-      namespace,
-      ERC721MetadataData({ name: name, symbol: symbol, baseURI: URI })
-    );
+    tokenAddress = registerERC721(world, namespace, ERC721MetadataData({ name: name, symbol: symbol, baseURI: URI }));
   }
 }

@@ -17,10 +17,8 @@ import { EncodedLengths, EncodedLengthsLib } from "@latticexyz/store/src/Encoded
 import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 
 struct GameConfigData {
-  address owner;
   address tokenAddress;
-  uint256 tokenId;
-  bytes14 namespace;
+  bytes14 tokenNamespace;
 }
 
 library GameConfig {
@@ -28,12 +26,12 @@ library GameConfig {
   ResourceId constant _tableId = ResourceId.wrap(0x7462000000000000000000000000000047616d65436f6e666967000000000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x005604001414200e000000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x00220200140e0000000000000000000000000000000000000000000000000000);
 
   // Hex-encoded key schema of ()
   Schema constant _keySchema = Schema.wrap(0x0000000000000000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (address, address, uint256, bytes14)
-  Schema constant _valueSchema = Schema.wrap(0x0056040061611f4d000000000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (address, bytes14)
+  Schema constant _valueSchema = Schema.wrap(0x00220200614d0000000000000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -48,11 +46,9 @@ library GameConfig {
    * @return fieldNames An array of strings with the names of value fields.
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
-    fieldNames = new string[](4);
-    fieldNames[0] = "owner";
-    fieldNames[1] = "tokenAddress";
-    fieldNames[2] = "tokenId";
-    fieldNames[3] = "namespace";
+    fieldNames = new string[](2);
+    fieldNames[0] = "tokenAddress";
+    fieldNames[1] = "tokenNamespace";
   }
 
   /**
@@ -70,50 +66,12 @@ library GameConfig {
   }
 
   /**
-   * @notice Get owner.
-   */
-  function getOwner() internal view returns (address owner) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return (address(bytes20(_blob)));
-  }
-
-  /**
-   * @notice Get owner.
-   */
-  function _getOwner() internal view returns (address owner) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return (address(bytes20(_blob)));
-  }
-
-  /**
-   * @notice Set owner.
-   */
-  function setOwner(address owner) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((owner)), _fieldLayout);
-  }
-
-  /**
-   * @notice Set owner.
-   */
-  function _setOwner(address owner) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((owner)), _fieldLayout);
-  }
-
-  /**
    * @notice Get tokenAddress.
    */
   function getTokenAddress() internal view returns (address tokenAddress) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
     return (address(bytes20(_blob)));
   }
 
@@ -123,7 +81,7 @@ library GameConfig {
   function _getTokenAddress() internal view returns (address tokenAddress) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
     return (address(bytes20(_blob)));
   }
 
@@ -133,7 +91,7 @@ library GameConfig {
   function setTokenAddress(address tokenAddress) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((tokenAddress)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((tokenAddress)), _fieldLayout);
   }
 
   /**
@@ -142,83 +100,45 @@ library GameConfig {
   function _setTokenAddress(address tokenAddress) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((tokenAddress)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((tokenAddress)), _fieldLayout);
   }
 
   /**
-   * @notice Get tokenId.
+   * @notice Get tokenNamespace.
    */
-  function getTokenId() internal view returns (uint256 tokenId) {
+  function getTokenNamespace() internal view returns (bytes14 tokenNamespace) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
-    return (uint256(bytes32(_blob)));
-  }
-
-  /**
-   * @notice Get tokenId.
-   */
-  function _getTokenId() internal view returns (uint256 tokenId) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 2, _fieldLayout);
-    return (uint256(bytes32(_blob)));
-  }
-
-  /**
-   * @notice Set tokenId.
-   */
-  function setTokenId(uint256 tokenId) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((tokenId)), _fieldLayout);
-  }
-
-  /**
-   * @notice Set tokenId.
-   */
-  function _setTokenId(uint256 tokenId) internal {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    StoreCore.setStaticField(_tableId, _keyTuple, 2, abi.encodePacked((tokenId)), _fieldLayout);
-  }
-
-  /**
-   * @notice Get namespace.
-   */
-  function getNamespace() internal view returns (bytes14 namespace) {
-    bytes32[] memory _keyTuple = new bytes32[](0);
-
-    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (bytes14(_blob));
   }
 
   /**
-   * @notice Get namespace.
+   * @notice Get tokenNamespace.
    */
-  function _getNamespace() internal view returns (bytes14 namespace) {
+  function _getTokenNamespace() internal view returns (bytes14 tokenNamespace) {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 3, _fieldLayout);
+    bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 1, _fieldLayout);
     return (bytes14(_blob));
   }
 
   /**
-   * @notice Set namespace.
+   * @notice Set tokenNamespace.
    */
-  function setNamespace(bytes14 namespace) internal {
+  function setTokenNamespace(bytes14 tokenNamespace) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((namespace)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((tokenNamespace)), _fieldLayout);
   }
 
   /**
-   * @notice Set namespace.
+   * @notice Set tokenNamespace.
    */
-  function _setNamespace(bytes14 namespace) internal {
+  function _setTokenNamespace(bytes14 tokenNamespace) internal {
     bytes32[] memory _keyTuple = new bytes32[](0);
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 3, abi.encodePacked((namespace)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 1, abi.encodePacked((tokenNamespace)), _fieldLayout);
   }
 
   /**
@@ -252,8 +172,8 @@ library GameConfig {
   /**
    * @notice Set the full data using individual values.
    */
-  function set(address owner, address tokenAddress, uint256 tokenId, bytes14 namespace) internal {
-    bytes memory _staticData = encodeStatic(owner, tokenAddress, tokenId, namespace);
+  function set(address tokenAddress, bytes14 tokenNamespace) internal {
+    bytes memory _staticData = encodeStatic(tokenAddress, tokenNamespace);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -266,8 +186,8 @@ library GameConfig {
   /**
    * @notice Set the full data using individual values.
    */
-  function _set(address owner, address tokenAddress, uint256 tokenId, bytes14 namespace) internal {
-    bytes memory _staticData = encodeStatic(owner, tokenAddress, tokenId, namespace);
+  function _set(address tokenAddress, bytes14 tokenNamespace) internal {
+    bytes memory _staticData = encodeStatic(tokenAddress, tokenNamespace);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -281,7 +201,7 @@ library GameConfig {
    * @notice Set the full data using the data struct.
    */
   function set(GameConfigData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.owner, _table.tokenAddress, _table.tokenId, _table.namespace);
+    bytes memory _staticData = encodeStatic(_table.tokenAddress, _table.tokenNamespace);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -295,7 +215,7 @@ library GameConfig {
    * @notice Set the full data using the data struct.
    */
   function _set(GameConfigData memory _table) internal {
-    bytes memory _staticData = encodeStatic(_table.owner, _table.tokenAddress, _table.tokenId, _table.namespace);
+    bytes memory _staticData = encodeStatic(_table.tokenAddress, _table.tokenNamespace);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -308,16 +228,10 @@ library GameConfig {
   /**
    * @notice Decode the tightly packed blob of static data using this table's field layout.
    */
-  function decodeStatic(
-    bytes memory _blob
-  ) internal pure returns (address owner, address tokenAddress, uint256 tokenId, bytes14 namespace) {
-    owner = (address(Bytes.getBytes20(_blob, 0)));
+  function decodeStatic(bytes memory _blob) internal pure returns (address tokenAddress, bytes14 tokenNamespace) {
+    tokenAddress = (address(Bytes.getBytes20(_blob, 0)));
 
-    tokenAddress = (address(Bytes.getBytes20(_blob, 20)));
-
-    tokenId = (uint256(Bytes.getBytes32(_blob, 40)));
-
-    namespace = (Bytes.getBytes14(_blob, 72));
+    tokenNamespace = (Bytes.getBytes14(_blob, 20));
   }
 
   /**
@@ -331,7 +245,7 @@ library GameConfig {
     EncodedLengths,
     bytes memory
   ) internal pure returns (GameConfigData memory _table) {
-    (_table.owner, _table.tokenAddress, _table.tokenId, _table.namespace) = decodeStatic(_staticData);
+    (_table.tokenAddress, _table.tokenNamespace) = decodeStatic(_staticData);
   }
 
   /**
@@ -356,13 +270,8 @@ library GameConfig {
    * @notice Tightly pack static (fixed length) data using this table's schema.
    * @return The static data, encoded into a sequence of bytes.
    */
-  function encodeStatic(
-    address owner,
-    address tokenAddress,
-    uint256 tokenId,
-    bytes14 namespace
-  ) internal pure returns (bytes memory) {
-    return abi.encodePacked(owner, tokenAddress, tokenId, namespace);
+  function encodeStatic(address tokenAddress, bytes14 tokenNamespace) internal pure returns (bytes memory) {
+    return abi.encodePacked(tokenAddress, tokenNamespace);
   }
 
   /**
@@ -372,12 +281,10 @@ library GameConfig {
    * @return The dynamic (variable length) data, encoded into a sequence of bytes.
    */
   function encode(
-    address owner,
     address tokenAddress,
-    uint256 tokenId,
-    bytes14 namespace
+    bytes14 tokenNamespace
   ) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
-    bytes memory _staticData = encodeStatic(owner, tokenAddress, tokenId, namespace);
+    bytes memory _staticData = encodeStatic(tokenAddress, tokenNamespace);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
