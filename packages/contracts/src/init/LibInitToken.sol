@@ -12,18 +12,9 @@ import { registerERC721 } from "@latticexyz/world-modules/src/modules/erc721-pup
 
 import { GameConfig } from "../codegen/index.sol";
 
-import { wandererTokenName, wandererTokenSymbol, wandererTokenURI } from "../CustomTypes.sol";
-
 library LibInitToken {
   function init(bytes14 namespace, address worldAddress) internal {
-    IERC721Mintable tokenAddress = _add(
-      wandererTokenName,
-      wandererTokenSymbol,
-      wandererTokenURI,
-      namespace,
-      worldAddress
-    );
-    uint256 tokenId = uint256(uint160(address(tokenAddress)));
+    IERC721Mintable tokenAddress = _add("Wanderer NFT", "WNFT", "", namespace, worldAddress);
 
     GameConfig.set(address(tokenAddress), namespace);
   }
