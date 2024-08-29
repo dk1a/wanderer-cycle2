@@ -109,11 +109,11 @@ export default defineWorld({
       },
       key: ["id"],
     },
-    GameConfig: {
-      key: [],
+    ERC721Config: {
+      key: ["namespace"],
       schema: {
+        namespace: "bytes14",
         tokenAddress: "address",
-        tokenNamespace: "bytes14",
       },
     },
     Name: "string",
