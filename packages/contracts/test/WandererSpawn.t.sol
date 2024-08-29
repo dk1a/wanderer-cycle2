@@ -4,37 +4,22 @@ pragma solidity >=0.8.21;
 import { MudLibTest } from "./MudLibTest.t.sol";
 import { getUniqueEntity } from "@latticexyz/world-modules/src/modules/uniqueentity/getUniqueEntity.sol";
 import { hasKey } from "@latticexyz/world-modules/src/modules/keysintable/hasKey.sol";
-import { IERC721Mintable } from "@latticexyz/world-modules/src/modules/erc721-puppet/IERC721Mintable.sol";
-import { IWorld } from "../src/codegen/world/IWorld.sol";
-import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 
-import { ROOT_NAMESPACE_ID } from "@latticexyz/world/src/constants.sol";
-import { NamespaceOwner } from "@latticexyz/world/src/codegen/tables/NamespaceOwner.sol";
-
-import { ActiveGuise, DefaultWheel, Wanderer, GuisePrototype, ActiveCycle, CycleTurns, LifeCurrent, ManaCurrent, GameConfig } from "../src/codegen/index.sol";
+import { ActiveGuise, DefaultWheel, Wanderer, GuisePrototype, ActiveCycle, CycleTurns, LifeCurrent, ManaCurrent } from "../src/codegen/index.sol";
 
 import { LibCycle } from "../src/cycle/LibCycle.sol";
 import { LibGuise } from "../src/guise/LibGuise.sol";
 import { LibExperience } from "../src/charstat/LibExperience.sol";
-import { LibToken } from "../src/wnft/LibToken.sol";
-//import { IERC721BaseInternal } from "@latticexyz/world-modules/src/modules/erc721-puppet/IERC721BaseInternal.sol";
 
 contract WandererSpawnTest is MudLibTest {
   bytes32 guiseEntity;
+
   bytes32 wandererEntity;
   bytes32 cycleEntity;
   bytes32 defaultWheelEntity;
-  uint256 badGoatToken;
-  uint256 beefToken;
-  address alice;
-  address badGuy;
 
   function setUp() public virtual override {
     super.setUp();
-    uint256 badGoatToken = uint256(0xBAD060A7);
-    uint256 beefToken = uint256(0xBEEF);
-    address alice = address(0x600D);
-    address badGuy = address(0x0BAD);
 
     guiseEntity = LibGuise.getGuiseEntity("Warrior");
 
@@ -63,16 +48,16 @@ contract WandererSpawnTest is MudLibTest {
     assertTrue(Wanderer.get(wandererEntity));
   }
 
+  /*TODO tokens
   function test_tokenOwner() public {
-    address expectedOwner = NamespaceOwner.get(ROOT_NAMESPACE_ID);
-    assertEq(LibToken.ownerOf(), expectedOwner);
+    assertEq(wNFTSystem.ownerOf(wandererEntity), alice);
   }
 
-  function test_tokenOwner_incorrectAddress() public {
-    address tokenAddress = GameConfig.getTokenAddress();
-    vm.expectRevert();
-    LibToken.requireOwner(tokenAddress);
-  }
+  function test_tokenOwner_notForCycleEntity() public {
+    // cycleEntity shouldn't even be a token, this error refers to address(0)
+    vm.expectRevert(IERC721BaseInternal.ERC721Base__InvalidOwner.selector);
+    wNFTSystem.ownerOf(cycleEntity);
+  }*/
 
   function test_activeGuise() public {
     assertEq(ActiveGuise.get(cycleEntity), guiseEntity);
@@ -81,6 +66,8 @@ contract WandererSpawnTest is MudLibTest {
 
   function test_experience() public {
     assertTrue(LibExperience.hasExp(cycleEntity));
+    // TODO wandererEntity could have exp for some non-cycle-related reasons, come back to this later
+    // TODO (same thing with currents, though less likely)
     assertFalse(LibExperience.hasExp(wandererEntity));
   }
 
