@@ -114,6 +114,8 @@ export default defineWorld({
       schema: {
         tokenAddress: "address",
         tokenNamespace: "bytes14",
+        owner: "address",
+        tokenId: "uint256",
       },
     },
     Name: "string",

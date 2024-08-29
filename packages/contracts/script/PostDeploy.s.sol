@@ -5,6 +5,9 @@ import { Script } from "forge-std/Script.sol";
 import { console } from "forge-std/console.sol";
 import { StoreSwitch } from "@latticexyz/store/src/StoreSwitch.sol";
 
+import { ROOT_NAMESPACE_ID } from "@latticexyz/world/src/constants.sol";
+import { NamespaceOwner } from "@latticexyz/world/src/codegen/tables/NamespaceOwner.sol";
+
 import { LibInitStatmod } from "../src/init/LibInitStatmod.sol";
 import { LibInitSkill } from "../src/init/LibInitSkill.sol";
 import { LibInitGuise } from "../src/init/LibInitGuise.sol";
@@ -28,7 +31,7 @@ contract PostDeploy is Script {
     LibInitSkill.init();
     LibInitGuise.init();
     LibInitWheel.init();
-    LibInitToken.init(bytes14("WNFT"), worldAddress);
+    LibInitToken.init(bytes14("WNFT"), worldAddress, NamespaceOwner.get(ROOT_NAMESPACE_ID));
 
     vm.stopBroadcast();
   }
