@@ -44,18 +44,24 @@ library LibERC721 {
     erc721.burn(tokenId);
   }
 
-  function tokenURI(ERC721Namespace namespace, uint256 tokenId) internal view returns (string memory) {
+  function tokenURI(ERC721Namespace namespace, bytes32 tokenEntity) internal view returns (string memory) {
+    // Token id is also a globally unique entity
+    uint256 tokenId = uint256(tokenEntity);
+
     string memory uri = TokenURI.get(_tokenUriTableId(namespace.unwrap()), tokenId);
     return uri;
   }
 
-  function ownerOf(ERC721Namespace namespace, uint256 tokenId) internal view returns (address) {
+  function ownerOf(ERC721Namespace namespace, bytes32 tokenEntity) internal view returns (address) {
+    // Token id is also a globally unique entity
+    uint256 tokenId = uint256(tokenEntity);
+
     address addr = Owners.get(_ownersTableId(namespace.unwrap()), tokenId);
     return addr;
   }
 
-  function requireOwner(ERC721Namespace namespace, address account, uint256 tokenId) internal view {
-    if (account != namespace.ownerOf(tokenId)) {
+  function requireOwner(ERC721Namespace namespace, address account, bytes32 tokenEntity) internal view {
+    if (account != namespace.ownerOf(tokenEntity)) {
       revert LibERC721_MustBeTokenOwner();
     }
   }

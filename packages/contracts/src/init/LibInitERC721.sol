@@ -2,6 +2,7 @@
 pragma solidity >=0.8.21;
 
 import { WorldContextConsumerLib } from "@latticexyz/world/src/WorldContext.sol";
+import { WorldResourceIdLib } from "@latticexyz/world/src/WorldResourceId.sol";
 
 import { IWorld } from "../codegen/world/IWorld.sol";
 import { IERC721Mintable } from "@latticexyz/world-modules/src/modules/erc721-puppet/IERC721Mintable.sol";
@@ -22,6 +23,10 @@ library LibInitERC721 {
 
     ERC721MetadataData memory metadata = ERC721MetadataData({ name: name, symbol: symbol, baseURI: "" });
     IERC721Mintable tokenAddress = registerERC721(world, namespace, metadata);
+
+    // Transfer ownership of the token namespace to the world contract
+    // (allows the world to use admin functions like minting)
+    world.transferOwnership(WorldResourceIdLib.encodeNamespace(namespace), address(world));
 
     ERC721Config.set(namespace, address(tokenAddress));
   }
