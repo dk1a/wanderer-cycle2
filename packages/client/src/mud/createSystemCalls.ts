@@ -2,9 +2,10 @@
  * Create the system calls that the client can use to ask
  * for changes in the World state (using the System contracts).
  */
-
 import { Hex } from "viem";
+
 import { SetupNetworkResult } from "./setupNetwork";
+// import { ClientComponents } from "./createClientComponents";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -29,6 +30,7 @@ export function createSystemCalls(
    *   (https://github.com/latticexyz/mud/blob/main/templates/react/packages/client/src/mud/setupNetwork.ts#L77-L83).
    */
   { tables, useStore, worldContract, waitForTransaction }: SetupNetworkResult,
+  // { Wanderer }: ClientComponents,
 ) {
   const addTask = async (label: string) => {
     const tx = await worldContract.write.app__addTask([label]);
@@ -50,8 +52,14 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
+  const spawn = async (id: Hex) => {
+    const tx = await worldContract.write.app__spawn([id]);
+    await waitForTransaction(tx);
+  };
+
   return {
     addTask,
+    spawn,
     toggleTask,
     deleteTask,
   };
