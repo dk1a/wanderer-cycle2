@@ -407,6 +407,14 @@ export default defineWorld({
         dataStruct: false,
       },
     },
+    EqptBase: {
+      ...entityKey,
+      schema: {
+        entity: EntityId,
+      },
+    },
+    FromEqptBase: entityRelation,
+    FromPrototype: entityRelation,
 
     /************************************************************************
      *
@@ -480,6 +488,9 @@ export default defineWorld({
     },
   },
   systems: {
+    RandomEquipmentSubSystem: {
+      name: "RandomEquipmentSubSystem",
+    },
     CombatSystem: {
       openAccess: false,
       accessList: [],

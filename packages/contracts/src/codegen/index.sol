@@ -52,6 +52,9 @@ import { MapTypeAffixAvailability } from "./tables/MapTypeAffixAvailability.sol"
 import { GenericDuration, GenericDurationData } from "./tables/GenericDuration.sol";
 import { DurationIdxList } from "./tables/DurationIdxList.sol";
 import { DurationIdxMap } from "./tables/DurationIdxMap.sol";
+import { EqptBase } from "./tables/EqptBase.sol";
+import { FromEqptBase } from "./tables/FromEqptBase.sol";
+import { FromPrototype } from "./tables/FromPrototype.sol";
 import { StatmodBase, StatmodBaseData } from "./tables/StatmodBase.sol";
 import { StatmodValue } from "./tables/StatmodValue.sol";
 import { StatmodIdxList } from "./tables/StatmodIdxList.sol";
