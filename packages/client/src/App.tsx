@@ -14,6 +14,10 @@ export const App = () => {
     return records;
   });
 
+  const value = useMUD();
+
+  console.log(value);
+
   return (
     <>
       <table>
