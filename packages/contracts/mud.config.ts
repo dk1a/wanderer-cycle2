@@ -8,6 +8,7 @@ import {
   ACTION_TYPE_ARRAY,
   AFFIX_PART_ID_ARRAY,
   PSTAT_ARRAY,
+  COMBAT_ACTION_TYPE_ARRAY,
 } from "./enums";
 
 const EntityId = "bytes32" as const;
@@ -86,11 +87,13 @@ const enums = {
   StatmodOp: STATMOD_OP_ARRAY,
   ActionType: ACTION_TYPE_ARRAY,
   AffixPartId: AFFIX_PART_ID_ARRAY,
+  CombatActionType: COMBAT_ACTION_TYPE_ARRAY,
 };
 
 const userTypes = {
   ResourceId: { filePath: "@latticexyz/store/src/ResourceId.sol", type: "bytes32" },
   StatmodTopic: { filePath: "./src/modules/statmod/StatmodTopic.sol", type: "bytes32" },
+  MapType: { filePath: "./src/map/MapType.sol", type: "bytes32" },
 } as const;
 
 export default defineWorld({
@@ -105,6 +108,13 @@ export default defineWorld({
         description: "string",
       },
       key: ["id"],
+    },
+    ERC721Config: {
+      key: ["namespace"],
+      schema: {
+        namespace: "bytes14",
+        tokenAddress: "address",
+      },
     },
     Name: "string",
     DefaultWheel: {
@@ -130,19 +140,19 @@ export default defineWorld({
       },
     },
     AffixAvailable: {
-      key: ["affixPart", "targetEntity", "ilvl"],
+      key: ["affixPart", "affixAvailabilityEntity", "ilvl"],
       schema: {
         affixPart: "AffixPartId",
-        targetEntity: EntityId,
+        affixAvailabilityEntity: EntityId,
         ilvl: "uint32",
         affixes: "bytes32[]",
       },
     },
     AffixNaming: {
-      key: ["affixPart", "targetEntity", "protoEntity"],
+      key: ["affixPart", "affixAvailabilityEntity", "protoEntity"],
       schema: {
         affixPart: "AffixPartId",
-        targetEntity: EntityId,
+        affixAvailabilityEntity: EntityId,
         protoEntity: EntityId,
         name: "string",
       },
@@ -318,9 +328,16 @@ export default defineWorld({
         value: "uint32",
       },
     },
-    // initiatorEntity => retaliatorEntity
     // An entity can initiate only 1 combat at a time
-    ActiveCombat: entityRelation,
+    ActiveCombat: {
+      key: ["initiatorEntity"],
+      schema: {
+        initiatorEntity: EntityId,
+        retaliatorEntity: EntityId,
+        roundsSpent: "uint32",
+        roundsMax: "uint32",
+      },
+    },
     RNGPrecommit: {
       ...entityKey,
       schema: {
@@ -339,6 +356,20 @@ export default defineWorld({
     },
     SlotEquipment: entityRelation,
     OwnedBy: entityRelation,
+    MapTypeComponent: {
+      ...entityKey,
+      schema: {
+        entity: EntityId,
+        value: "MapType",
+      },
+    },
+    MapTypeAffixAvailability: {
+      key: ["label"],
+      schema: {
+        label: "bytes32",
+        entity: EntityId,
+      },
+    },
 
     /************************************************************************
      *
@@ -459,18 +490,34 @@ export default defineWorld({
   systems: {
     RandomEquipmentSubSystem: {
       name: "RandomEquipmentSubSystem",
+    },
+    CombatSystem: {
+      openAccess: false,
+      accessList: [],
+    },
+    RandomMapSystem: {
       openAccess: false,
       accessList: [],
     },
   },
   modules: [
-    ...keysInTable(["Experience", "LearnedSkills", "EffectTemplate", "EffectApplied"]),
-    ...keysWithValue(["AffixProtoGroup"]),
+    {
+      artifactPath: "@latticexyz/world-modules/out/StandardDelegationsModule.sol/StandardDelegationsModule.json",
+      root: true,
+      args: [],
+    },
+    {
+      artifactPath: "@latticexyz/world-modules/out/PuppetModule.sol/PuppetModule.json",
+      root: true,
+      args: [],
+    },
     {
       artifactPath: "@latticexyz/world-modules/out/UniqueEntityModule.sol/UniqueEntityModule.json",
       root: true,
       args: [],
     },
+    ...keysInTable(["Experience", "LearnedSkills", "EffectTemplate", "EffectApplied"]),
+    ...keysWithValue(["AffixProtoGroup"]),
     ...duration(["EffectDuration", "SkillCooldown"]),
     {
       artifactPath: "./out/StatmodModule.sol/StatmodModule.json",
