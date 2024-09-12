@@ -13,8 +13,11 @@ export async function setup() {
   const components = createClientComponents(network);
   const systemCalls = createSystemCalls(network, components);
 
+  console.log(network);
+
   return {
     network,
+    components,
     systemCalls,
   };
 }

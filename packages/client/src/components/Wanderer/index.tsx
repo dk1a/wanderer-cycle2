@@ -1,5 +1,4 @@
 import { EntityIndex } from "@latticexyz/recs";
-import CustomButton from "../UI/Button/CustomButton";
 import { useWandererContext } from "../../contexts/WandererContext";
 
 export default function Wanderer({
@@ -13,17 +12,17 @@ export default function Wanderer({
     <div className="">
       <div className="">
         {wandererEntity === selectedWandererEntity && (
-          <CustomButton disabled={true}>
+          <button disabled={true}>
             <span className="">Selected</span>
-          </CustomButton>
+          </button>
         )}
         {wandererEntity !== selectedWandererEntity && (
-          <CustomButton
+          <button
             style={{ width: "6rem" }}
             onClick={() => selectWandererEntity(wandererEntity)}
           >
             Select
-          </CustomButton>
+          </button>
         )}
       </div>
     </div>

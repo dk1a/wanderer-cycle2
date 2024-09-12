@@ -5,7 +5,6 @@
 import { Hex } from "viem";
 
 import { SetupNetworkResult } from "./setupNetwork";
-// import { ClientComponents } from "./createClientComponents";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -30,7 +29,6 @@ export function createSystemCalls(
    *   (https://github.com/latticexyz/mud/blob/main/templates/react/packages/client/src/mud/setupNetwork.ts#L77-L83).
    */
   { tables, useStore, worldContract, waitForTransaction }: SetupNetworkResult,
-  // { Wanderer }: ClientComponents,
 ) {
   const addTask = async (label: string) => {
     const tx = await worldContract.write.app__addTask([label]);

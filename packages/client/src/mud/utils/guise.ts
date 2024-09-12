@@ -1,11 +1,12 @@
-import { EntityIndex, getComponentValueStrict } from "@latticexyz/recs";
+import { getComponentValueStrict } from "@latticexyz/recs";
 import { SetupResult } from "../setup";
+import { Entity } from "@latticexyz/recs/src/types";
 
 export type GuiseData = ReturnType<typeof getGuise>;
 
 export const getGuise = (
   { world, components: { GuisePrototype, GuiseSkills, Name } }: SetupResult,
-  entity: EntityIndex,
+  entity: Entity,
 ) => {
   const guisePrototype = getComponentValueStrict(GuisePrototype, entity);
   const skillEntityIds = getComponentValueStrict(GuiseSkills, entity);
