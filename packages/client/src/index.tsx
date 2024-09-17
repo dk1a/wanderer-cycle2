@@ -13,8 +13,7 @@ const root = ReactDOM.createRoot(rootElement);
 setup().then(async (result) => {
   root.render(
     <MUDProvider value={result}>
-      <div className="bg-black">
-        <div className="text-red-500">hello world</div>
+      <div className="w-full h-full bg-dark-600">
         <App />
       </div>
     </MUDProvider>,
