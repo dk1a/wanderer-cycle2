@@ -1,6 +1,6 @@
 import { BrowserRouter as Router } from "react-router-dom";
 import { Navbar } from "./components/Navbar/Navbar";
-// import Guise from "./components/Guise/Guise";
+import Guise from "./components/Guise/Guise";
 import AppRouter from "./AppRouter";
 import React from "react";
 
@@ -15,7 +15,7 @@ export const App = () => {
         />
         <div className="max-w-[1296px]">
           <AppRouter />
-          {/*<Guise />*/}
+          <Guise />
         </div>
       </div>
     </Router>

@@ -1,10 +1,11 @@
-import { EntityIndex } from "@latticexyz/recs";
-import { useWandererContext } from "../../contexts/WandererContext";
+// import { useWandererContext } from "../../contexts/WandererContext";
+
+import { Entity } from "@latticexyz/recs";
 
 export default function Wanderer({
   wandererEntity,
 }: {
-  wandererEntity: EntityIndex;
+  wandererEntity: Entity;
 }) {
   const { selectedWandererEntity, selectWandererEntity } = useWandererContext();
 
