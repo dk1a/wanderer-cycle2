@@ -15,15 +15,16 @@ export const useGuise = (entity: Entity | undefined) => {
 };
 
 export const useGuises = () => {
-  const mud = useMUD();
-  const {
-    components: { GuisePrototype },
-  } = mud;
+  const { components } = useMUD();
+  const { GuisePrototype } = components;
 
   const guiseEntities = useEntityQuery([Has(GuisePrototype)]);
+  console.log(guiseEntities);
   return useMemo(() => {
-    return guiseEntities.map((guiseEntity) => getGuise(mud, guiseEntity));
-  }, [mud, guiseEntities]);
+    return guiseEntities.map((guiseEntity) =>
+      getGuise(components, guiseEntity),
+    );
+  }, [components, guiseEntities]);
 };
 
 export const useActiveGuise = (targetEntity: Entity | undefined) => {

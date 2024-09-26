@@ -13,6 +13,8 @@ import {
   ClientConfig,
   getContract,
 } from "viem";
+import { world } from "./world";
+import { syncToRecs } from "@latticexyz/store-sync/recs";
 import { syncToZustand } from "@latticexyz/store-sync/zustand";
 import { getNetworkConfig } from "./getNetworkConfig";
 import IWorldAbi from "contracts/out/IWorld.sol/IWorld.abi.json";
@@ -78,6 +80,14 @@ export async function setupNetwork() {
     client: { public: publicClient, wallet: burnerWalletClient },
   });
 
+  const { components } = await syncToRecs({
+    world,
+    config: mudConfig,
+    address: networkConfig.worldAddress as Hex,
+    publicClient,
+    startBlock: BigInt(networkConfig.initialBlockNumber),
+  });
+
   /*
    * Sync on-chain state into RECS and keeps our client in sync.
    * Uses the MUD indexer if available, otherwise falls back
@@ -99,6 +109,7 @@ export async function setupNetwork() {
 
   return {
     tables,
+    components,
     useStore,
     publicClient,
     walletClient: burnerWalletClient,

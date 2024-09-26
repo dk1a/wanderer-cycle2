@@ -1,10 +1,14 @@
+import React from "react";
+import { useGuises } from "./mud/hooks/guise";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Navbar } from "./components/Navbar/Navbar";
 import Guise from "./components/Guise/Guise";
 import AppRouter from "./AppRouter";
-import React from "react";
 
 export const App = () => {
+  const guisess = useGuises();
+  console.log(guisess);
+
   return (
     <Router>
       <div className="app flex justify-center items-center">
@@ -15,9 +19,12 @@ export const App = () => {
         />
         <div className="max-w-[1296px]">
           <AppRouter />
-          <Guise />
         </div>
       </div>
+
+      {guisess.map((guise) => (
+        <Guise key={guise.entity} guise={guise} />
+      ))}
     </Router>
   );
 };

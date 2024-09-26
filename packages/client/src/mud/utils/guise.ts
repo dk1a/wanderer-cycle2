@@ -4,33 +4,29 @@ import { Entity } from "@latticexyz/recs/src/types";
 
 export type GuiseData = ReturnType<typeof getGuise>;
 
-export const getGuise = (
-  { world, components: { GuisePrototype, GuiseSkills, Name } }: SetupResult,
-  entity: Entity,
-) => {
-  const guisePrototype = getComponentValueStrict(GuisePrototype, entity);
-  const skillEntityIds = getComponentValueStrict(GuiseSkills, entity);
-  const name = getComponentValueStrict(Name, entity);
+export const getGuise = (components: SetupResult, entity: Entity) => {
+  const guisePrototype = getComponentValueStrict(
+    components.GuisePrototype,
+    entity,
+  );
+  const skillEntities = getComponentValueStrict(components.GuiseSkills, entity);
+  const name = getComponentValueStrict(components.Name, entity);
 
-  const skillEntities = skillEntityIds?.value.map((entityId) => {
-    const entity = world.entityToIndex.get(entityId);
-    if (!entity) {
-      throw new Error(`entityId not in entityToIndex for skill ${entityId}`);
-    }
-    return entity;
-  });
+  const affixPart = Array.isArray(guisePrototype.affixPart)
+    ? guisePrototype.affixPart
+    : [];
+  const [arcana = 0, dexterity = 0, strength = 0] = affixPart;
 
   return {
     entity,
-    entityId: world.entities[entity],
     name: name?.value ?? "",
 
     levelMul: {
-      strength: guisePrototype.levelMul_strength,
-      arcana: guisePrototype.levelMul_arcana,
-      dexterity: guisePrototype.levelMul_dexterity,
+      arcana,
+      dexterity,
+      strength,
     },
-    skillEntityIds: skillEntityIds.value,
+
     skillEntities,
   };
 };
