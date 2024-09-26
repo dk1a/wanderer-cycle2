@@ -3,6 +3,7 @@ import { App } from "./App";
 import { setup } from "./mud/setup";
 import { MUDProvider } from "./MUDContext";
 import mudConfig from "contracts/mud.config";
+import "../index.css";
 
 const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");
@@ -12,7 +13,9 @@ const root = ReactDOM.createRoot(rootElement);
 setup().then(async (result) => {
   root.render(
     <MUDProvider value={result}>
-      <App />
+      <div className="w-full h-full bg-dark-600">
+        <App />
+      </div>
     </MUDProvider>,
   );
 
