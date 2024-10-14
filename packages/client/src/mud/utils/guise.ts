@@ -1,10 +1,10 @@
 import { getComponentValueStrict } from "@latticexyz/recs";
-import { SetupResult } from "../setup";
 import { Entity } from "@latticexyz/recs/src/types";
+import { ClientComponents } from "../createClientComponents";
 
 export type GuiseData = ReturnType<typeof getGuise>;
 
-export const getGuise = (components: SetupResult, entity: Entity) => {
+export const getGuise = (components: ClientComponents, entity: Entity) => {
   const guisePrototype = getComponentValueStrict(
     components.GuisePrototype,
     entity,

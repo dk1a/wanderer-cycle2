@@ -19,7 +19,6 @@ export const useGuises = () => {
   const { GuisePrototype } = components;
 
   const guiseEntities = useEntityQuery([Has(GuisePrototype)]);
-  console.log(guiseEntities);
   return useMemo(() => {
     return guiseEntities.map((guiseEntity) =>
       getGuise(components, guiseEntity),

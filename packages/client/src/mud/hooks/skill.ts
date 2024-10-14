@@ -14,11 +14,11 @@ export const useSkill = (entity: Entity | undefined) => {
 };
 
 export const useSkillStrict = (entity: Entity) => {
-  const { world, components } = useMUD();
+  const { components } = useMUD();
 
   return useMemo(() => {
-    return getSkill(world, components, entity);
-  }, [world, components, entity]);
+    return getSkill(components, entity);
+  }, [components, entity]);
 };
 
 export const useSkills = (entities: Entity[]) => {

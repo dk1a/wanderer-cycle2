@@ -9,7 +9,7 @@ export function createClientComponents({ components }: SetupNetworkResult) {
     GuisePrototype: overridableComponent(components.GuisePrototype),
     GuiseSkills: overridableComponent(components.GuiseSkills),
     Name: overridableComponent(components.Name),
-    SkillPrototype: overridableComponent(components.SkillPrototype),
-    SkillDescription: overridableComponent(components.SkillDescription),
+    // SkillPrototype: overridableComponent(components.SkillPrototype),
+    // SkillDescription: overridableComponent(components.SkillDescription),
   };
 }

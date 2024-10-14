@@ -7,7 +7,6 @@ import AppRouter from "./AppRouter";
 
 export const App = () => {
   const guisess = useGuises();
-  console.log(guisess);
 
   return (
     <Router>

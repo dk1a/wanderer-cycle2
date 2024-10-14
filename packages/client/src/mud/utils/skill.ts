@@ -1,7 +1,7 @@
-import { Entity, getComponentValueStrict, World } from "@latticexyz/recs";
-import { SetupResult } from "../setup";
-// import { parseElemental } from "./elemental";
-// import { parseScopedDuration } from "./scopedDuration";
+import { Entity, getComponentValueStrict } from "@latticexyz/recs";
+import { ClientComponents } from "../createClientComponents";
+import { parseElementalArray } from "./elemental";
+import { parseScopedDuration } from "./scopedDuration";
 
 export type SkillData = ReturnType<typeof getSkill>;
 
@@ -31,27 +31,40 @@ export const targetTypeNames = {
   [TargetType.SELF_OR_ALLY]: "self or ally",
 };
 
-type GetSkillComponents = Pick<
-  SetupResult["components"],
-  "SkillPrototype" | "SkillDescription" | "Name"
->;
-
 export const getSkill = (
-  world: World,
-  components: GetSkillComponents,
+  // world: World,
+  components: ClientComponents,
   entity: Entity,
 ) => {
-  const { SkillPrototype, SkillDescription, Name } = components;
-  const skill = getComponentValueStrict(SkillPrototype, entity);
-  const description = getComponentValueStrict(SkillDescription, entity);
-  const name = getComponentValueStrict(Name, entity);
+  const skill = getComponentValueStrict(components.SkillTemplate, entity);
+  const description = getComponentValueStrict(
+    components.SkillDescription,
+    entity,
+  );
+  const name = getComponentValueStrict(components.Name, entity);
+  const skillSpellDamage = getComponentValueStrict(
+    components.SkillSpellDamage,
+    entity,
+  );
+  const skillTemplateCooldown = getComponentValueStrict(
+    components.SkillTemplateCooldown,
+    entity,
+  );
+  const skillTemplateDuration = getComponentValueStrict(
+    components.SkillTemplateDuration,
+    entity,
+  );
+  // const skillCooldown = getComponentValueStrict(components.SkillCooldown, entity);
+
+  console.log("skill", skill);
+  console.log("skillSpell", skillSpellDamage);
 
   const skillType = skill.skillType as SkillType;
   const effectTarget = skill.effectTarget as TargetType;
 
   return {
     entity,
-    entityId: world.entities[entity],
+    // entityId: world.entities[entity],
     name: name?.value ?? "",
     requiredLevel: skill.requiredLevel,
     skillType,
@@ -59,17 +72,17 @@ export const getSkill = (
     withAttack: skill.withAttack,
     withSpell: skill.withSpell,
     cost: skill.cost,
-    // duration: parseScopedDuration(skill.duration_timeScopeId, skill.duration_timeValue),
-    // cooldown: parseScopedDuration(skill.cooldown_timeScopeId, skill.cooldown_timeValue),
+    duration: parseScopedDuration(
+      skillTemplateDuration.timeId,
+      skillTemplateDuration.timeValue.toString(),
+    ),
+    cooldown: parseScopedDuration(
+      skillTemplateCooldown.timeId,
+      skillTemplateCooldown.timeValue.toString(),
+    ),
     effectTarget,
     effectTargetName: targetTypeNames[effectTarget],
-    // spellDamage: parseElemental(
-    //   skill.spellDamage_all,
-    //   skill.spellDamage_physical,
-    //   skill.spellDamage_fire,
-    //   skill.spellDamage_cold,
-    //   skill.spellDamage_poison
-    // ),
+    spellDamage: parseElementalArray(skillSpellDamage.value),
 
     description: description?.value ?? "",
   };

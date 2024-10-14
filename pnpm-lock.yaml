@@ -77,6 +77,9 @@ importers:
       contracts:
         specifier: workspace:*
         version: link:../contracts
+      ethers:
+        specifier: ^5.7.2
+        version: 5.7.2
       react:
         specifier: ^18.2.0
         version: 18.3.1
@@ -104,7 +107,7 @@ importers:
         version: 18.2.7
       '@vitejs/plugin-react':
         specifier: ^3.1.0
-        version: 3.1.0(vite@4.5.3(@types/node@18.19.33))
+        version: 3.1.0(vite@4.5.3(@types/node@22.7.5))
       autoprefixer:
         specifier: ^10.4.20
         version: 10.4.20(postcss@8.4.47)
@@ -122,7 +125,7 @@ importers:
         version: 3.4.11
       vite:
         specifier: ^4.2.1
-        version: 4.5.3(@types/node@18.19.33)
+        version: 4.5.3(@types/node@22.7.5)
       wait-port:
         specifier: ^1.0.4
         version: 1.1.0
@@ -1193,6 +1196,9 @@ packages:
 
   '@types/node@18.19.33':
     resolution: {integrity: sha512-NR9+KrpSajr2qBVp/Yt5TU/rp+b5Mayi3+OlMlcg2cVCfRmcG5PWZ7S4+MG9PZ5gWBoc9Pd0BKSRViuBCRPu0A==}
+
+  '@types/node@22.7.5':
+    resolution: {integrity: sha512-jML7s2NAzMWc//QSJ1a3prpk78cOPchGvXJsC3C6R6PSMoooztvRVQEz89gmBTBY1SPMaqo5teB4uNHPdetShQ==}
 
   '@types/prop-types@15.7.12':
     resolution: {integrity: sha512-5zvhXYtRNRluoE/jAp4GVsSduVUzNWKkOZrCDBWYtE7biZywwdC2AcEzg+cSMLFRfVgeAFqpfNabiPjxFddV1Q==}
@@ -2957,6 +2963,9 @@ packages:
 
   undici-types@5.26.5:
     resolution: {integrity: sha512-JlCMO+ehdEIKqlFxk6IfVoAUVmgz7cU7zD/h9XZ0qzeosSHmUJVOzSQvvYSYWXkFXC+IfLKSIffhv0sVZup6pA==}
+
+  undici-types@6.19.8:
+    resolution: {integrity: sha512-ve2KP6f/JnbPBFyobGHuerC9g1FYGn/F8n1LWTwNxCEzd6IfqTwUQcNXgEtmmQ6DlRrC1hrSrBnCZPokRrDHjw==}
 
   update-browserslist-db@1.0.16:
     resolution: {integrity: sha512-KVbTxlBYlckhF5wgfyZXTWnMn7MMZjMu9XG8bPlliUOP9ThaF4QnhP8qrjrH7DRzHfSk0oQv1wToW+iA5GajEQ==}
@@ -4984,6 +4993,11 @@ snapshots:
     dependencies:
       undici-types: 5.26.5
 
+  '@types/node@22.7.5':
+    dependencies:
+      undici-types: 6.19.8
+    optional: true
+
   '@types/prop-types@15.7.12': {}
 
   '@types/react-dom@18.2.7':
@@ -5090,14 +5104,14 @@ snapshots:
 
   '@ungap/structured-clone@1.2.0': {}
 
-  '@vitejs/plugin-react@3.1.0(vite@4.5.3(@types/node@18.19.33))':
+  '@vitejs/plugin-react@3.1.0(vite@4.5.3(@types/node@22.7.5))':
     dependencies:
       '@babel/core': 7.24.6
       '@babel/plugin-transform-react-jsx-self': 7.24.6(@babel/core@7.24.6)
       '@babel/plugin-transform-react-jsx-source': 7.24.6(@babel/core@7.24.6)
       magic-string: 0.27.0
       react-refresh: 0.14.2
-      vite: 4.5.3(@types/node@18.19.33)
+      vite: 4.5.3(@types/node@22.7.5)
     transitivePeerDependencies:
       - supports-color
 
@@ -6923,6 +6937,9 @@ snapshots:
 
   undici-types@5.26.5: {}
 
+  undici-types@6.19.8:
+    optional: true
+
   update-browserslist-db@1.0.16(browserslist@4.23.0):
     dependencies:
       browserslist: 4.23.0
@@ -6973,13 +6990,13 @@ snapshots:
       - utf-8-validate
       - zod
 
-  vite@4.5.3(@types/node@18.19.33):
+  vite@4.5.3(@types/node@22.7.5):
     dependencies:
       esbuild: 0.18.20
       postcss: 8.4.47
       rollup: 3.29.4
     optionalDependencies:
-      '@types/node': 18.19.33
+      '@types/node': 22.7.5
       fsevents: 2.3.3
 
   wait-port@1.1.0:

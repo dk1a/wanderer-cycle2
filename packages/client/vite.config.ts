@@ -14,4 +14,25 @@ export default defineConfig({
     minify: true,
     sourcemap: true,
   },
+  optimizeDeps: {
+    esbuildOptions: {
+      target: "es2020",
+    },
+    exclude: ["@latticexyz/network"],
+    include: [
+      "threads",
+      "proxy-deep",
+      "ethers/lib/utils",
+      "bn.js",
+      "js-sha3",
+      "hash.js",
+      "bech32",
+      "long",
+      "protobufjs/minimal",
+      "debug",
+      "is-observable",
+      "nice-grpc-web",
+      "@improbable-eng/grpc-web",
+    ],
+  },
 });

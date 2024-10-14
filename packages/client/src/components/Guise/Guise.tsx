@@ -17,8 +17,6 @@ export default function Guise({
     guise.levelMul,
   ) as (keyof typeof guise.levelMul)[];
 
-  console.log("guise", guise);
-
   return (
     <div className="border border-dark-400 w-72 h-auto p-4 flex flex-col bg-dark-500 transform delay-500">
       <header className="text-2xl text-dark-type text-center">
@@ -45,7 +43,7 @@ export default function Guise({
         <div className="w-28">{"// level / skill"}</div>
       </div>
       <div>
-        {guise.skillEntities.map((entity) => (
+        {guise.skillEntities.entityArray.map((entity) => (
           <GuiseSkill key={entity} entity={entity} />
         ))}
       </div>
