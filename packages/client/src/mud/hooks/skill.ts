@@ -5,12 +5,12 @@ import { getSkill } from "../utils/skill";
 import { useMUD } from "../../MUDContext";
 
 export const useSkill = (entity: Entity | undefined) => {
-  const { world, components } = useMUD();
+  const { components } = useMUD();
 
   return useMemo(() => {
     if (entity === undefined) return undefined;
-    return getSkill(world, components, entity);
-  }, [world, components, entity]);
+    return getSkill(components, entity);
+  }, [components, entity]);
 };
 
 export const useSkillStrict = (entity: Entity) => {
@@ -22,13 +22,13 @@ export const useSkillStrict = (entity: Entity) => {
 };
 
 export const useSkills = (entities: Entity[]) => {
-  const { world, components } = useMUD();
+  const { components } = useMUD();
 
   return useMemo(() => {
     return entities.map((entity) => {
-      return getSkill(world, components, entity);
+      return getSkill(components, entity);
     });
-  }, [world, components, entities]);
+  }, [components, entities]);
 };
 
 export const useAllSkillEntities = () => {
