@@ -22,7 +22,7 @@ export const App = () => {
       </div>
 
       {guisess.map((guise) => (
-        <Guise key={guise.entity} guise={guise} />
+        <Guise key={guise.entity} guise={guise} disabled={false} />
       ))}
     </Router>
   );

@@ -10,9 +10,15 @@ interface GuiseSkillProps {
 
 export const GuiseSkill = ({ className, entity }: GuiseSkillProps) => {
   const skill = useSkillStrict(entity);
+  const uniqueId = `skill-${entity}`;
 
   return (
-    <div className={"bg-dark-500 p-2 border border-dark-400 flex " + className}>
+    <div
+      id={uniqueId}
+      className={
+        "skill-name bg-dark-500 p-2 border border-dark-400 flex " + className
+      }
+    >
       <div className={"w-full flex cursor-pointer justify-between"}>
         <div className={"flex"}>
           <div
@@ -27,7 +33,7 @@ export const GuiseSkill = ({ className, entity }: GuiseSkillProps) => {
           </div>
         </div>
       </div>
-      <Tooltip anchorSelect={"."} place={"top"} className={""}>
+      <Tooltip anchorSelect={`#${uniqueId}`} place={"right"} className={""}>
         <Skill skill={skill} />
       </Tooltip>
     </div>

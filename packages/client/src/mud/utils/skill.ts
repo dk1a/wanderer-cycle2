@@ -54,10 +54,6 @@ export const getSkill = (
     components.SkillTemplateDuration,
     entity,
   );
-  // const skillCooldown = getComponentValueStrict(components.SkillCooldown, entity);
-
-  console.log("skill", skill);
-  console.log("skillSpell", skillSpellDamage);
 
   const skillType = skill.skillType as SkillType;
   const effectTarget = skill.effectTarget as TargetType;
