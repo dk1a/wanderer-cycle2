@@ -50,9 +50,8 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
-  const wandererSpawn = async (id: Hex) => {
-    console.log(worldContract);
-    const tx = await worldContract.write.spawnWanderer([id]);
+  const wandererSpawn = async (entity: Hex) => {
+    const tx = await worldContract.write.spawnWanderer([entity]);
     await waitForTransaction(tx);
   };
 

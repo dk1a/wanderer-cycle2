@@ -1,17 +1,21 @@
 import { useGuises } from "../../mud/hooks/guise";
-// import { useWandererSpawn } from "../../mud/hooks/useWandererSpawn";
-// import Guise from "../Guise/Guise";
+import Guise from "../Guise/Guise";
+import React from "react";
+import { useWandererSpawn } from "../../mud/hooks/useWandererSpawn";
 
-export default function WandererSpawn() {
+export default function WandererSpawn({ disabled }: { disabled: boolean }) {
   const guises = useGuises();
+  const wandererSpawn = useWandererSpawn();
 
   return (
     <div>
       {guises.map((guise) => (
-        <div
-          className="flex justify-center items-center flex-col"
+        <Guise
           key={guise.entity}
-        ></div>
+          guise={guise}
+          disabled={disabled}
+          onSelectGuise={wandererSpawn}
+        />
       ))}
     </div>
   );
