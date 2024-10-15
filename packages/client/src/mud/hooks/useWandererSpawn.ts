@@ -1,16 +1,11 @@
-// import { EntityIndex } from "@latticexyz/recs";
-// import { useCallback } from "react";
-// import { useMUD } from "../../MUDContext";
+import { useCallback } from "react";
+import { useMUD } from "../../MUDContext";
+import { Hex } from "viem";
 
-export const useWandererSpawn = () => {
-  // const world = useMUD();
-  // return useCallback(
-  // //   async (guiseProtoEntity: EntityIndex) => {
-  // //     const tx = await systems["system.WandererSpawn"].executeTyped(
-  // //       world.entities[guiseProtoEntity],
-  // //     );
-  // //     await tx.wait();
-  // //   },
-  // //   [world, systems],
-  // );
+export const useWandererSpawn = (guiseProtoEntity: Hex) => {
+  const { systemCalls } = useMUD();
+
+  return useCallback(async () => {
+    await systemCalls.wandererSpawn(guiseProtoEntity);
+  }, [systemCalls, guiseProtoEntity]);
 };

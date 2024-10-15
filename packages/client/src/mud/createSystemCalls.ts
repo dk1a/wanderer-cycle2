@@ -50,14 +50,15 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
-  const spawn = async (id: Hex) => {
-    const tx = await worldContract.write.app__spawn([id]);
+  const wandererSpawn = async (id: Hex) => {
+    console.log(worldContract);
+    const tx = await worldContract.write.spawnWanderer([id]);
     await waitForTransaction(tx);
   };
 
   return {
     addTask,
-    spawn,
+    wandererSpawn,
     toggleTask,
     deleteTask,
   };

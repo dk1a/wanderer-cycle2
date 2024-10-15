@@ -4,9 +4,11 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { Navbar } from "./components/Navbar/Navbar";
 import Guise from "./components/Guise/Guise";
 import AppRouter from "./AppRouter";
+import { useWandererSpawn } from "./mud/hooks/useWandererSpawn";
 
 export const App = () => {
   const guisess = useGuises();
+  const wandererSpawn = useWandererSpawn();
 
   return (
     <Router>
@@ -22,7 +24,12 @@ export const App = () => {
       </div>
 
       {guisess.map((guise) => (
-        <Guise key={guise.entity} guise={guise} disabled={false} />
+        <Guise
+          key={guise.entity}
+          guise={guise}
+          disabled={false}
+          onSelectGuise={wandererSpawn}
+        />
       ))}
     </Router>
   );

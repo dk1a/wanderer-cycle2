@@ -9,10 +9,7 @@ interface GuiseProps {
   disabled?: boolean;
 }
 
-export default function Guise({
-  guise,
-  // onSelectGuise, disabled
-}: GuiseProps) {
+export default function Guise({ guise, onSelectGuise, disabled }: GuiseProps) {
   const statNames = Object.keys(
     guise.levelMul,
   ) as (keyof typeof guise.levelMul)[];
@@ -49,14 +46,11 @@ export default function Guise({
       </div>
 
       {/*{onSelectGuise !== undefined && (*/}
-      {/*  <div className="flex justify-center my-2">*/}
-      {/*    <button*/}
-      {/*      onClick={() => onSelectGuise(guise.entity)}*/}
-      {/*      disabled={disabled}*/}
-      {/*    >*/}
-      {/*      Spawn*/}
-      {/*    </button>*/}
-      {/*  </div>*/}
+      <div className="flex justify-center my-2">
+        <button onClick={() => onSelectGuise(guise.entity)} disabled={disabled}>
+          Spawn
+        </button>
+      </div>
       {/*)}*/}
     </div>
   );
