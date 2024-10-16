@@ -16,12 +16,9 @@ import { Schema } from "@latticexyz/store/src/Schema.sol";
 import { EncodedLengths, EncodedLengthsLib } from "@latticexyz/store/src/EncodedLengths.sol";
 import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 
-// Import user types
-import { MapType } from "../../map/MapType.sol";
-
-library MapTypeComponent {
-  // Hex below is the result of `WorldResourceIdLib.encode({ namespace: "", name: "MapTypeComponent", typeId: RESOURCE_TABLE });`
-  ResourceId constant _tableId = ResourceId.wrap(0x746200000000000000000000000000004d617054797065436f6d706f6e656e74);
+library MapTypeAffixAvailability {
+  // Hex below is the result of `WorldResourceIdLib.encode({ namespace: "", name: "MapTypeAffixAvai", typeId: RESOURCE_TABLE });`
+  ResourceId constant _tableId = ResourceId.wrap(0x746200000000000000000000000000004d617054797065416666697841766169);
 
   FieldLayout constant _fieldLayout =
     FieldLayout.wrap(0x0020010020000000000000000000000000000000000000000000000000000000);
@@ -37,7 +34,7 @@ library MapTypeComponent {
    */
   function getKeyNames() internal pure returns (string[] memory keyNames) {
     keyNames = new string[](1);
-    keyNames[0] = "entity";
+    keyNames[0] = "label";
   }
 
   /**
@@ -46,7 +43,7 @@ library MapTypeComponent {
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
     fieldNames = new string[](1);
-    fieldNames[0] = "value";
+    fieldNames[0] = "entity";
   }
 
   /**
@@ -64,95 +61,95 @@ library MapTypeComponent {
   }
 
   /**
-   * @notice Get value.
+   * @notice Get entity.
    */
-  function getValue(bytes32 entity) internal view returns (MapType value) {
+  function getEntity(bytes32 label) internal view returns (bytes32 entity) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return MapType.wrap(bytes32(_blob));
+    return (bytes32(_blob));
   }
 
   /**
-   * @notice Get value.
+   * @notice Get entity.
    */
-  function _getValue(bytes32 entity) internal view returns (MapType value) {
+  function _getEntity(bytes32 label) internal view returns (bytes32 entity) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return MapType.wrap(bytes32(_blob));
+    return (bytes32(_blob));
   }
 
   /**
-   * @notice Get value.
+   * @notice Get entity.
    */
-  function get(bytes32 entity) internal view returns (MapType value) {
+  function get(bytes32 label) internal view returns (bytes32 entity) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return MapType.wrap(bytes32(_blob));
+    return (bytes32(_blob));
   }
 
   /**
-   * @notice Get value.
+   * @notice Get entity.
    */
-  function _get(bytes32 entity) internal view returns (MapType value) {
+  function _get(bytes32 label) internal view returns (bytes32 entity) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return MapType.wrap(bytes32(_blob));
+    return (bytes32(_blob));
   }
 
   /**
-   * @notice Set value.
+   * @notice Set entity.
    */
-  function setValue(bytes32 entity, MapType value) internal {
+  function setEntity(bytes32 label, bytes32 entity) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked(MapType.unwrap(value)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((entity)), _fieldLayout);
   }
 
   /**
-   * @notice Set value.
+   * @notice Set entity.
    */
-  function _setValue(bytes32 entity, MapType value) internal {
+  function _setEntity(bytes32 label, bytes32 entity) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked(MapType.unwrap(value)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((entity)), _fieldLayout);
   }
 
   /**
-   * @notice Set value.
+   * @notice Set entity.
    */
-  function set(bytes32 entity, MapType value) internal {
+  function set(bytes32 label, bytes32 entity) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked(MapType.unwrap(value)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((entity)), _fieldLayout);
   }
 
   /**
-   * @notice Set value.
+   * @notice Set entity.
    */
-  function _set(bytes32 entity, MapType value) internal {
+  function _set(bytes32 label, bytes32 entity) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked(MapType.unwrap(value)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((entity)), _fieldLayout);
   }
 
   /**
    * @notice Delete all data for given keys.
    */
-  function deleteRecord(bytes32 entity) internal {
+  function deleteRecord(bytes32 label) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
     StoreSwitch.deleteRecord(_tableId, _keyTuple);
   }
@@ -160,9 +157,9 @@ library MapTypeComponent {
   /**
    * @notice Delete all data for given keys.
    */
-  function _deleteRecord(bytes32 entity) internal {
+  function _deleteRecord(bytes32 label) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
     StoreCore.deleteRecord(_tableId, _keyTuple, _fieldLayout);
   }
@@ -171,8 +168,8 @@ library MapTypeComponent {
    * @notice Tightly pack static (fixed length) data using this table's schema.
    * @return The static data, encoded into a sequence of bytes.
    */
-  function encodeStatic(MapType value) internal pure returns (bytes memory) {
-    return abi.encodePacked(value);
+  function encodeStatic(bytes32 entity) internal pure returns (bytes memory) {
+    return abi.encodePacked(entity);
   }
 
   /**
@@ -181,8 +178,8 @@ library MapTypeComponent {
    * @return The lengths of the dynamic fields (packed into a single bytes32 value).
    * @return The dynamic (variable length) data, encoded into a sequence of bytes.
    */
-  function encode(MapType value) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
-    bytes memory _staticData = encodeStatic(value);
+  function encode(bytes32 entity) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
+    bytes memory _staticData = encodeStatic(entity);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -193,9 +190,9 @@ library MapTypeComponent {
   /**
    * @notice Encode keys as a bytes32 array using this table's field layout.
    */
-  function encodeKeyTuple(bytes32 entity) internal pure returns (bytes32[] memory) {
+  function encodeKeyTuple(bytes32 label) internal pure returns (bytes32[] memory) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = label;
 
     return _keyTuple;
   }

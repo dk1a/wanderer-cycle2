@@ -16,20 +16,17 @@ import { Schema } from "@latticexyz/store/src/Schema.sol";
 import { EncodedLengths, EncodedLengthsLib } from "@latticexyz/store/src/EncodedLengths.sol";
 import { ResourceId } from "@latticexyz/store/src/ResourceId.sol";
 
-// Import user types
-import { MapType } from "../../map/MapType.sol";
-
-library MapTypeComponent {
-  // Hex below is the result of `WorldResourceIdLib.encode({ namespace: "", name: "MapTypeComponent", typeId: RESOURCE_TABLE });`
-  ResourceId constant _tableId = ResourceId.wrap(0x746200000000000000000000000000004d617054797065436f6d706f6e656e74);
+library ERC721Config {
+  // Hex below is the result of `WorldResourceIdLib.encode({ namespace: "", name: "ERC721Config", typeId: RESOURCE_TABLE });`
+  ResourceId constant _tableId = ResourceId.wrap(0x74620000000000000000000000000000455243373231436f6e66696700000000);
 
   FieldLayout constant _fieldLayout =
-    FieldLayout.wrap(0x0020010020000000000000000000000000000000000000000000000000000000);
+    FieldLayout.wrap(0x0014010014000000000000000000000000000000000000000000000000000000);
 
-  // Hex-encoded key schema of (bytes32)
-  Schema constant _keySchema = Schema.wrap(0x002001005f000000000000000000000000000000000000000000000000000000);
-  // Hex-encoded value schema of (bytes32)
-  Schema constant _valueSchema = Schema.wrap(0x002001005f000000000000000000000000000000000000000000000000000000);
+  // Hex-encoded key schema of (bytes14)
+  Schema constant _keySchema = Schema.wrap(0x000e01004d000000000000000000000000000000000000000000000000000000);
+  // Hex-encoded value schema of (address)
+  Schema constant _valueSchema = Schema.wrap(0x0014010061000000000000000000000000000000000000000000000000000000);
 
   /**
    * @notice Get the table's key field names.
@@ -37,7 +34,7 @@ library MapTypeComponent {
    */
   function getKeyNames() internal pure returns (string[] memory keyNames) {
     keyNames = new string[](1);
-    keyNames[0] = "entity";
+    keyNames[0] = "namespace";
   }
 
   /**
@@ -46,7 +43,7 @@ library MapTypeComponent {
    */
   function getFieldNames() internal pure returns (string[] memory fieldNames) {
     fieldNames = new string[](1);
-    fieldNames[0] = "value";
+    fieldNames[0] = "tokenAddress";
   }
 
   /**
@@ -64,95 +61,95 @@ library MapTypeComponent {
   }
 
   /**
-   * @notice Get value.
+   * @notice Get tokenAddress.
    */
-  function getValue(bytes32 entity) internal view returns (MapType value) {
+  function getTokenAddress(bytes14 namespace) internal view returns (address tokenAddress) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return MapType.wrap(bytes32(_blob));
+    return (address(bytes20(_blob)));
   }
 
   /**
-   * @notice Get value.
+   * @notice Get tokenAddress.
    */
-  function _getValue(bytes32 entity) internal view returns (MapType value) {
+  function _getTokenAddress(bytes14 namespace) internal view returns (address tokenAddress) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return MapType.wrap(bytes32(_blob));
+    return (address(bytes20(_blob)));
   }
 
   /**
-   * @notice Get value.
+   * @notice Get tokenAddress.
    */
-  function get(bytes32 entity) internal view returns (MapType value) {
+  function get(bytes14 namespace) internal view returns (address tokenAddress) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
     bytes32 _blob = StoreSwitch.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return MapType.wrap(bytes32(_blob));
+    return (address(bytes20(_blob)));
   }
 
   /**
-   * @notice Get value.
+   * @notice Get tokenAddress.
    */
-  function _get(bytes32 entity) internal view returns (MapType value) {
+  function _get(bytes14 namespace) internal view returns (address tokenAddress) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
     bytes32 _blob = StoreCore.getStaticField(_tableId, _keyTuple, 0, _fieldLayout);
-    return MapType.wrap(bytes32(_blob));
+    return (address(bytes20(_blob)));
   }
 
   /**
-   * @notice Set value.
+   * @notice Set tokenAddress.
    */
-  function setValue(bytes32 entity, MapType value) internal {
+  function setTokenAddress(bytes14 namespace, address tokenAddress) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked(MapType.unwrap(value)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((tokenAddress)), _fieldLayout);
   }
 
   /**
-   * @notice Set value.
+   * @notice Set tokenAddress.
    */
-  function _setValue(bytes32 entity, MapType value) internal {
+  function _setTokenAddress(bytes14 namespace, address tokenAddress) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked(MapType.unwrap(value)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((tokenAddress)), _fieldLayout);
   }
 
   /**
-   * @notice Set value.
+   * @notice Set tokenAddress.
    */
-  function set(bytes32 entity, MapType value) internal {
+  function set(bytes14 namespace, address tokenAddress) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
-    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked(MapType.unwrap(value)), _fieldLayout);
+    StoreSwitch.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((tokenAddress)), _fieldLayout);
   }
 
   /**
-   * @notice Set value.
+   * @notice Set tokenAddress.
    */
-  function _set(bytes32 entity, MapType value) internal {
+  function _set(bytes14 namespace, address tokenAddress) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
-    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked(MapType.unwrap(value)), _fieldLayout);
+    StoreCore.setStaticField(_tableId, _keyTuple, 0, abi.encodePacked((tokenAddress)), _fieldLayout);
   }
 
   /**
    * @notice Delete all data for given keys.
    */
-  function deleteRecord(bytes32 entity) internal {
+  function deleteRecord(bytes14 namespace) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
     StoreSwitch.deleteRecord(_tableId, _keyTuple);
   }
@@ -160,9 +157,9 @@ library MapTypeComponent {
   /**
    * @notice Delete all data for given keys.
    */
-  function _deleteRecord(bytes32 entity) internal {
+  function _deleteRecord(bytes14 namespace) internal {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
     StoreCore.deleteRecord(_tableId, _keyTuple, _fieldLayout);
   }
@@ -171,8 +168,8 @@ library MapTypeComponent {
    * @notice Tightly pack static (fixed length) data using this table's schema.
    * @return The static data, encoded into a sequence of bytes.
    */
-  function encodeStatic(MapType value) internal pure returns (bytes memory) {
-    return abi.encodePacked(value);
+  function encodeStatic(address tokenAddress) internal pure returns (bytes memory) {
+    return abi.encodePacked(tokenAddress);
   }
 
   /**
@@ -181,8 +178,8 @@ library MapTypeComponent {
    * @return The lengths of the dynamic fields (packed into a single bytes32 value).
    * @return The dynamic (variable length) data, encoded into a sequence of bytes.
    */
-  function encode(MapType value) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
-    bytes memory _staticData = encodeStatic(value);
+  function encode(address tokenAddress) internal pure returns (bytes memory, EncodedLengths, bytes memory) {
+    bytes memory _staticData = encodeStatic(tokenAddress);
 
     EncodedLengths _encodedLengths;
     bytes memory _dynamicData;
@@ -193,9 +190,9 @@ library MapTypeComponent {
   /**
    * @notice Encode keys as a bytes32 array using this table's field layout.
    */
-  function encodeKeyTuple(bytes32 entity) internal pure returns (bytes32[] memory) {
+  function encodeKeyTuple(bytes14 namespace) internal pure returns (bytes32[] memory) {
     bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = entity;
+    _keyTuple[0] = bytes32(namespace);
 
     return _keyTuple;
   }
