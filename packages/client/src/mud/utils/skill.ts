@@ -1,7 +1,6 @@
 import { Entity, getComponentValueStrict } from "@latticexyz/recs";
 import { ClientComponents } from "../createClientComponents";
 import { parseElementalArray } from "./elemental";
-import { parseScopedDuration } from "./scopedDuration";
 
 export type SkillData = ReturnType<typeof getSkill>;
 
@@ -68,14 +67,8 @@ export const getSkill = (
     withAttack: skill.withAttack,
     withSpell: skill.withSpell,
     cost: skill.cost,
-    duration: parseScopedDuration(
-      skillTemplateDuration.timeId,
-      skillTemplateDuration.timeValue.toString(),
-    ),
-    cooldown: parseScopedDuration(
-      skillTemplateCooldown.timeId,
-      skillTemplateCooldown.timeValue.toString(),
-    ),
+    duration: skillTemplateDuration,
+    cooldown: skillTemplateCooldown,
     effectTarget,
     effectTargetName: targetTypeNames[effectTarget],
     spellDamage: parseElementalArray(skillSpellDamage.value),

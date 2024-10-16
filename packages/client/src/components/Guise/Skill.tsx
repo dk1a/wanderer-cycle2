@@ -54,11 +54,11 @@ export default function Skill({
                 <div className="flex">
                   <span className="text-dark-key mr-1">duration:</span>
                   <span className="text-dark-number mr-1">
-                    {skill.duration.timeValue}
+                    {skill.duration.timeValue.toString()}
                   </span>
                   <span className="text-dark-string">
                     {" "}
-                    {skill.duration.timeScopeName}
+                    {skill.duration.timeId}
                   </span>
                 </div>
               )}
@@ -66,11 +66,11 @@ export default function Skill({
                 <div className="flex">
                   <span className="text-dark-key mr-1">cooldown: </span>
                   <span className="text-dark-number mr-1">
-                    {skill.cooldown.timeValue}
+                    {skill.cooldown.timeValue.toString()}
                   </span>
                   <span className="text-dark-string">
                     {" "}
-                    {skill.cooldown.timeScopeName}
+                    {skill.cooldown.timeId}
                   </span>
                 </div>
               )}

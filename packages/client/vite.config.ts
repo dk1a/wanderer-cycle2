@@ -22,7 +22,6 @@ export default defineConfig({
     include: [
       "threads",
       "proxy-deep",
-      "ethers/lib/utils",
       "bn.js",
       "js-sha3",
       "hash.js",
