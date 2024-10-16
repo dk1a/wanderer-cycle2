@@ -78,7 +78,7 @@ export default function Skill({
               {/*  <div className="p-0.5 w-full mt-4">*/}
               {/*    <div className="">*/}
               {/*      <span className="text-dark-key">*/}
-              {/*        effectTarget: <span className="text-dark-string">{skill.effectTargetName}</span>*/}
+              {/*        targetType: <span className="text-dark-string">{skill.targetTypeName}</span>*/}
               {/*      </span>*/}
               {/*    </div>*/}
               {/*    {effect.statmods.map((statmod) => (*/}

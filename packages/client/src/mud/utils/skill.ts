@@ -55,7 +55,7 @@ export const getSkill = (
   );
 
   const skillType = skill.skillType as SkillType;
-  const effectTarget = skill.effectTarget as TargetType;
+  const targetType = skill.targetType as TargetType;
 
   return {
     entity,
@@ -69,8 +69,8 @@ export const getSkill = (
     cost: skill.cost,
     duration: skillTemplateDuration,
     cooldown: skillTemplateCooldown,
-    effectTarget,
-    effectTargetName: targetTypeNames[effectTarget],
+    targetType,
+    targetTypeName: targetTypeNames[targetType],
     spellDamage: parseElementalArray(skillSpellDamage.value),
 
     description: description?.value ?? "",
