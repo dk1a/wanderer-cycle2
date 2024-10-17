@@ -1,11 +1,11 @@
-import { GuiseData } from "../../mud/utils/guise";
 import { Fragment } from "react";
+import { Entity } from "@latticexyz/recs";
+import { GuiseData } from "../../mud/utils/guise";
 import { GuiseSkill } from "./GuiseSkill";
-import { Hex } from "viem";
 
 interface GuiseProps {
   guise: GuiseData;
-  onSelectGuise?: (guiseEntity: Hex) => void;
+  onSelectGuise?: (guiseEntity: Entity) => void;
   disabled?: boolean;
 }
 
@@ -40,7 +40,7 @@ export default function Guise({ guise, onSelectGuise, disabled }: GuiseProps) {
         <div className="w-28">{"// level / skill"}</div>
       </div>
       <div>
-        {guise.skillEntities.entityArray.map((entity) => (
+        {guise.skillEntities.map((entity) => (
           <GuiseSkill key={entity} entity={entity} />
         ))}
       </div>

@@ -1,5 +1,4 @@
-import { getComponentValueStrict } from "@latticexyz/recs";
-import { Entity } from "@latticexyz/recs/src/types";
+import { Entity, getComponentValueStrict } from "@latticexyz/recs";
 import { ClientComponents } from "../createClientComponents";
 
 export type GuiseData = ReturnType<typeof getGuise>;
@@ -9,7 +8,8 @@ export const getGuise = (components: ClientComponents, entity: Entity) => {
     components.GuisePrototype,
     entity,
   );
-  const skillEntities = getComponentValueStrict(components.GuiseSkills, entity);
+  const skillEntities = getComponentValueStrict(components.GuiseSkills, entity)
+    .entityArray as Entity[];
   const name = getComponentValueStrict(components.Name, entity);
 
   const affixPart = Array.isArray(guisePrototype.affixPart)

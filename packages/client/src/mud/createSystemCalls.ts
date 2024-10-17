@@ -3,6 +3,7 @@
  * for changes in the World state (using the System contracts).
  */
 import { Hex } from "viem";
+import { Entity } from "@latticexyz/recs";
 
 import { SetupNetworkResult } from "./setupNetwork";
 
@@ -50,14 +51,14 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
-  const wandererSpawn = async (entity: Hex) => {
-    const tx = await worldContract.write.spawnWanderer([entity]);
+  const spawnWanderer = async (guiseEntity: Entity) => {
+    const tx = await worldContract.write.spawnWanderer([guiseEntity as Hex]);
     await waitForTransaction(tx);
   };
 
   return {
     addTask,
-    wandererSpawn,
+    spawnWanderer,
     toggleTask,
     deleteTask,
   };

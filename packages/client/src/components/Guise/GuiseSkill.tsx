@@ -1,7 +1,7 @@
 import { Tooltip } from "react-tooltip";
+import { Entity } from "@latticexyz/recs";
 import Skill from "./Skill";
 import { useSkillStrict } from "../../mud/hooks/skill";
-import { Entity } from "@latticexyz/recs";
 
 interface GuiseSkillProps {
   className?: string;

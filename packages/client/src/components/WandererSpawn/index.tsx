@@ -1,11 +1,10 @@
 import { useGuises } from "../../mud/hooks/guise";
 import Guise from "../Guise/Guise";
-import React from "react";
-import { useWandererSpawn } from "../../mud/hooks/useWandererSpawn";
+import { useSpawnWanderer } from "../../mud/hooks/useSpawnWanderer";
 
 export default function WandererSpawn({ disabled }: { disabled: boolean }) {
   const guises = useGuises();
-  const wandererSpawn = useWandererSpawn();
+  const spawnWanderer = useSpawnWanderer();
 
   return (
     <div>
@@ -14,7 +13,7 @@ export default function WandererSpawn({ disabled }: { disabled: boolean }) {
           key={guise.entity}
           guise={guise}
           disabled={disabled}
-          onSelectGuise={wandererSpawn}
+          onSelectGuise={spawnWanderer}
         />
       ))}
     </div>

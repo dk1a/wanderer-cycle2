@@ -1,13 +1,13 @@
 import { useCallback } from "react";
+import { Entity } from "@latticexyz/recs";
 import { useMUD } from "../../MUDContext";
-import { Hex } from "viem";
 
-export const useWandererSpawn = () => {
+export const useSpawnWanderer = () => {
   const { systemCalls } = useMUD();
 
   return useCallback(
-    async (guiseProtoEntity: Hex) => {
-      await systemCalls.wandererSpawn(guiseProtoEntity);
+    async (guiseEntity: Entity) => {
+      await systemCalls.spawnWanderer(guiseEntity);
     },
     [systemCalls],
   );
