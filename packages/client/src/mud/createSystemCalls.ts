@@ -29,37 +29,14 @@ export function createSystemCalls(
    *   syncToRecs
    *   (https://github.com/latticexyz/mud/blob/main/templates/react/packages/client/src/mud/setupNetwork.ts#L77-L83).
    */
-  { tables, useStore, worldContract, waitForTransaction }: SetupNetworkResult,
+  { worldContract, waitForTransaction }: SetupNetworkResult,
 ) {
-  const addTask = async (label: string) => {
-    const tx = await worldContract.write.app__addTask([label]);
-    await waitForTransaction(tx);
-  };
-
-  const toggleTask = async (id: Hex) => {
-    const isComplete =
-      (useStore.getState().getValue(tables.Tasks, { id })?.completedAt ?? 0n) >
-      0n;
-    const tx = isComplete
-      ? await worldContract.write.app__resetTask([id])
-      : await worldContract.write.app__completeTask([id]);
-    await waitForTransaction(tx);
-  };
-
-  const deleteTask = async (id: Hex) => {
-    const tx = await worldContract.write.app__deleteTask([id]);
-    await waitForTransaction(tx);
-  };
-
   const spawnWanderer = async (guiseEntity: Entity) => {
     const tx = await worldContract.write.spawnWanderer([guiseEntity as Hex]);
     await waitForTransaction(tx);
   };
 
   return {
-    addTask,
     spawnWanderer,
-    toggleTask,
-    deleteTask,
   };
 }

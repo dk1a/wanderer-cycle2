@@ -3,6 +3,7 @@
 // import { useStatmodPrototype } from "../mud/hooks/useStatmodPrototype";
 // import { EffectStatmodData } from "../mud/utils/effectStatmod";
 
+import { Hex, hexToString } from "viem";
 import { SkillType, SkillData } from "../../mud/utils/skill";
 
 type SkillProps = {
@@ -58,7 +59,7 @@ export default function Skill({
                   </span>
                   <span className="text-dark-string">
                     {" "}
-                    {skill.duration.timeId}
+                    {hexToString(skill.duration.timeId as Hex)}
                   </span>
                 </div>
               )}
@@ -70,7 +71,7 @@ export default function Skill({
                   </span>
                   <span className="text-dark-string">
                     {" "}
-                    {skill.cooldown.timeId}
+                    {hexToString(skill.cooldown.timeId as Hex)}
                   </span>
                 </div>
               )}

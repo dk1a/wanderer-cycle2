@@ -30,11 +30,7 @@ export const targetTypeNames = {
   [TargetType.SELF_OR_ALLY]: "self or ally",
 };
 
-export const getSkill = (
-  // world: World,
-  components: ClientComponents,
-  entity: Entity,
-) => {
+export const getSkill = (components: ClientComponents, entity: Entity) => {
   const skill = getComponentValueStrict(components.SkillTemplate, entity);
   const description = getComponentValueStrict(
     components.SkillDescription,
@@ -59,7 +55,6 @@ export const getSkill = (
 
   return {
     entity,
-    // entityId: world.entities[entity],
     name: name?.value ?? "",
     requiredLevel: skill.requiredLevel,
     skillType,

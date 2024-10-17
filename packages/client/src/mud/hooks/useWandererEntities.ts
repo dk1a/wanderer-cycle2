@@ -7,5 +7,5 @@ export const useWandererEntities = () => {
     components: { Wanderer },
   } = useMUD();
 
-  return useEntityQuery([Has(Wanderer)], true);
+  return useEntityQuery([Has(Wanderer)]);
 };
