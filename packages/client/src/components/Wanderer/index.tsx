@@ -1,6 +1,6 @@
 // import { useWandererContext } from "../../contexts/WandererContext";
 import { Button } from "../utils/Button/Button";
-import { Entity } from "@latticexyz/recs/dist";
+import { Entity } from "@latticexyz/recs";
 
 interface WandererProps {
   wandererEntity: Entity;

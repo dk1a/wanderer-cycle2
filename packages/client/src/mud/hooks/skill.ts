@@ -32,29 +32,31 @@ export const useSkills = (entities: Entity[]) => {
 };
 
 export const useAllSkillEntities = () => {
-  const {
-    components: { SkillPrototype },
-  } = useMUD();
+  const { components } = useMUD();
 
-  return useEntityQuery([Has(SkillPrototype)]);
+  return useEntityQuery([Has(components.SkillTemplate)]);
 };
 
 export const useLearnedSkillEntities = (targetEntity: Entity | undefined) => {
-  const {
-    world,
-    components: { LearnedSkills },
-  } = useMUD();
+  const { components } = useMUD();
 
-  const learnedSkills = useComponentValue(LearnedSkills, targetEntity);
+  const learnedSkills = useComponentValue(
+    components.LearnedSkills,
+    targetEntity,
+  );
+
   return useMemo(() => {
-    const entityIds = learnedSkills?.value ?? [];
-    return entityIds.map((entityId) => {
-      const entity = world.entityToIndex.get(entityId);
-      if (entity === undefined)
-        throw new Error(`No index for entity id ${entityId}`);
+    if (!learnedSkills || !Array.isArray(learnedSkills)) {
+      return [];
+    }
+
+    return learnedSkills.map((entity: Entity) => {
+      if (entity === undefined) {
+        throw new Error(`No index for entity id ${entity}`);
+      }
       return entity;
     });
-  }, [world, learnedSkills]);
+  }, [components, learnedSkills]);
 };
 
 export const useLearnCycleSkill = (wandererEntity: Entity | undefined) => {
