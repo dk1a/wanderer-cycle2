@@ -14,8 +14,8 @@ const WandererSelect = ({ className }: WandererSelectProps) => {
       <section>
         <div className="flex justify-around">
           {wandererEntities.length > 0 && (
-            <div className="flex flex-col w-1/2 ml-5">
-              <h3 className="m-10 text-2xl font-bold text-dark-comment text-center">
+            <div className="flex flex-col w-1/2 ml-5 p-10">
+              <h3 className="mb-10 mt-10 text-2xl font-bold text-dark-comment">
                 {"// select a wanderer"}
               </h3>
               <div className="flex flex-wrap gap-x-4 gap-y-4 mt-2 justify-around">
@@ -28,8 +28,8 @@ const WandererSelect = ({ className }: WandererSelectProps) => {
               </div>
             </div>
           )}
-          <div className="flex flex-col w-1/2 mr-5">
-            <h3 className=" mt-10 text-2xl font-bold text-dark-comment mb-10 text-center">
+          <div className="flex flex-col w-1/2 mr-5 p-10">
+            <h3 className="mb-10 mt-10 text-2xl font-bold text-dark-comment">
               {"// select a guise to spawn a new wanderer"}
             </h3>
             <WandererSpawn

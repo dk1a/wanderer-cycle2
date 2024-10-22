@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import { Entity } from "@latticexyz/recs";
 import { GuiseData } from "../../mud/utils/guise";
 import { GuiseSkill } from "./GuiseSkill";
+import { Button } from "../utils/Button/Button";
 
 interface GuiseProps {
   guise: GuiseData;
@@ -47,12 +48,12 @@ export default function Guise({ guise, onSelectGuise, disabled }: GuiseProps) {
 
       {onSelectGuise !== undefined && (
         <div className="flex justify-center my-2">
-          <button
+          <Button
             onClick={() => onSelectGuise(guise.entity)}
             disabled={disabled}
           >
             Spawn
-          </button>
+          </Button>
         </div>
       )}
     </div>

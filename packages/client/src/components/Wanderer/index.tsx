@@ -1,24 +1,43 @@
 // import { useWandererContext } from "../../contexts/WandererContext";
+import { Button } from "../utils/Button/Button";
+import { Entity } from "@latticexyz/recs/dist";
 
-// import { Entity } from "@latticexyz/recs";
+interface WandererProps {
+  wandererEntity: Entity;
+}
 
-export default function Wanderer() {
+export default function Wanderer({ wandererEntity }: WandererProps) {
   // const { selectedWandererEntity, selectWandererEntity } = useWandererContext();
 
+  console.log(wandererEntity);
+
+  function formatEntity(entity: string): string {
+    if (entity.length <= 10) {
+      return entity;
+    }
+    const start = entity.slice(0, 5);
+    const end = entity.slice(-5);
+    return `${start}...${end}`;
+  }
+
   return (
-    <div className="border border-dark-400 w-72 h-auto py-2 px-4 flex flex-col justify-between items-center bg-dark-500 transform delay-500">
+    <div className="border border-dark-400 min-h-[300px] min-w-[200px] h-auto py-2 px-4 flex flex-col justify-between items-center bg-dark-500 transform delay-500">
+      <h3 className={"text-dark-type"}>{formatEntity(wandererEntity)}</h3>
       {/*<WandererImage entity={wandererEntity}/>*/}
       {/*<div className="mt-4 flex justify-around w-full">*/}
       {/*  {wandererEntity === selectedWandererEntity && (*/}
-      {/*    <CustomButton disabled={true}>*/}
+      {/*    <Button disabled={true}>*/}
       {/*      <span className="Selected font-medium">Selected</span>*/}
-      {/*    </CustomButton>*/}
+      {/*    </Button>*/}
       {/*  )}*/}
-      {/*  {wandererEntity !== selectedWandererEntity && (*/}
-      {/*    <CustomButton style={{width: "6rem"}} onClick={() => selectWandererEntity(wandererEntity)}>*/}
-      {/*      Select*/}
-      {/*    </CustomButton>*/}
-      {/*  )}*/}
+      {/*{wandererEntity !== selectedWandererEntity && (*/}
+      <Button
+        style={{ width: "6rem" }}
+        // onClick={() => selectWandererEntity(wandererEntity)}
+      >
+        Select
+      </Button>
+      {/*  // )}*/}
       {/*</div>*/}
     </div>
   );
