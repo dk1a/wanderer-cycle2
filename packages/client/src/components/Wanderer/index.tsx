@@ -9,8 +9,6 @@ interface WandererProps {
 export default function Wanderer({ wandererEntity }: WandererProps) {
   // const { selectedWandererEntity, selectWandererEntity } = useWandererContext();
 
-  console.log(wandererEntity);
-
   function formatEntity(entity: string): string {
     if (entity.length <= 10) {
       return entity;
@@ -32,7 +30,7 @@ export default function Wanderer({ wandererEntity }: WandererProps) {
       {/*  )}*/}
       {/*{wandererEntity !== selectedWandererEntity && (*/}
       <Button
-        style={{ width: "6rem" }}
+        className={"w-24"}
         // onClick={() => selectWandererEntity(wandererEntity)}
       >
         Select
