@@ -36,7 +36,25 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
+  // const learnCycleSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
+  //   const tx = await worldContract.write.LearnCycleSkill([wandererEntity as Hex, skillEntity as Hex]);
+  //   await waitForTransaction(tx);
+  // };
+
+  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
+  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
+  //   await waitForTransaction(tx);
+  // };
+
+  // const noncombatSkill = async (cycleEntity: Entity, skillEntity: Entity) => {
+  //   const tx = await worldContract.write.NoncombatSkill([cycleEntity as Hex, skillEntity as Hex]);
+  //   await waitForTransaction(tx);
+  // };
+
   return {
     spawnWanderer,
+    // learnCycleSkill,
+    // permSkill,
+    // noncombatSkill
   };
 }

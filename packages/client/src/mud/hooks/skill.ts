@@ -1,6 +1,6 @@
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Entity, Has } from "@latticexyz/recs";
-import { useCallback, useMemo } from "react";
+import { useMemo } from "react";
 import { getSkill } from "../utils/skill";
 import { useMUD } from "../../MUDContext";
 
@@ -56,52 +56,43 @@ export const useLearnedSkillEntities = (targetEntity: Entity | undefined) => {
       }
       return entity;
     });
-  }, [components, learnedSkills]);
+  }, [learnedSkills]);
 };
 
-export const useLearnCycleSkill = (wandererEntity: Entity | undefined) => {
-  const { world, systems } = useMUD();
+// export const useLearnCycleSkill = (wandererEntity: Entity | undefined) => {
+//   const { systemCalls } = useMUD();
+//
+//   return useCallback(
+//     async (skillEntity: Entity) => {
+//       if (wandererEntity === undefined) {
+//         throw new Error("No wanderer selected");
+//       }
+//
+//       await systemCalls.LearnCycleSkill(wandererEntity, skillEntity);
+//     },
+//     [systemCalls, wandererEntity]
+//   );
+// };
 
-  return useCallback(
-    async (skillEntity: Entity) => {
-      if (wandererEntity === undefined) throw new Error("No wanderer selected");
-      const tx = await systems["system.LearnCycleSkill"].executeTyped(
-        world.entities[wandererEntity],
-        world.entities[skillEntity],
-      );
-      await tx.wait();
-    },
-    [world, systems, wandererEntity],
-  );
-};
+// export const usePermSkill = (wandererEntity: Entity | undefined) => {
+//   const { systemCalls } = useMUD();
+//
+//   return useCallback(
+//     async (skillEntity: Entity) => {
+//       if (wandererEntity === undefined) throw new Error("No wanderer selected");
+//       await systemCalls.permSkill(wandererEntity, skillEntity);
+//     },
+//     [systemCalls, wandererEntity],
+//   );
+// };
 
-export const usePermSkill = (wandererEntity: Entity | undefined) => {
-  const { world, systems } = useMUD();
-
-  return useCallback(
-    async (skillEntity: Entity) => {
-      if (wandererEntity === undefined) throw new Error("No wanderer selected");
-      const tx = await systems["system.PermSkill"].executeTyped(
-        world.entities[wandererEntity],
-        world.entities[skillEntity],
-      );
-      await tx.wait();
-    },
-    [world, systems, wandererEntity],
-  );
-};
-
-export const useExecuteNoncombatSkill = () => {
-  const { world, systems } = useMUD();
-
-  return useCallback(
-    async (cycleEntity: Entity, skillEntity: Entity) => {
-      const tx = await systems["system.NoncombatSkill"].executeTyped(
-        world.entities[cycleEntity],
-        world.entities[skillEntity],
-      );
-      await tx.wait();
-    },
-    [world, systems],
-  );
-};
+// export const useExecuteNoncombatSkill = () => {
+//   const { systemCalls } = useMUD();
+//
+//   return useCallback(
+//     async (cycleEntity: Entity, skillEntity: Entity) => {
+//       await systemCalls.noncombatSkill(cycleEntity, skillEntity);
+//     },
+//     [systemCalls],
+//   );
+// };
