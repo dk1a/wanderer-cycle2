@@ -8,8 +8,7 @@ import { LibCharstat } from "../charstat/LibCharstat.sol";
 import { LibRNG } from "../rng/LibRNG.sol";
 import { AffixPartId } from "../affix/LibPickAffix.sol";
 import { PStat_length } from "../CustomTypes.sol";
-
-// import { MapPrototypes } from "../map/MapPrototypes.sol";
+import { MapTypes, MapType } from "../map/MapType.sol";
 
 library LibCycleCombatRewardRequest {
   error LibCycleCombatRewardRequest__EntityMismatch();
@@ -29,8 +28,8 @@ library LibCycleCombatRewardRequest {
         mapEntity: mapEntity,
         connection: LibCharstat.getConnection(cycleEntity),
         fortune: LibCharstat.getFortune(cycleEntity),
-        winnerPStats: LibCharstat.getPStats(cycleEntity),
-        loserPStats: LibCharstat.getPStats(retaliatorEntity)
+        winnerPStat: LibCharstat.getPStats(cycleEntity),
+        loserPStat: LibCharstat.getPStats(retaliatorEntity)
       })
     );
   }
@@ -49,9 +48,9 @@ library LibCycleCombatRewardRequest {
 
     bytes32 mapProtoEntity = FromTemplate.get(req.mapEntity);
     if (
-      mapProtoEntity != MapPrototypes.GLOBAL_BASIC &&
-      mapProtoEntity != MapPrototypes.GLOBAL_RANDOM &&
-      mapProtoEntity != MapPrototypes.GLOBAL_CYCLE_BOSS
+      mapProtoEntity != MapType.unwrap(MapTypes.BASIC) &&
+      mapProtoEntity != MapType.unwrap(MapTypes.RANDOM) &&
+      mapProtoEntity != MapType.unwrap(MapTypes.CYCLE_BOSS)
     ) {
       // TODO support for other map protos when they're added
       revert LibCycleCombatRewardRequest__UnknownMapPrototype();
@@ -61,7 +60,7 @@ library LibCycleCombatRewardRequest {
     (lootIlvl, lootCount) = _getLootReward(randomness, req);
 
     // extra boss rewards
-    if (mapProtoEntity == MapPrototypes.GLOBAL_CYCLE_BOSS) {
+    if (mapProtoEntity == MapType.unwrap(MapTypes.CYCLE_BOSS)) {
       lootCount += 2;
 
       BossesDefeated.push(cycleEntity, req.mapEntity);
@@ -74,11 +73,11 @@ library LibCycleCombatRewardRequest {
   ) private pure returns (uint32[PStat_length] memory exp) {
     for (uint256 i; i < PStat_length; i++) {
       // initial exp is connection + loser's stats
-      exp[i] = req.connection + req.loserPStats[i];
+      exp[i] = req.connection + req.loserPStat[i];
 
-      if (req.winnerPStats[i] > req.loserPStats[i]) {
+      if (req.winnerPStat[i] > req.loserPStat[i]) {
         // easy win may reduce exp by up to stat diff
-        uint32 range = req.winnerPStats[i] - req.loserPStats[i];
+        uint32 range = req.winnerPStat[i] - req.loserPStat[i];
         uint256 iterRandomness = uint256(keccak256(abi.encode("subExp", i, randomness)));
         uint32 subExp = uint32(iterRandomness % range);
         if (subExp > exp[i]) {
@@ -87,9 +86,9 @@ library LibCycleCombatRewardRequest {
         } else {
           exp[i] -= subExp;
         }
-      } else if (req.winnerPStats[i] < req.loserPStats[i]) {
+      } else if (req.winnerPStat[i] < req.loserPStat[i]) {
         // hard win may increase exp by up to stat diff
-        uint32 range = req.loserPStats[i] - req.winnerPStats[i];
+        uint32 range = req.loserPStat[i] - req.winnerPStat[i];
         uint256 iterRandomness = uint256(keccak256(abi.encode("addExp", i, randomness)));
         uint32 addExp = uint32(iterRandomness % range);
         exp[i] += addExp;
@@ -99,7 +98,7 @@ library LibCycleCombatRewardRequest {
 
   function _getLootReward(
     uint256 randomness,
-    CycleCombatRewardRequestData memory req
+    CycleCombatRReqData memory req
   ) private view returns (uint32 ilvl, uint256 count) {
     randomness = uint256(keccak256(abi.encode(keccak256("_getLootIlvlReward"), randomness)));
 
@@ -108,8 +107,9 @@ library LibCycleCombatRewardRequest {
 
     bytes32[] memory affixes = LootAffixes.get(req.mapEntity);
     for (uint256 i; i < affixes.length; i++) {
-      if (affixes[i] == AffixPartId.IMPLICIT) {
-        ilvl += uint32(affixes[i]);
+      uint256 affixValue = uint256(affixes[i]);
+      if (affixValue == uint256(AffixPartId.IMPLICIT)) {
+        ilvl += uint32(affixValue);
       } else {
         uint256 tier = AffixPrototype.get(affixes[i]).tier;
         accumulatedFortune += tier;

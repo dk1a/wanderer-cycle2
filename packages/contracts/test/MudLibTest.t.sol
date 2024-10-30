@@ -9,14 +9,20 @@ import { IWorld } from "../src/codegen/world/IWorld.sol";
 abstract contract MudLibTest is MudTest {
   IWorld world;
 
+  address alice = address(bytes20(keccak256("alice")));
+
   function setUp() public virtual override {
     super.setUp();
 
     world = IWorld(worldAddress);
 
     address testContractAddress = address(this);
+    _grantRootAccess(testContractAddress);
+  }
+
+  function _grantRootAccess(address grantee) internal {
     uint256 deployerPrivateKey = vm.envUint("PRIVATE_KEY");
     vm.broadcast(deployerPrivateKey);
-    world.grantAccess(WorldResourceIdLib.encodeNamespace(""), testContractAddress);
+    world.grantAccess(WorldResourceIdLib.encodeNamespace(""), grantee);
   }
 }

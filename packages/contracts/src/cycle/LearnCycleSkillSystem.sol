@@ -3,7 +3,7 @@ pragma solidity >=0.8.21;
 
 import { System } from "@latticexyz/world/src/System.sol";
 
-import { ActiveGuise, SkillTemplate, SkillTemplateData, GuiseSkill } from "../codegen/index.sol";
+import { ActiveGuise, SkillTemplate, SkillTemplateData, GuiseSkills } from "../codegen/index.sol";
 
 import { LibLearnedSkills } from "../skill/LibLearnedSkills.sol";
 import { LibCycle } from "./LibCycle.sol";
@@ -14,7 +14,7 @@ contract LearnCycleSkillSystem is System {
   error LearnCycleSkillSystem__SkillNotInGuiseSkills();
   error LearnCycleSkillSystem__LevelIsTooLow();
 
-  function learnFromCycle(bytes memory args) public override returns (bytes memory) {
+  function learnFromCycle(bytes memory args) public returns (bytes memory) {
     (bytes32 wandererEntity, bytes32 skillEntity) = abi.decode(args, (bytes32, bytes32));
 
     // get cycle entity if sender is allowed to use it
@@ -29,7 +29,7 @@ contract LearnCycleSkillSystem is System {
 
     // guise skills must include `skillEntity`
     bytes32 guiseProtoEntity = ActiveGuise.get(cycleEntity);
-    bytes32[] skills = GuiseSkill.get(guiseProtoEntity);
+    bytes32[] memory skills = GuiseSkills.get(guiseProtoEntity);
 
     bool res = false;
     for (uint i = 0; i < skills.length; i++) {

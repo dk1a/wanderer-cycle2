@@ -6,21 +6,17 @@ import { System } from "@latticexyz/world/src/System.sol";
 import { ActiveCycle } from "../codegen/index.sol";
 
 import { LibCycleTurns } from "./LibCycleTurns.sol";
-
-// import { LibToken } from "../token/LibToken.sol";
+import { ERC721Namespaces } from "../token/ERC721Namespaces.sol";
 
 /// @title Claim accumulated cycle turns.
 /// @dev Does nothing if claimable turns == 0.
 contract ClaimCycleTurnsSystem is System {
-  function claimCycleTurnsSystem(bytes memory args) public override returns (bytes memory) {
-    bytes32 wandererEntity = abi.decode(args, (bytes32));
+  function claimCycleTurns(bytes32 wandererEntity) public {
     // check permission
-    // LibToken.requireOwner(wandererEntity, msg.sender);
+    ERC721Namespaces.WandererNFT.requireOwner(msg.sender, wandererEntity);
     // get cycle entity
     bytes32 cycleEntity = ActiveCycle.get(wandererEntity);
     // claim
     LibCycleTurns.claimTurns(cycleEntity);
-
-    return "";
   }
 }

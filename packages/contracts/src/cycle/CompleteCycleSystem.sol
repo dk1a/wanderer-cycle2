@@ -16,7 +16,7 @@ contract CompleteCycleSystem is System {
   error CompleteCycleSystem__NotAllBossesDefeated();
   error CompleteCycleSystem__InsufficientLevel();
 
-  function complete(bytes memory args) public override returns (bytes memory) {
+  function complete(bytes memory args) public returns (bytes memory) {
     bytes32 wandererEntity = abi.decode(args, (bytes32));
 
     // reverts if sender doesn't have permission
@@ -39,6 +39,6 @@ contract CompleteCycleSystem is System {
     LibCycle.endCycle(wandererEntity, cycleEntity);
     LibWanderer.gainCycleRewards(wandererEntity);
 
-    return cycleEntity;
+    return abi.encode(cycleEntity);
   }
 }
