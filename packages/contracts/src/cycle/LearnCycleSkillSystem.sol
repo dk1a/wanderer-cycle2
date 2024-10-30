@@ -3,7 +3,7 @@ pragma solidity >=0.8.21;
 
 import { System } from "@latticexyz/world/src/System.sol";
 
-import { ActiveGuise, SkillTemplate, SkillTemplateData, GuiseSkills } from "../codegen/index.sol";
+import { ActiveGuise, SkillTemplate, GuiseSkills } from "../codegen/index.sol";
 
 import { LibLearnedSkills } from "../skill/LibLearnedSkills.sol";
 import { LibCycle } from "./LibCycle.sol";
@@ -11,12 +11,10 @@ import { LibGuiseLevel } from "../guise/LibGuiseLevel.sol";
 
 /// @title Learn a Skill from the current cycle Guise's set of available skills.
 contract LearnCycleSkillSystem is System {
-  error LearnCycleSkillSystem__SkillNotInGuiseSkills();
-  error LearnCycleSkillSystem__LevelIsTooLow();
+  error LearnCycleSkillSystem_SkillNotInGuiseSkills();
+  error LearnCycleSkillSystem_LevelIsTooLow();
 
-  function learnFromCycle(bytes memory args) public returns (bytes memory) {
-    (bytes32 wandererEntity, bytes32 skillEntity) = abi.decode(args, (bytes32, bytes32));
-
+  function learnFromCycle(bytes32 wandererEntity, bytes32 skillEntity) public {
     // get cycle entity if sender is allowed to use it
     bytes32 cycleEntity = LibCycle.getCycleEntityPermissioned(wandererEntity);
 
@@ -24,7 +22,7 @@ contract LearnCycleSkillSystem is System {
     uint32 currentLevel = LibGuiseLevel.getAggregateLevel(cycleEntity);
     uint8 requiredLevel = SkillTemplate.getRequiredLevel(skillEntity);
     if (currentLevel < requiredLevel) {
-      revert LearnCycleSkillSystem__LevelIsTooLow();
+      revert LearnCycleSkillSystem_LevelIsTooLow();
     }
 
     // guise skills must include `skillEntity`
@@ -40,11 +38,9 @@ contract LearnCycleSkillSystem is System {
     }
 
     if (!res) {
-      revert LearnCycleSkillSystem__SkillNotInGuiseSkills();
+      revert LearnCycleSkillSystem_SkillNotInGuiseSkills();
     }
     // learn the skill
-    LibLearnedSkills.learnSkill(wandererEntity, skillEntity);
-
-    return "";
+    LibLearnedSkills.learnSkill(cycleEntity, skillEntity);
   }
 }
