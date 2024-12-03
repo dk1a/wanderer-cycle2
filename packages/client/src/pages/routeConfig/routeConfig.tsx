@@ -1,4 +1,3 @@
-import { RouteProps } from "react-router-dom";
 import MapsPage from "../MapsPage/MapsPage";
 import React from "react";
 import InventoryPage from "../InventoryPage/InventoryPage";
@@ -7,15 +6,15 @@ import CyclePage from "../CyclePage/CyclePage";
 import WandererSelect from "../WandererSelect/WandererSelect";
 
 export enum AppRoutes {
-  WANDERER_SELECT = "Wanderer-select",
-  MAPS = "Maps",
-  INVENTORY = "Inventory",
-  SKILLS = "Skills",
-  CYCLE = "Cycle",
-  ABOUT = "About",
-  NOT_FOUND = "not_found",
-  DISCORD = "discord",
-  GITHUB = "github",
+  WANDERER_SELECT = "WANDERER_SELECT",
+  MAPS = "MAPS",
+  INVENTORY = "INVENTORY",
+  SKILLS = "SKILLS",
+  CYCLE = "CYCLE",
+  ABOUT = "ABOUT",
+  NOT_FOUND = "NOT_FOUND",
+  DISCORD = "DISCORD",
+  GITHUB = "GITHUB",
 }
 
 export const RoutePath: Record<AppRoutes, string> = {
@@ -30,33 +29,47 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.GITHUB]: "https://github.com/dk1a/wanderer-cycle",
 };
 
-export const routeConfig: Record<AppRoutes, RouteProps> = {
+interface AppRouteProps {
+  path: string;
+  element: JSX.Element | null;
+  isProtected?: boolean;
+  external?: boolean;
+}
+
+export const routeConfig: Record<AppRoutes, AppRouteProps> = {
   [AppRoutes.MAPS]: {
-    path: RoutePath.Maps,
+    path: RoutePath[AppRoutes.MAPS],
     element: <MapsPage />,
+    isProtected: true,
   },
   [AppRoutes.INVENTORY]: {
-    path: RoutePath.Inventory,
+    path: RoutePath[AppRoutes.INVENTORY],
     element: <InventoryPage />,
+    isProtected: true,
   },
   [AppRoutes.SKILLS]: {
-    path: RoutePath.Skills,
+    path: RoutePath[AppRoutes.SKILLS],
     element: <SkillPage />,
+    isProtected: true,
   },
   [AppRoutes.CYCLE]: {
-    path: RoutePath.Cycle,
+    path: RoutePath[AppRoutes.CYCLE],
     element: <CyclePage />,
+    isProtected: true,
   },
   [AppRoutes.WANDERER_SELECT]: {
-    path: RoutePath["Wanderer-select"],
+    path: RoutePath[AppRoutes.WANDERER_SELECT],
     element: <WandererSelect />,
+    isProtected: false,
   },
   [AppRoutes.GITHUB]: {
-    path: RoutePath.github,
-    element: "",
+    path: RoutePath.GITHUB,
+    element: null,
+    external: true,
   },
   [AppRoutes.DISCORD]: {
-    path: RoutePath.discord,
-    element: "",
+    path: RoutePath.DISCORD,
+    element: null,
+    external: true,
   },
 };
