@@ -66,6 +66,129 @@
     },
     {
       "namespaceLabel": "",
+      "label": "CompleteCycleSystem",
+      "namespace": "",
+      "name": "CompleteCycleSys",
+      "systemId": "0x73790000000000000000000000000000436f6d706c6574654379636c65537973",
+      "abi": [
+        "error CompleteCycleSystem__InsufficientLevel()",
+        "error CompleteCycleSystem__NotAllBossesDefeated()",
+        "error LibCycle_CycleNotActive()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_InvalidLevel(uint32 level)",
+        "function complete(bytes args) returns (bytes)"
+      ],
+      "worldAbi": [
+        "error CompleteCycleSystem__InsufficientLevel()",
+        "error CompleteCycleSystem__NotAllBossesDefeated()",
+        "error LibCycle_CycleNotActive()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_InvalidLevel(uint32 level)",
+        "function complete(bytes args) returns (bytes)"
+      ]
+    },
+    {
+      "namespaceLabel": "",
+      "label": "CycleActivateCombatSystem",
+      "namespace": "",
+      "name": "CycleActivateCom",
+      "systemId": "0x737900000000000000000000000000004379636c654163746976617465436f6d",
+      "abi": [
+        "error CycleActivateCombatSystem__BossMapAlreadyCleared()",
+        "error CycleActivateCombatSystem__InvalidMapPrototype()",
+        "error LibActiveCombat_CombatActive()",
+        "error LibCycle_CycleNotActive()",
+        "error LibCycleTurns__NotEnoughTurns()",
+        "error LibEffect_InvalidApplicationEntity()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_InvalidLevel(uint32 level)",
+        "error Statmod_IncreaseByZero()",
+        "function execute(bytes args) returns (bytes)"
+      ],
+      "worldAbi": [
+        "error CycleActivateCombatSystem__BossMapAlreadyCleared()",
+        "error CycleActivateCombatSystem__InvalidMapPrototype()",
+        "error LibActiveCombat_CombatActive()",
+        "error LibCycle_CycleNotActive()",
+        "error LibCycleTurns__NotEnoughTurns()",
+        "error LibEffect_InvalidApplicationEntity()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_InvalidLevel(uint32 level)",
+        "error Statmod_IncreaseByZero()",
+        "function execute(bytes args) returns (bytes)"
+      ]
+    },
+    {
+      "namespaceLabel": "",
+      "label": "CycleCombatRewardSystem",
+      "namespace": "",
+      "name": "CycleCombatRewar",
+      "systemId": "0x737900000000000000000000000000004379636c65436f6d6261745265776172",
+      "abi": [
+        "error CycleCombatRewardSystem__UnknownMapPrototype()",
+        "error LibActiveCombat_CombatActive()",
+        "error LibCycle_CycleNotActive()",
+        "error LibCycleCombatRewardRequest__UnknownMapPrototype()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_ExpNotInitialized()",
+        "error LibRNG__InvalidPrecommit()",
+        "error LibRNG__NotRequestOwner()",
+        "function cancelRequest(bytes32 wandererEntity, bytes32 requestId)",
+        "function reward(bytes args) returns (bytes)"
+      ],
+      "worldAbi": [
+        "error CycleCombatRewardSystem__UnknownMapPrototype()",
+        "error LibActiveCombat_CombatActive()",
+        "error LibCycle_CycleNotActive()",
+        "error LibCycleCombatRewardRequest__UnknownMapPrototype()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_ExpNotInitialized()",
+        "error LibRNG__InvalidPrecommit()",
+        "error LibRNG__NotRequestOwner()",
+        "function cancelRequest(bytes32 wandererEntity, bytes32 requestId)",
+        "function reward(bytes args) returns (bytes)"
+      ]
+    },
+    {
+      "namespaceLabel": "",
+      "label": "CycleCombatSystem",
+      "namespace": "",
+      "name": "CycleCombatSyste",
+      "systemId": "0x737900000000000000000000000000004379636c65436f6d6261745379737465",
+      "abi": [
+        "error LibActiveCombat_CombatNotActive()",
+        "error LibCycle_CycleNotActive()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_InvalidLevel(uint32 level)",
+        "function processCombatRound(bytes args) returns (bytes)"
+      ],
+      "worldAbi": [
+        "error LibActiveCombat_CombatNotActive()",
+        "error LibCycle_CycleNotActive()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_InvalidLevel(uint32 level)",
+        "function processCombatRound(bytes args) returns (bytes)"
+      ]
+    },
+    {
+      "namespaceLabel": "",
+      "label": "CycleEquipmentSystem",
+      "namespace": "",
+      "name": "CycleEquipmentSy",
+      "systemId": "0x737900000000000000000000000000004379636c6545717569706d656e745379",
+      "abi": [
+        "error CycleEquipmentSystem__NotEquipmentOwner()",
+        "error CycleEquipmentSystem__NotSlotOwner()",
+        "function manageEquipmentCycle(bytes args) returns (bytes)"
+      ],
+      "worldAbi": [
+        "error CycleEquipmentSystem__NotEquipmentOwner()",
+        "error CycleEquipmentSystem__NotSlotOwner()",
+        "function manageEquipmentCycle(bytes args) returns (bytes)"
+      ]
+    },
+    {
+      "namespaceLabel": "",
       "label": "CycleInitSystem",
       "namespace": "",
       "name": "CycleInitSystem",
@@ -99,6 +222,49 @@
     },
     {
       "namespaceLabel": "",
+      "label": "LearnCycleSkillSystem",
+      "namespace": "",
+      "name": "LearnCycleSkillS",
+      "systemId": "0x737900000000000000000000000000004c6561726e4379636c65536b696c6c53",
+      "abi": [
+        "error Duration_IncreaseByZero()",
+        "error LearnCycleSkillSystem_LevelIsTooLow()",
+        "error LearnCycleSkillSystem_SkillNotInGuiseSkills()",
+        "error LibCycle_CycleNotActive()",
+        "error LibEffect_InvalidApplicationEntity()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_InvalidLevel(uint32 level)",
+        "error LibLearnedSkills__LearnSkillDuplicate()",
+        "error LibSkill_InvalidSkillTarget()",
+        "error LibSkill_NotEnoughMana()",
+        "error LibSkill_SkillMustBeLearned()",
+        "error LibSkill_SkillOnCooldown()",
+        "error Statmod_DecreaseByZero()",
+        "error Statmod_EntityAbsent()",
+        "error Statmod_IncreaseByZero()",
+        "function learnFromCycle(bytes32 wandererEntity, bytes32 skillEntity)"
+      ],
+      "worldAbi": [
+        "error Duration_IncreaseByZero()",
+        "error LearnCycleSkillSystem_LevelIsTooLow()",
+        "error LearnCycleSkillSystem_SkillNotInGuiseSkills()",
+        "error LibCycle_CycleNotActive()",
+        "error LibEffect_InvalidApplicationEntity()",
+        "error LibERC721_MustBeTokenOwner()",
+        "error LibExperience_InvalidLevel(uint32 level)",
+        "error LibLearnedSkills__LearnSkillDuplicate()",
+        "error LibSkill_InvalidSkillTarget()",
+        "error LibSkill_NotEnoughMana()",
+        "error LibSkill_SkillMustBeLearned()",
+        "error LibSkill_SkillOnCooldown()",
+        "error Statmod_DecreaseByZero()",
+        "error Statmod_EntityAbsent()",
+        "error Statmod_IncreaseByZero()",
+        "function learnFromCycle(bytes32 wandererEntity, bytes32 skillEntity)"
+      ]
+    },
+    {
+      "namespaceLabel": "",
       "label": "PassCycleTurnSystem",
       "namespace": "",
       "name": "PassCycleTurnSys",
@@ -107,6 +273,7 @@
         "error LibActiveCombat_CombatActive()",
         "error LibCycle_CycleNotActive()",
         "error LibCycleTurns__NotEnoughTurns()",
+        "error LibERC721_MustBeTokenOwner()",
         "error LibExperience_InvalidLevel(uint32 level)",
         "function passCycle(bytes32 wandererEntity)"
       ],
@@ -114,6 +281,7 @@
         "error LibActiveCombat_CombatActive()",
         "error LibCycle_CycleNotActive()",
         "error LibCycleTurns__NotEnoughTurns()",
+        "error LibERC721_MustBeTokenOwner()",
         "error LibExperience_InvalidLevel(uint32 level)",
         "function passCycle(bytes32 wandererEntity)"
       ]
@@ -127,11 +295,13 @@
       "abi": [
         "error LibCycle_CycleIsAlreadyActive()",
         "error LibCycle_InvalidGuiseProtoEntity()",
+        "error LibERC721_MustBeTokenOwner()",
         "function startCycle(bytes32 wandererEntity, bytes32 guiseProtoEntity, bytes32 wheelEntity) returns (bytes32 cycleEntity)"
       ],
       "worldAbi": [
         "error LibCycle_CycleIsAlreadyActive()",
         "error LibCycle_InvalidGuiseProtoEntity()",
+        "error LibERC721_MustBeTokenOwner()",
         "function startCycle(bytes32 wandererEntity, bytes32 guiseProtoEntity, bytes32 wheelEntity) returns (bytes32 cycleEntity)"
       ]
     },
@@ -164,5 +334,5 @@
       ]
     }
   ],
-  "createdAt": 1729670532803
+  "createdAt": 1733211901104
 }
