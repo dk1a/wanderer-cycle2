@@ -4,6 +4,7 @@ import { setup } from "./mud/setup";
 import { MUDProvider } from "./MUDContext";
 import mudConfig from "contracts/mud.config";
 import "../index.css";
+import { WandererProvider } from "./contexts/WandererContext";
 
 const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");
@@ -13,9 +14,12 @@ const root = ReactDOM.createRoot(rootElement);
 setup().then(async (result) => {
   root.render(
     <MUDProvider value={result}>
-      <div className="bg-dark-600 w-full h-full">
-        <App />
-      </div>
+      <WandererProvider>
+        <div className="bg-dark-600 w-full h-full">
+          <App />
+        </div>
+      </WandererProvider>
+      ,
     </MUDProvider>,
   );
 
