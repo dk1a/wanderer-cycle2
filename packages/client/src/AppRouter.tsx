@@ -13,7 +13,7 @@ const AppRouter: React.FC = () => (
           key={path}
           path={path}
           element={
-            <Suspense fallback={"Загрузка..."}>
+            <Suspense fallback={"Loading..."}>
               <div className="page-wrapper">
                 {isProtected ? <PrivateRoute>{element}</PrivateRoute> : element}
               </div>
