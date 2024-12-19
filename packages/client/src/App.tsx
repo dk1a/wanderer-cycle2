@@ -2,8 +2,10 @@ import React from "react";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Navbar } from "./components/Navbar/Navbar";
 import AppRouter from "./AppRouter";
+import { useMUD } from "./MUDContext";
 
 export const App = () => {
+  console.log(useMUD());
   return (
     <Router>
       <div className="app flex flex-col overflow-y-auto">
