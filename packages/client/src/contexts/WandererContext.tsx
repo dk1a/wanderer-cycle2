@@ -1,4 +1,11 @@
-import { createContext, ReactNode, useContext, useMemo, useState } from "react";
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from "react";
 // import {
 //   CycleCombatRewardRequest,
 //   OnCombatResultData,
@@ -72,8 +79,11 @@ export const WandererProvider = (props: { children: ReactNode }) => {
   // const learnCycleSkill = useLearnCycleSkill(selectedWandererEntity);
   // const learnedSkillEntities = useLearnedSkillEntities(cycleEntity);
 
-  // const [wandererMode, setWandererMode] = useState(false);
-  // const toggleWandererMode = useCallback(() => setWandererMode((value) => !value), []);
+  const [wandererMode, setWandererMode] = useState(false);
+  const toggleWandererMode = useCallback(
+    () => setWandererMode((value) => !value),
+    [],
+  );
 
   const value = {
     selectedWandererEntity,
@@ -86,8 +96,8 @@ export const WandererProvider = (props: { children: ReactNode }) => {
     // clearCombatResult,
     // learnedSkillEntities,
     // learnCycleSkill,
-    // wandererMode,
-    // toggleWandererMode,
+    wandererMode,
+    toggleWandererMode,
   };
   return (
     <WandererContext.Provider value={value}>
