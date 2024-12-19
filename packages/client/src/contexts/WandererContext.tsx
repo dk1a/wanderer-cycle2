@@ -17,6 +17,10 @@ import {
 // import { useLearnedSkillEntities } from "../mud/hooks/skill";
 import { useMUD } from "../MUDContext";
 import { Entity, getComponentValueStrict } from "@latticexyz/recs";
+import {
+  useLearnCycleSkill,
+  useLearnedSkillEntities,
+} from "../mud/hooks/skill";
 
 type WandererContextType = {
   selectedWandererEntity?: Entity;
@@ -29,7 +33,7 @@ type WandererContextType = {
   // clearCombatResult: () => void;
   // learnCycleSkill: ReturnType<typeof useLearnCycleSkill>;
   // learnedSkillEntities: Entity[];
-  // wandererMode: boolean;
+  wandererMode: boolean;
   // toggleWandererMode: () => void;
 };
 
@@ -75,9 +79,9 @@ export const WandererProvider = (props: { children: ReactNode }) => {
   // const [lastCombatResult, setLastCombatResult] = useState<OnCombatResultData>();
   // const clearCombatResult = useCallback(() => setLastCombatResult(undefined), []);
   // useOnCombatResultEffect(cycleEntity, setLastCombatResult);
-
-  // const learnCycleSkill = useLearnCycleSkill(selectedWandererEntity);
-  // const learnedSkillEntities = useLearnedSkillEntities(cycleEntity);
+  //
+  const learnCycleSkill = useLearnCycleSkill(selectedWandererEntity);
+  const learnedSkillEntities = useLearnedSkillEntities(cycleEntity);
 
   const [wandererMode, setWandererMode] = useState(false);
   const toggleWandererMode = useCallback(
@@ -89,15 +93,15 @@ export const WandererProvider = (props: { children: ReactNode }) => {
     selectedWandererEntity,
     selectWandererEntity,
     cycleEntity,
+    learnCycleSkill,
+    learnedSkillEntities,
+    wandererMode,
+    toggleWandererMode,
     // previousCycleEntity,
     // enemyEntity,
     // combatRewardRequests,
     // lastCombatResult,
     // clearCombatResult,
-    // learnedSkillEntities,
-    // learnCycleSkill,
-    wandererMode,
-    toggleWandererMode,
   };
   return (
     <WandererContext.Provider value={value}>

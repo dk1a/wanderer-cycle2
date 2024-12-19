@@ -10,6 +10,8 @@ export default function SkillList() {
   const guise = useActiveGuise(cycleEntity);
   const learnedSkills = useLearnedSkillEntities(selectedWandererEntity);
 
+  console.log(learnedSkills);
+
   const displaySkills = useMemo(() => {
     if (wandererMode) {
       return learnedSkills;
