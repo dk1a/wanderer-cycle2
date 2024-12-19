@@ -21,7 +21,7 @@ export default function SkillList() {
   }, [wandererMode, learnedSkills, guise]);
 
   return (
-    <div className="ml-36 w-full">
+    <div className="ml-36 w-full h-full">
       <div className="text-2xl text-dark-comment m-2">{"// skills"}</div>
       <div className="flex flex-col">
         {displaySkills.map((entity) => (

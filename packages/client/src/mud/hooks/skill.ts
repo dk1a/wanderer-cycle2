@@ -85,7 +85,7 @@ export const useLearnCycleSkill = (wandererEntity: Entity | undefined) => {
 //     [systemCalls, wandererEntity],
 //   );
 // };
-
+//
 // export const useExecuteNoncombatSkill = () => {
 //   const { systemCalls } = useMUD();
 //

@@ -13,8 +13,6 @@ import {
 //   useCycleCombatRewardRequests,
 //   useOnCombatResultEffect,
 // } from "../mud/hooks/combat";
-// import { useLearnCycleSkill } from "../mud/hooks/skill";
-// import { useLearnedSkillEntities } from "../mud/hooks/skill";
 import { useMUD } from "../MUDContext";
 import { Entity, getComponentValueStrict } from "@latticexyz/recs";
 import {
@@ -31,10 +29,10 @@ type WandererContextType = {
   // combatRewardRequests: CycleCombatRewardRequest[];
   // lastCombatResult?: OnCombatResultData;
   // clearCombatResult: () => void;
-  // learnCycleSkill: ReturnType<typeof useLearnCycleSkill>;
-  // learnedSkillEntities: Entity[];
+  learnCycleSkill: ReturnType<typeof useLearnCycleSkill>;
+  learnedSkillEntities: Entity[];
   wandererMode: boolean;
-  // toggleWandererMode: () => void;
+  toggleWandererMode: () => void;
 };
 
 const WandererContext = createContext<WandererContextType | undefined>(
