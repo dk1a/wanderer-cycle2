@@ -1,12 +1,11 @@
 import { Entity } from "@latticexyz/recs";
 import { useCallback, useMemo, useState } from "react";
-// import { useActiveGuise } from "../../mud/hooks/guise";
 // import { SkillType } from "../../mud/utils/skill";
 
-import { Button } from "../utils/Button/Button";
 import { useWandererContext } from "../../contexts/WandererContext";
 import { useSkillStrict } from "../../mud/hooks/skill";
-// import {useLevel} from "../../mud/hooks/charstat";
+import { Button } from "../utils/Button/Button";
+// import {useLevel} from "..useLevel/../mud/hooks/charstat";
 import Skill from "../Guise/Skill";
 
 export default function SkillLearnable({
@@ -19,7 +18,7 @@ export default function SkillLearnable({
   const {
     learnCycleSkill,
     learnedSkillEntities,
-    // cycleEntity
+    // cycleEntity,
   } = useWandererContext();
   const skill = useSkillStrict(entity);
   // const duration = useDuration(cycleEntity, skill.entity);

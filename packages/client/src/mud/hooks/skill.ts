@@ -1,8 +1,8 @@
 import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import { Entity, Has } from "@latticexyz/recs";
 import { useCallback, useMemo } from "react";
-import { getSkill } from "../utils/skill";
 import { useMUD } from "../../MUDContext";
+import { getSkill } from "../utils/skill";
 
 export const useSkill = (entity: Entity | undefined) => {
   const { components } = useMUD();
@@ -64,10 +64,7 @@ export const useLearnCycleSkill = (wandererEntity: Entity | undefined) => {
 
   return useCallback(
     async (skillEntity: Entity) => {
-      if (wandererEntity === undefined || skillEntity === undefined) {
-        throw new Error("No wanderer selected");
-      }
-
+      if (wandererEntity === undefined) throw new Error("No wanderer selected");
       await systemCalls.learnCycleSkill(wandererEntity, skillEntity);
     },
     [systemCalls],

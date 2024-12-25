@@ -13,12 +13,12 @@ import {
 //   useCycleCombatRewardRequests,
 //   useOnCombatResultEffect,
 // } from "../mud/hooks/combat";
-import { useMUD } from "../MUDContext";
 import { Entity, getComponentValueStrict } from "@latticexyz/recs";
 import {
   useLearnCycleSkill,
   useLearnedSkillEntities,
 } from "../mud/hooks/skill";
+import { useMUD } from "../MUDContext";
 
 type WandererContextType = {
   selectedWandererEntity?: Entity;
@@ -78,7 +78,9 @@ export const WandererProvider = (props: { children: ReactNode }) => {
   // const clearCombatResult = useCallback(() => setLastCombatResult(undefined), []);
   // useOnCombatResultEffect(cycleEntity, setLastCombatResult);
   //
+  console.log("wanderer", selectedWandererEntity);
   const learnCycleSkill = useLearnCycleSkill(selectedWandererEntity);
+  console.log("learnCycleSkill", learnCycleSkill);
   const learnedSkillEntities = useLearnedSkillEntities(cycleEntity);
 
   const [wandererMode, setWandererMode] = useState(false);
