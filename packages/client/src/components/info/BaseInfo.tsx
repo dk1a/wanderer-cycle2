@@ -1,4 +1,4 @@
-import { EntityIndex } from "@latticexyz/recs";
+import { Entity } from "@latticexyz/recs";
 import { Fragment, ReactNode } from "react";
 import {
   LevelData,
@@ -17,7 +17,7 @@ import { PStatWithProgress } from "./PStatWithProgress";
 import EffectList from "../EffectList";
 
 export interface BaseInfoProps {
-  entity: EntityIndex | undefined;
+  entity: Entity | undefined;
   name: string | undefined;
   locationName: string | null | undefined;
   levelData: LevelData;
