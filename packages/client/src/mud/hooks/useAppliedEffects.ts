@@ -1,7 +1,7 @@
+import { useEntityQuery } from "@latticexyz/react";
 import { EntityID, Entity, Has } from "@latticexyz/recs";
 import { defaultAbiCoder, keccak256, toUtf8Bytes } from "ethers/lib/utils";
 import { useMemo } from "react";
-import { useEntityQuery } from "../useEntityQuery";
 import { getAppliedEffect } from "../utils/getEffect";
 import { useMUD } from "../../MUDContext";
 
