@@ -25,7 +25,7 @@ type WandererContextType = {
   selectWandererEntity: (wanderer: Entity | undefined) => void;
   cycleEntity?: Entity;
   previousCycleEntity?: Entity;
-  // enemyEntity?: Entity;
+  enemyEntity?: Entity;
   // combatRewardRequests: CycleCombatRewardRequest[];
   // lastCombatResult?: OnCombatResultData;
   // clearCombatResult: () => void;
@@ -98,7 +98,7 @@ export const WandererProvider = (props: { children: ReactNode }) => {
     wandererMode,
     toggleWandererMode,
     // previousCycleEntity,
-    // enemyEntity,
+    enemyEntity: undefined,
     // combatRewardRequests,
     // lastCombatResult,
     // clearCombatResult,

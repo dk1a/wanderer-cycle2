@@ -1,11 +1,11 @@
 import { useCallback, useMemo, useState } from "react";
 import { useWandererContext } from "../../contexts/WandererContext";
 import { useCycleTurns } from "../../mud/hooks/turns";
-import { useMUD } from "../../mud/MUDContext";
-import CustomButton from "../UI/Button/CustomButton";
+import { useMUD } from "../../MUDContext";
+import { Button } from "../utils/Button/Button";
 
 export default function PassTurnButton() {
-  const { world, systems } = useMUD();
+  const { systemCalls } = useMUD();
   const { selectedWandererEntity, cycleEntity, enemyEntity } =
     useWandererContext();
 
@@ -17,12 +17,9 @@ export default function PassTurnButton() {
     if (selectedWandererEntity === undefined)
       throw new Error("No wanderer selected");
     setIsBusy(true);
-    const tx = await systems["system.PassCycleTurn"].executeTyped(
-      world.entities[selectedWandererEntity],
-    );
-    await tx.wait();
+    await systemCalls.passCycleTurn(selectedWandererEntity);
     setIsBusy(false);
-  }, [world, systems, selectedWandererEntity]);
+  }, [systemCalls, selectedWandererEntity]);
 
   const isDisabled = useMemo(() => {
     // not available during combat (since it fully heals)
@@ -32,13 +29,13 @@ export default function PassTurnButton() {
 
   return (
     <div className="ml-1">
-      <CustomButton
+      <Button
         onClick={passTurn}
         disabled={isDisabled}
         style={{ fontSize: "13px", border: "none", width: "" }}
       >
         {"passTurn"}
-      </CustomButton>
+      </Button>
     </div>
   );
 }

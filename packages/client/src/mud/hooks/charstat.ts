@@ -13,8 +13,27 @@ import {
   PStats,
   pstatsFromExperience,
 } from "../utils/experience";
-import { useGetValuesElementalFinal, useGetValuesFinal } from "./statmod";
+//import { useGetValuesElementalFinal, useGetValuesFinal } from "./statmod";
 import { useExperience } from "./useExperience";
+
+import { StatmodTopic, ElementalStatmodTopic } from "../utils/topics";
+
+// TODO replace placeholders
+const useGetValuesFinal = (
+  targetEntity: Entity | undefined,
+  topic: StatmodTopic,
+  baseValue: number,
+) => {
+  return baseValue;
+};
+
+const useGetValuesElementalFinal = (
+  targetEntity: Entity | undefined,
+  topic: ElementalStatmodTopic,
+  baseValues: Elemental,
+) => {
+  return 10;
+};
 
 export type PStatData = ReturnType<typeof usePstat>;
 export type LevelData = ReturnType<typeof useLevel>;

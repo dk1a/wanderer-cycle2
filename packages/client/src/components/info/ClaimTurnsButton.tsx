@@ -1,14 +1,14 @@
 import { useCallback, useState } from "react";
 import { useWandererContext } from "../../contexts/WandererContext";
-import { useMUD } from "../../mud/MUDContext";
-import CustomButton from "../UI/Button/CustomButton";
+import { useMUD } from "../../MUDContext";
+import { Button } from "../utils/Button/Button";
 
 export default function ClaimTurnsButton({
   claimableTurns,
 }: {
   claimableTurns: number;
 }) {
-  const { world, systems } = useMUD();
+  const { systemCalls } = useMUD();
   const { selectedWandererEntity } = useWandererContext();
 
   const [isBusy, setIsBusy] = useState(false);
@@ -17,16 +17,13 @@ export default function ClaimTurnsButton({
       throw new Error("No wanderer entity selected");
     }
     setIsBusy(true);
-    const tx = await systems["system.ClaimCycleTurns"].executeTyped(
-      world.entities[selectedWandererEntity],
-    );
-    await tx.wait();
+    await systemCalls.claimCycleTurns(selectedWandererEntity);
     setIsBusy(false);
-  }, [world, systems, selectedWandererEntity]);
+  }, [systemCalls, selectedWandererEntity]);
 
   return (
     <div className="ml-1">
-      <CustomButton
+      <Button
         disabled={isBusy}
         onClick={claimTurns}
         style={{ fontSize: "13px", border: "none", width: "7rem" }}
@@ -35,7 +32,7 @@ export default function ClaimTurnsButton({
         <span className="text-white">{" ("}</span>
         <span className="text-dark-number">{claimableTurns}</span>
         <span className="text-white">{")"}</span>
-      </CustomButton>
+      </Button>
     </div>
   );
 }

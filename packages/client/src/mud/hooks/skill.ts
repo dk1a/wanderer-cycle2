@@ -67,7 +67,7 @@ export const useLearnCycleSkill = (wandererEntity: Entity | undefined) => {
       if (wandererEntity === undefined) throw new Error("No wanderer selected");
       await systemCalls.learnCycleSkill(wandererEntity, skillEntity);
     },
-    [systemCalls],
+    [wandererEntity, systemCalls],
   );
 };
 

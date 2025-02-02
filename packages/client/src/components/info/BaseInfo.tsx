@@ -12,9 +12,10 @@ import {
   useManaCurrent,
   useIdentityCurrent,
 } from "../../mud/hooks/currents";
-import { ElementalStatmods } from "../ElementalStatmods";
+// TODO missing components
+//import { ElementalStatmods } from "../ElementalStatmods";
 import { PStatWithProgress } from "./PStatWithProgress";
-import EffectList from "../EffectList";
+//import EffectList from "../EffectList";
 
 export interface BaseInfoProps {
   entity: Entity | undefined;
@@ -108,9 +109,9 @@ export default function BaseInfo({
       {turnsHtml}
       {/* TODO styles, this is from old ui and looks terrible */}
       {separator}
-      <ElementalStatmods />
+      {/*<ElementalStatmods />*/}
       {separator}
-      <EffectList effects={effects} />
+      {/*<EffectList effects={effects} />*/}
     </section>
   );
 }

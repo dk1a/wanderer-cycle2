@@ -36,6 +36,18 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
+  const claimCycleTurns = async (wandererEntity: Entity) => {
+    const tx = await worldContract.write.claimCycleTurns([
+      wandererEntity as Hex,
+    ]);
+    await waitForTransaction(tx);
+  };
+
+  const passCycleTurn = async (wandererEntity: Entity) => {
+    const tx = await worldContract.write.passCycleTurn([wandererEntity as Hex]);
+    await waitForTransaction(tx);
+  };
+
   const learnCycleSkill = async (
     wandererEntity: Entity,
     skillEntity: Entity,
@@ -59,6 +71,8 @@ export function createSystemCalls(
 
   return {
     spawnWanderer,
+    claimCycleTurns,
+    passCycleTurn,
     learnCycleSkill,
     // permSkill,
     // noncombatSkill
