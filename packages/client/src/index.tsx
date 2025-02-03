@@ -15,7 +15,7 @@ setup().then(async (result) => {
   root.render(
     <MUDProvider value={result}>
       <WandererProvider>
-        <div className="bg-dark-600 w-full h-full">
+        <div className="bg-dark-600 w-full min-h-screen flex flex-col">
           <App />
         </div>
       </WandererProvider>

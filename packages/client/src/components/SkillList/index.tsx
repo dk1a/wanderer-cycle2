@@ -10,8 +10,6 @@ export default function SkillList() {
   const guise = useActiveGuise(cycleEntity);
   const learnedSkills = useLearnedSkillEntities(selectedWandererEntity);
 
-  console.log(learnedSkills);
-
   const displaySkills = useMemo(() => {
     if (wandererMode) {
       return learnedSkills;
@@ -21,7 +19,7 @@ export default function SkillList() {
   }, [wandererMode, learnedSkills, guise]);
 
   return (
-    <div className="ml-36 w-full h-full">
+    <div className="">
       <div className="text-2xl text-dark-comment m-2">{"// skills"}</div>
       <div className="flex flex-col">
         {displaySkills.map((entity) => (
