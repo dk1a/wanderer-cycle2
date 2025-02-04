@@ -47,7 +47,7 @@ export default function SkillLearnable({
   }, [visible]);
 
   return (
-    <div className="p-0 flex items-center mb-8">
+    <div className="p-0 flex mb-8 items-center">
       <Skill
         skill={skill}
         className={`bg-dark-500 border border-dark-400 p-2 w-[400px]`}

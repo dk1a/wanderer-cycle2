@@ -5,25 +5,25 @@ import { App } from "./App";
 import { WandererProvider } from "./contexts/WandererContext";
 import { setup } from "./mud/setup";
 import { MUDProvider } from "./MUDContext";
+import "./index.css";
 
 const rootElement = document.getElementById("react-root");
 if (!rootElement) throw new Error("React root not found");
 const root = ReactDOM.createRoot(rootElement);
 
-// TODO: figure out if we actually want this to be async or if we should render something else in the meantime
 setup().then(async (result) => {
   root.render(
     <MUDProvider value={result}>
       <WandererProvider>
-        <div className="bg-dark-600 w-full min-h-screen flex flex-col">
+        <div className="bg-dark-600 w-full h-screen">
+          {" "}
+          {/* фиксированная высота */}
           <App />
         </div>
       </WandererProvider>
-      ,
     </MUDProvider>,
   );
 
-  // https://vitejs.dev/guide/env-and-mode.html
   if (import.meta.env.DEV) {
     const { mount: mountDevTools } = await import("@latticexyz/dev-tools");
     mountDevTools({

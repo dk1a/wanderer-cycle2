@@ -4,16 +4,16 @@ import ClaimTurnsButton from "./ClaimTurnsButton";
 import { useActiveGuise } from "../../mud/hooks/guise";
 import { useCycleTurns, useGetClaimableTurns } from "../../mud/hooks/turns";
 import { useWandererContext } from "../../contexts/WandererContext";
-import { useLevel } from "../../mud/hooks/charstat";
-import { useMemo } from "react";
+// import { useLevel } from "../../mud/hooks/charstat";
+// import { useMemo } from "react";
 
 export default function CycleInfo() {
   const { cycleEntity } = useWandererContext();
   const guise = useActiveGuise(cycleEntity);
   const turns = useCycleTurns(cycleEntity);
 
-  const guiseMul = useMemo(() => guise?.levelMul, [guise]);
-  const levelData = useLevel(cycleEntity, guiseMul);
+  // const guiseMul = useMemo(() => guise?.levelMul, [guise]);
+  // const levelData = useLevel(cycleEntity, guiseMul);
 
   const claimableTurns = useGetClaimableTurns(cycleEntity);
 
@@ -40,7 +40,7 @@ export default function CycleInfo() {
         entity={cycleEntity}
         name={guise?.name}
         locationName={null}
-        levelData={levelData}
+        // levelData={levelData}
         turnsHtml={turnsHtml}
       />
     </div>
