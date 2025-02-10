@@ -70,7 +70,6 @@ export const useLearnCycleSkill = (wandererEntity: Entity | undefined) => {
     [wandererEntity, systemCalls],
   );
 };
-
 // export const usePermSkill = (wandererEntity: Entity | undefined) => {
 //   const { systemCalls } = useMUD();
 //
