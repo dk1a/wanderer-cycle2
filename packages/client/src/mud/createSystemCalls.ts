@@ -59,6 +59,11 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
+  // const сycleEquipment = async (action, selectedWandererEntityId, equipmentSlotId, equipmentEntityId) => {
+  //   const tx = await worldContract.write.сycleEquipment(action, selectedWandererEntityId, equipmentSlotId, equipmentEntityId);
+  //   await waitForTransaction(tx);
+  // };
+
   // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
   //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
   //   await waitForTransaction(tx);
