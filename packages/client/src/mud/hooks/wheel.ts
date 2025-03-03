@@ -3,7 +3,6 @@ import { useComponentValue } from "@latticexyz/react";
 import { useMemo } from "react";
 import { SetupResult } from "../setup";
 import { useEntityQuery } from "../useEntityQuery";
-import { defaultAbiCoder, keccak256 } from "ethers/lib/utils";
 import { useMUD } from "../../MUDContext";
 
 export type WheelData = ReturnType<typeof getWheel>;
@@ -60,27 +59,27 @@ export const useWheelsCompleted = (
     if (wandererEntity === undefined) return [];
 
     return wheelEntities.map((wheelEntity) => {
-      const bytes = defaultAbiCoder.encode(
-        ["bytes32", "bytes32"],
-        [wandererEntity, wheelEntity],
-      );
-      const compositeEntityId = keccak256(bytes) as EntityID;
-      const compositeEntity = world.entityToIndex.get(compositeEntityId);
-
-      let completed = 0;
-      if (
-        compositeEntity !== undefined &&
-        wheelsCompletedEntities.includes(compositeEntity)
-      ) {
-        completed = getComponentValueStrict(
-          WheelsCompleted,
-          compositeEntity,
-        ).value;
-      }
+      // const bytes = defaultAbiCoder.encode(
+      //   ["bytes32", "bytes32"],
+      //   [wandererEntity, wheelEntity],
+      // );
+      // const compositeEntityId = keccak256(bytes) as EntityID;
+      // const compositeEntity = world.entityToIndex.get(compositeEntityId);
+      //
+      // let completed = 0;
+      // if (
+      //   compositeEntity !== undefined &&
+      //   wheelsCompletedEntities.includes(compositeEntity)
+      // ) {
+      //   completed = getComponentValueStrict(
+      //     WheelsCompleted,
+      //     compositeEntity,
+      //   ).value;
+      // }
 
       return {
         ...getWheel(mud, wheelEntity),
-        completed,
+        // completed,
       };
     });
   }, [
