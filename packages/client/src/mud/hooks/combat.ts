@@ -1,35 +1,35 @@
-import { useComponentValue } from "@latticexyz/react";
-import {
-  Entity,
-  // getComponentValue,
-  // getComponentValueStrict,
-  // Has,
-  // HasValue,
-  // setComponent,
-} from "@latticexyz/recs";
+// import { useComponentValue } from "@latticexyz/react";
+// import {
+//   Entity,
+//   getComponentValue,
+//   getComponentValueStrict,
+//   Has,
+//   HasValue,
+//   setComponent,
+// } from "@latticexyz/recs";
 // import { BigNumber } from "ethers";
-import { useMemo } from "react";
+// import {useCallback, useEffect, useMemo} from "react";
 // import { useEntityQuery } from "../useEntityQuery";
 // import { CombatAction } from "../utils/combat";
 // import { parsePStats } from "../utils/experience";
-import { useMUD } from "../../MUDContext";
-
-export const useActiveCombat = (entity: Entity | undefined) => {
-  const mud = useMUD();
-  const {
-    components: { ActiveCombat },
-  } = mud;
-
-  const activeCombat = useComponentValue(ActiveCombat, entity);
-  const enemyEntity = useMemo(() => {
-    const enemyEntityId = activeCombat?.value;
-    if (!enemyEntityId) return;
-    return world.entityToIndex.get(enemyEntityId);
-  }, [activeCombat]);
-
-  return enemyEntity;
-};
-
+// import { useMUD } from "../../MUDContext";
+//
+// export const useActiveCombat = (entity: Entity | undefined) => {
+//   const mud = useMUD();
+//   const {
+//     components: { ActiveCombat },
+//   } = mud;
+//
+//   const activeCombat = useComponentValue(ActiveCombat, entity);
+//   const enemyEntity = useMemo(() => {
+//     const enemyEntityId = activeCombat?.value;
+//     if (!enemyEntityId) return;
+//     return world.entityToIndex.get(enemyEntityId);
+//   }, [activeCombat]);
+//
+//   return enemyEntity;
+// };
+//
 // export const useActivateCycleCombat = () => {
 //   const { systemCalls } = useMUD();
 //
@@ -41,7 +41,7 @@ export const useActiveCombat = (entity: Entity | undefined) => {
 //     [systemCalls]
 //   );
 // };
-
+//
 // export const useExecuteCycleCombatRound = () => {
 //   const { systemCalls } = useMUD();
 //
@@ -53,7 +53,7 @@ export const useActiveCombat = (entity: Entity | undefined) => {
 //     [systemCalls]
 //   );
 // };
-
+//
 // export const useClaimCycleCombatReward = () => {
 //   const { systemCalls } = useMUD();
 //
@@ -65,7 +65,7 @@ export const useActiveCombat = (entity: Entity | undefined) => {
 //     [systemCalls]
 //   );
 // };
-
+//
 // export const useCancelCycleCombatReward = () => {
 //   const { systemCalls } = useMUD();
 //
@@ -77,30 +77,30 @@ export const useActiveCombat = (entity: Entity | undefined) => {
 //     [systemCalls]
 //   );
 // };
-
+//
 // export type CycleCombatRewardRequest = ReturnType<typeof useCycleCombatRewardRequests>[number];
 //
 // export const useCycleCombatRewardRequests = (requesterEntity: Entity | undefined) => {
 //   const mud = useMUD();
 //   const {
-//     components: { RNGRequestOwner, RNGPrecommit, CycleCombatRewardRequest },
+//     components: { RNGRequestOwner, RNGPrecommit, CycleCombatRReq },
 //   } = mud;
 //
 //   const requesterEntityId = useMemo(() => {
 //     if (!requesterEntity) return;
-//     return world.entities[requesterEntity];
-//   }, [world, requesterEntity]);
+//     return requesterEntity;
+//   }, [requesterEntity]);
 //   const requestEntities = useEntityQuery(
-//     [HasValue(RNGRequestOwner, { value: requesterEntityId }), Has(RNGPrecommit), Has(CycleCombatRewardRequest)],
+//     [HasValue(RNGRequestOwner, { value: requesterEntityId }), Has(RNGPrecommit), Has(CycleCombatRReq)],
 //     true
 //   );
 //
 //   return useMemo(() => {
 //     return requestEntities.map((requestEntity) => {
 //       const precommit = getComponentValueStrict(RNGPrecommit, requestEntity).value;
-//       const request = getComponentValueStrict(CycleCombatRewardRequest, requestEntity);
+//       const request = getComponentValueStrict(CycleCombatRReq, requestEntity);
 //
-//       const mapEntity = world.entityToIndex.get(request.mapEntity);
+//       const mapEntity = request.mapEntity;
 //       if (mapEntity === undefined) throw new Error(`No index for map entity id ${request.mapEntity}`);
 //
 //       return {
@@ -110,11 +110,11 @@ export const useActiveCombat = (entity: Entity | undefined) => {
 //         mapEntityId: request.mapEntity,
 //         connection: request.connection,
 //         fortune: request.fortune,
-//         winnerPStats: parsePStats(request.winner_strength, request.winner_arcana, request.winner_dexterity),
-//         loserPStats: parsePStats(request.loser_strength, request.loser_arcana, request.loser_dexterity),
+//         winnerPStats: parsePStats(request.winnerPStat[0], request.winnerPStat[1], request.winnerPStat[2]),
+//         loserPStats: parsePStats(request.loserPStat[0], request.loserPStat[1], request.loserPStat[2]),
 //       };
 //     });
-//   }, [RNGPrecommit, CycleCombatRewardRequest, requestEntities]);
+//   }, [RNGPrecommit, CycleCombatRReq, requestEntities]);
 // };
 //
 // export enum CombatResult {
@@ -141,7 +141,7 @@ export const useActiveCombat = (entity: Entity | undefined) => {
 //   callback: (combatData: OnCombatResultData) => void
 // ) {
 //   const {
-//     systemCallStreams,
+//     systemCalls,
 //     components: { ActiveCycle, ActiveCombat, LifeCurrent, _CombatLife },
 //   } = useMUD();
 //
@@ -201,5 +201,5 @@ export const useActiveCombat = (entity: Entity | undefined) => {
 //       subscription1.unsubscribe();
 //       subscription2.unsubscribe();
 //     };
-//   }, [world, ActiveCombat, ActiveCycle, LifeCurrent, _CombatLife, systemCallStreams, callback, initiatorEntity]);
+//   }, [ActiveCombat, ActiveCycle, LifeCurrent, _CombatLife, systemCalls, callback, initiatorEntity]);
 // }
