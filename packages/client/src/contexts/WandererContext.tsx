@@ -78,9 +78,7 @@ export const WandererProvider = (props: { children: ReactNode }) => {
   // const clearCombatResult = useCallback(() => setLastCombatResult(undefined), []);
   // useOnCombatResultEffect(cycleEntity, setLastCombatResult);
   //
-  console.log("wanderer", selectedWandererEntity);
   const learnCycleSkill = useLearnCycleSkill(selectedWandererEntity);
-  console.log("learnCycleSkill", learnCycleSkill);
   const learnedSkillEntities = useLearnedSkillEntities(cycleEntity);
 
   const [wandererMode, setWandererMode] = useState(false);
