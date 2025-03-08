@@ -1,12 +1,15 @@
 import { Entity } from "@latticexyz/recs";
 import { useCallback, useMemo, useState } from "react";
-// import { SkillType } from "../../mud/utils/skill";
+import { SkillType } from "../../mud/utils/skill";
 
 import { useWandererContext } from "../../contexts/WandererContext";
 import { useSkillStrict } from "../../mud/hooks/skill";
 import { Button } from "../utils/Button/Button";
-// import {useLevel} from "..useLevel/../mud/hooks/charstat";
 import Skill from "../Guise/Skill";
+import { useActiveGuise } from "../../mud/hooks/guise";
+import { useLevel } from "../../mud/hooks/charstat";
+import { UseSkillButton } from "../UseSkillButton";
+// import { useDuration } from "../../mud/hooks/useDuration";
 
 export default function SkillLearnable({
   entity,
@@ -15,16 +18,12 @@ export default function SkillLearnable({
   entity: Entity;
   withButtons: boolean;
 }) {
-  const {
-    learnCycleSkill,
-    learnedSkillEntities,
-    // cycleEntity,
-  } = useWandererContext();
+  const { learnCycleSkill, learnedSkillEntities, cycleEntity } =
+    useWandererContext();
   const skill = useSkillStrict(entity);
+  const guise = useActiveGuise(cycleEntity);
+  const level = useLevel(cycleEntity, guise?.levelMul)?.level;
   // const duration = useDuration(cycleEntity, skill.entity);
-
-  // const guise = useActiveGuise(cycleEntity);
-  // const level = useLevel(cycleEntity, guise?.levelMul)?.level;
 
   // const executeNoncombatSkill = useExecuteNoncombatSkill();
   // const onSkill = useCallback(async () => {
@@ -36,7 +35,6 @@ export default function SkillLearnable({
     () => learnedSkillEntities.includes(entity),
     [learnedSkillEntities, entity],
   );
-
   const [visible, setVisible] = useState(!isLearned);
 
   const onHeaderClick = useCallback(() => {
@@ -59,12 +57,17 @@ export default function SkillLearnable({
           {!isLearned && (
             <Button
               onClick={() => learnCycleSkill(entity)}
-              // disabled={level !== undefined && level < skill.requiredLevel}
+              disabled={level !== undefined && level < skill.requiredLevel}
             >
               learn
             </Button>
           )}
-          {/*{isLearned && skill.skillType === SkillType.COMBAT && <UseSkillButton entity={entity} onSkill={onSkill} />}*/}
+          {isLearned && skill.skillType === SkillType.COMBAT && (
+            <UseSkillButton
+              entity={entity}
+              // onSkill={onSkill}
+            />
+          )}
         </div>
       )}
     </div>
