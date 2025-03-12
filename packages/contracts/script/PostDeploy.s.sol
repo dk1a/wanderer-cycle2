@@ -13,6 +13,7 @@ import { UniqueIdx_AffixPrototype_TierName } from "../src/namespaces/affix/codeg
 import { LibInitStatmod } from "../src/namespaces/root/init/LibInitStatmod.sol";
 import { LibInitSkill } from "../src/namespaces/root/init/LibInitSkill.sol";
 import { LibInitGuise } from "../src/namespaces/root/init/LibInitGuise.sol";
+import { LibInitEquipmentAffix } from "../src/namespaces/root/init/LibInitEquipmentAffix.sol";
 import { LibInitWheel } from "../src/namespaces/root/init/LibInitWheel.sol";
 import { LibInitERC721 } from "../src/namespaces/root/init/LibInitERC721.sol";
 
@@ -33,6 +34,7 @@ contract PostDeploy is Script {
     LibInitStatmod.init();
     LibInitSkill.init();
     LibInitGuise.init();
+    LibInitEquipmentAffix.init();
     LibInitWheel.init();
     LibInitERC721.init();
 
