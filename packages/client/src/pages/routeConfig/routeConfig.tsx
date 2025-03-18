@@ -1,8 +1,8 @@
-import MapsPage from "../MapsPage/MapsPage";
-import React from "react";
-import InventoryPage from "../InventoryPage/InventoryPage";
-import SkillPage from "../SkillPage/SkillPage";
+import AdminPanel from "../AdminPanel/AdminPanel";
 import CyclePage from "../CyclePage/CyclePage";
+import InventoryPage from "../InventoryPage/InventoryPage";
+import MapsPage from "../MapsPage/MapsPage";
+import SkillPage from "../SkillPage/SkillPage";
 import WandererSelect from "../WandererSelect/WandererSelect";
 
 export enum AppRoutes {
@@ -12,6 +12,7 @@ export enum AppRoutes {
   SKILLS = "SKILLS",
   CYCLE = "CYCLE",
   ABOUT = "ABOUT",
+  ADMIN = "ADMIN",
   NOT_FOUND = "NOT_FOUND",
   DISCORD = "DISCORD",
   GITHUB = "GITHUB",
@@ -23,6 +24,7 @@ export const RoutePath: Record<AppRoutes, string> = {
   [AppRoutes.INVENTORY]: "/inventory",
   [AppRoutes.SKILLS]: "/skills",
   [AppRoutes.CYCLE]: "/cycle",
+  [AppRoutes.ADMIN]: "/admin",
   [AppRoutes.ABOUT]: "/about",
   [AppRoutes.NOT_FOUND]: "*",
   [AppRoutes.DISCORD]: "https://discord.gg/9pX3h53VnX",
@@ -60,6 +62,11 @@ export const routeConfig: Record<AppRoutes, AppRouteProps> = {
   [AppRoutes.WANDERER_SELECT]: {
     path: RoutePath[AppRoutes.WANDERER_SELECT],
     element: <WandererSelect />,
+    isProtected: false,
+  },
+  [AppRoutes.ADMIN]: {
+    path: RoutePath[AppRoutes.ADMIN],
+    element: <AdminPanel />,
     isProtected: false,
   },
   [AppRoutes.GITHUB]: {
