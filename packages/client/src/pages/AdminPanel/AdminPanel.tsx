@@ -99,8 +99,6 @@ const AdminPanel = () => {
                 AffixPrototype,
                 entity,
               );
-              console.log(affixProtoData);
-
               return (
                 <tr key={entity} className="border border-dark-control">
                   <td className="p-2 border border-dark-control">
