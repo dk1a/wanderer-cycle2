@@ -1,216 +1,140 @@
 import { useEntityQuery } from "@latticexyz/react";
 import { getComponentValueStrict, Has } from "@latticexyz/recs";
-import { Tooltip } from "react-tooltip";
+import { useState } from "react";
 import { useMUD } from "../../MUDContext";
 import { formatEntity } from "../../mud/utils/sliceAddress";
 
 const AdminPanel = () => {
   const { components } = useMUD();
-  const {
-    AffixPrototype,
-    AffixNaming,
-    // AffixPrototypeAvailable
-  } = components;
+  const { AffixPrototype } = components;
   const affixPrototypeEntities = useEntityQuery([Has(AffixPrototype)]);
-  const affixNamingEntities = useEntityQuery([Has(AffixNaming)]);
-  // const affixPrototypeAvailableEntities = useEntityQuery([Has(AffixPrototypeAvailable)]);
+  const [sortConfig, setSortConfig] = useState<{
+    key: string;
+    direction: "asc" | "desc";
+  } | null>(null);
+
+  const handleSort = (key: string) => {
+    setSortConfig((prev) => {
+      if (prev?.key === key) {
+        return { key, direction: prev.direction === "asc" ? "desc" : "asc" };
+      }
+      return { key, direction: "asc" };
+    });
+  };
+  // const parseNullTerminatedString = (hexString) => {
+  //   try {
+  //     const buffer = new Uint8Array(
+  //       hexString
+  //         .slice(2) // Remove '0x' prefix
+  //         .match(/.{1,2}/g) // Split into byte pairs
+  //         .map((byte) => parseInt(byte, 16))
+  //     );
+  //     return new TextDecoder("utf-8").decode(buffer).split("\u0000")[0];
+  //   } catch {
+  //     return "-";
+  //   }
+  // };
+  const sortedEntities = [...affixPrototypeEntities].sort((a, b) => {
+    if (!sortConfig) return 0;
+    const affixA = getComponentValueStrict(AffixPrototype, a);
+    const affixB = getComponentValueStrict(AffixPrototype, b);
+    const valueA = affixA[sortConfig.key] ?? "";
+    const valueB = affixB[sortConfig.key] ?? "";
+
+    if (valueA < valueB) return sortConfig.direction === "asc" ? -1 : 1;
+    if (valueA > valueB) return sortConfig.direction === "asc" ? 1 : -1;
+    return 0;
+  });
 
   return (
-    <section className="flex justify-center flex-col mx-5 md:mx-10">
-      <div className="text-2xl text-dark-comment m-2">{"// affixes"}</div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {affixPrototypeEntities.map((entity) => {
-          const affixProtoData = getComponentValueStrict(
-            AffixPrototype,
-            entity,
-          );
-          return (
-            <div
-              key={entity}
-              data-tooltip-id={entity}
-              className="p-4 bg-dark-background border border-dark-control shadow-md text-center cursor-pointer"
-            >
-              <div className="text-dark-type">{affixProtoData.name}</div>
-
-              <Tooltip
-                id={entity}
-                place="bottom"
-                className="bg-dark-background p-4 border border-dark-control rounded-lg max-w-[300px] break-words"
-                clickable
+    <section className="flex flex-col mx-5 md:mx-10">
+      <h2 className="text-2xl text-dark-comment m-2">
+        {"// Affix Prototypes"}
+      </h2>
+      <div className="overflow-x-auto">
+        <table className="min-w-full border border-dark-control text-left text-dark-number">
+          <thead className="bg-dark-background">
+            <tr>
+              <th className="p-2 border border-dark-control text-dark-keyword">
+                Entity
+              </th>
+              <th
+                className="p-2 border border-dark-control text-dark-keyword cursor-pointer"
+                onClick={() => handleSort("name")}
               >
-                <table className="text-dark-control w-full">
-                  <tbody>
-                    <tr className="border-b border-dark-control">
-                      <td className="pr-4 font-bold py-1">Entity:</td>
-                      <td className="py-1">
-                        <span
-                          data-tooltip-id={`entity-full-${entity}`}
-                          data-tooltip-content={entity}
-                          className="hover:underline cursor-help"
-                        >
-                          {formatEntity(entity)}
-                        </span>
-                        <Tooltip id={`entity-full-${entity}`} />
-                      </td>
-                    </tr>
-                    {Object.entries(affixProtoData).map(([key, value]) => (
-                      <tr key={key} className="">
-                        <td className="pr-4 font-bold py-1 text-dark-key">
-                          {key}:
-                        </td>
-                        <td className="py-1 text-dark-number">
-                          {typeof value === "string" && value.length > 20 ? (
-                            <span
-                              data-tooltip-id={`value-full-${entity}-${key}`}
-                              data-tooltip-content={value}
-                              className="hover:underline cursor-help"
-                            >
-                              {formatEntity(value)}
-                            </span>
-                          ) : (
-                            JSON.stringify(value)
-                          )}
-                          <Tooltip id={`value-full-${entity}-${key}`} />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Tooltip>
-            </div>
-          );
-        })}
+                Name{" "}
+                {sortConfig?.key === "name"
+                  ? sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+              <th
+                className="p-2 border border-dark-control text-dark-keyword cursor-pointer"
+                onClick={() => handleSort("affixTier")}
+              >
+                Affix Tier{" "}
+                {sortConfig?.key === "affixTier"
+                  ? sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+              <th
+                className="p-2 border border-dark-control text-dark-keyword cursor-pointer"
+                onClick={() => handleSort("exclusiveGroup")}
+              >
+                Exclusive Group{" "}
+                {sortConfig?.key === "exclusiveGroup"
+                  ? sortConfig.direction === "asc"
+                    ? "▲"
+                    : "▼"
+                  : ""}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {sortedEntities.map((entity) => {
+              const affixProtoData = getComponentValueStrict(
+                AffixPrototype,
+                entity,
+              );
+              console.log(affixProtoData);
+
+              return (
+                <tr key={entity} className="border border-dark-control">
+                  <td className="p-2 border border-dark-control">
+                    <span
+                      className="hover:underline cursor-pointer"
+                      onClick={() => navigator.clipboard.writeText(entity)}
+                    >
+                      {formatEntity(entity)}
+                    </span>
+                  </td>
+                  <td className="p-2 border border-dark-control">
+                    {affixProtoData.name}
+                  </td>
+                  <td className="p-2 border border-dark-control">
+                    {affixProtoData.affixTier}
+                  </td>
+                  <td className="p-2 border border-dark-control">
+                    <span
+                      className="hover:underline cursor-pointer"
+                      onClick={() =>
+                        navigator.clipboard.writeText(
+                          affixProtoData.exclusiveGroup,
+                        )
+                      }
+                    >
+                      {formatEntity(affixProtoData.exclusiveGroup)}
+                    </span>
+                  </td>
+                </tr>
+              );
+            })}
+          </tbody>
+        </table>
       </div>
-
-      <div className="text-2xl text-dark-comment m-2">{"// affixNames"}</div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {affixNamingEntities.map((entity) => {
-          const affixNamingData = getComponentValueStrict(AffixNaming, entity);
-          console.log(affixNamingData);
-
-          return (
-            <div
-              key={entity}
-              data-tooltip-id={entity}
-              className="p-4 bg-dark-background border border-dark-control shadow-md text-center cursor-pointer"
-            >
-              <div className="text-dark-type">{affixNamingData.label}</div>
-
-              <Tooltip
-                id={entity}
-                place="bottom"
-                className="bg-dark-background p-4 border border-dark-control rounded-lg max-w-[300px] break-words"
-                clickable
-              >
-                <table className="text-dark-control w-full">
-                  <tbody>
-                    <tr className="border-b border-dark-control">
-                      <td className="pr-4 font-bold py-1">Entity:</td>
-                      <td className="py-1">
-                        <span
-                          data-tooltip-id={`entity-full-${entity}`}
-                          data-tooltip-content={entity}
-                          className="hover:underline cursor-help"
-                        >
-                          {formatEntity(entity)}
-                        </span>
-                        <Tooltip id={`entity-full-${entity}`} />
-                      </td>
-                    </tr>
-                    {Object.entries(affixNamingData).map(([key, value]) => (
-                      <tr key={key} className="">
-                        <td className="pr-4 font-bold py-1 text-dark-key">
-                          {key}:
-                        </td>
-                        <td className="py-1 text-dark-number">
-                          {typeof value === "string" && value.length > 20 ? (
-                            <span
-                              data-tooltip-id={`value-full-${entity}-${key}`}
-                              data-tooltip-content={value}
-                              className="hover:underline cursor-help"
-                            >
-                              {formatEntity(value)}
-                            </span>
-                          ) : (
-                            JSON.stringify(value)
-                          )}
-                          <Tooltip id={`value-full-${entity}-${key}`} />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Tooltip>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* <div className="text-2xl text-dark-comment m-2">{"// affixPrototypeAvailableEntitiesData"}</div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-        {affixPrototypeAvailableEntities.map((entity) => {
-          const affixPrototypeAvailableEntitiesData = getComponentValueStrict(
-            AffixPrototypeAvailable,
-            entity,
-          );          
-          
-          return (
-            <div
-              key={entity}
-              data-tooltip-id={entity}
-              className="p-4 bg-dark-background border border-dark-control shadow-md text-center cursor-pointer"
-            >
-              {/* <div className="text-dark-type">{affixPrototypeAvailableEntitiesData.label}</div> */}
-
-      {/* <Tooltip
-                id={entity}
-                place="bottom"
-                className="bg-dark-background p-4 border border-dark-control rounded-lg max-w-[300px] break-words"
-                clickable
-              >
-                <table className="text-dark-control w-full">
-                  <tbody>
-                    <tr className="border-b border-dark-control">
-                      <td className="pr-4 font-bold py-1">Entity:</td>
-                      <td className="py-1">
-                        <span
-                          data-tooltip-id={`entity-full-${entity}`}
-                          data-tooltip-content={entity}
-                          className="hover:underline cursor-help"
-                        >
-                          {formatEntity(entity)}
-                        </span>
-                        <Tooltip id={`entity-full-${entity}`} />
-                      </td>
-                    </tr>
-                    {Object.entries(affixPrototypeAvailableEntitiesData).map(([key, value]) => (
-                      <tr key={key} className="">
-                        <td className="pr-4 font-bold py-1 text-dark-key">
-                          {key}:
-                        </td>
-                        <td className="py-1 text-dark-number">
-                          {typeof value === "string" && value.length > 20 ? (
-                            <span
-                              data-tooltip-id={`value-full-${entity}-${key}`}
-                              data-tooltip-content={value}
-                              className="hover:underline cursor-help"
-                            >
-                              {formatEntity(value)}
-                            </span>
-                          ) : (
-                            JSON.stringify(value)
-                          )}
-                          <Tooltip id={`value-full-${entity}-${key}`} />
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </Tooltip>
-            </div>
-          );
-        })}
-      </div> */}
     </section>
   );
 };
