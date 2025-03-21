@@ -1,9 +1,9 @@
-import { Button } from "../utils/Button/Button";
 import { Entity } from "@latticexyz/recs";
-import { useWandererContext } from "../../contexts/WandererContext";
 import { useNavigate } from "react-router-dom";
+import { useWandererContext } from "../../contexts/WandererContext";
+import { formatEntity } from "../../mud/utils/formatEntity";
 import { AppRoutes, RoutePath } from "../../pages/routeConfig/routeConfig";
-import { formatEntity } from "../../mud/utils/sliceAddress";
+import { Button } from "../utils/Button/Button";
 
 interface WandererProps {
   wandererEntity: Entity;
