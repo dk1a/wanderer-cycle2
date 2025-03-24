@@ -16,10 +16,7 @@ import {
 //import { useGetValuesElementalFinal, useGetValuesFinal } from "./statmod";
 import { useExperience } from "./useExperience";
 
-import {
-  StatmodTopic,
-  // , ElementalStatmodTopic
-} from "../utils/topics";
+import { StatmodTopic, ElementalStatmodTopic } from "../utils/topics";
 
 // TODO replace placeholders
 const useGetValuesFinal = (
@@ -30,13 +27,17 @@ const useGetValuesFinal = (
   return baseValue;
 };
 
-const useGetValuesElementalFinal = () =>
-  // targetEntity: Entity | undefined,
-  // topic: ElementalStatmodTopic,
-  // baseValues: Elemental,
-  {
-    return 10;
-  };
+// TODO replace placeholders
+const useGetValuesElementalFinal = (
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  targetEntity: Entity | undefined,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  topic: ElementalStatmodTopic,
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  baseValues: Elemental,
+) => {
+  return 10;
+};
 
 export type PStatData = ReturnType<typeof usePstat>;
 export type LevelData = ReturnType<typeof useLevel>;
