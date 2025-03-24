@@ -3,6 +3,8 @@ import React from "react";
 type Column = {
   key: string;
   label: string;
+  /** `text-dark-string` by default */
+  cellClassName?: string;
 };
 
 type Row = {
@@ -17,13 +19,13 @@ type TableProps = {
 
 export const Table: React.FC<TableProps> = ({ columns, data, onSort }) => {
   return (
-    <table className="min-w-full border border-dark-control text-left text-dark-number">
+    <table className="min-w-full border border-dark-400 text-left">
       <thead className="bg-dark-background">
         <tr>
           {columns.map((column) => (
             <th
               key={column.key}
-              className="p-2 border border-dark-control text-dark-keyword cursor-pointer"
+              className="p-2 border border-dark-400 font-normal text-dark-keyword cursor-pointer"
               onClick={() => onSort(column.key)}
             >
               {column.label}
@@ -33,9 +35,12 @@ export const Table: React.FC<TableProps> = ({ columns, data, onSort }) => {
       </thead>
       <tbody>
         {data.map((row, rowIndex) => (
-          <tr key={rowIndex} className="border border-dark-control">
+          <tr key={rowIndex} className="border border-dark-400">
             {columns.map((column) => (
-              <td key={column.key} className="p-2 border border-dark-control">
+              <td
+                key={column.key}
+                className={`p-2 border border-dark-400 ${column.cellClassName ?? "text-dark-string"}`}
+              >
                 {row[column.key]}
               </td>
             ))}

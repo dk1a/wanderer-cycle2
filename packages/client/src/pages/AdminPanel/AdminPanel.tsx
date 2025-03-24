@@ -2,7 +2,7 @@ import { useEntityQuery } from "@latticexyz/react";
 import { getComponentValueStrict, Has } from "@latticexyz/recs";
 import { useState } from "react";
 import { useMUD } from "../../MUDContext";
-import { Table } from "../../components/utils/Table.tsx/Table";
+import { Table } from "../../components/utils/Table/Table";
 import { formatEntity } from "../../mud/utils/formatEntity";
 
 const AdminPanel = () => {
@@ -36,10 +36,14 @@ const AdminPanel = () => {
   });
 
   const columns = [
-    { key: "entity", label: "Entity" },
+    { key: "entity", label: "entity", cellClassName: "text-dark-number" },
     { key: "name", label: "name" },
-    { key: "affixTier", label: "affixTier" },
-    { key: "exclusiveGroup", label: "exclusiveGroup" },
+    { key: "affixTier", label: "affixTier", cellClassName: "text-dark-number" },
+    {
+      key: "exclusiveGroup",
+      label: "exclusiveGroup",
+      cellClassName: "text-dark-number",
+    },
   ];
 
   const data = sortedEntities.map((entity) => {
@@ -70,9 +74,7 @@ const AdminPanel = () => {
 
   return (
     <section className="flex flex-col mx-5 md:mx-10">
-      <h2 className="text-2xl text-dark-comment m-2">
-        {"// Affix Prototypes"}
-      </h2>
+      <h2 className="text-2xl text-dark-comment m-2">{"// AffixPrototype"}</h2>
       <div className="overflow-x-auto">
         <Table columns={columns} data={data} onSort={handleSort} />
       </div>
