@@ -1,7 +1,7 @@
 import { Entity } from "@latticexyz/recs";
 import { useNavigate } from "react-router-dom";
 import { useWandererContext } from "../../contexts/WandererContext";
-import { formatEntity } from "../../mud/utils/formatEntity";
+import { formatEntity } from "../../mud/utils/format";
 import { AppRoutes, RoutePath } from "../../pages/routeConfig/routeConfig";
 import { Button } from "../utils/Button/Button";
 

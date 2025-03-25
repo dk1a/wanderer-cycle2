@@ -3,7 +3,10 @@ import { getComponentValueStrict, Has } from "@latticexyz/recs";
 import { useState } from "react";
 import { useMUD } from "../../MUDContext";
 import { Table } from "../../components/utils/Table/Table";
-import { formatEntity } from "../../mud/utils/formatEntity";
+import {
+  formatEntity,
+  formatZeroTerminatedString,
+} from "../../mud/utils/format";
 
 const AdminPanel = () => {
   const { components } = useMUD();
@@ -59,16 +62,7 @@ const AdminPanel = () => {
       ),
       name: affixProtoData.name,
       affixTier: affixProtoData.affixTier,
-      exclusiveGroup: (
-        <span
-          className="hover:underline cursor-pointer"
-          onClick={() =>
-            navigator.clipboard.writeText(affixProtoData.exclusiveGroup)
-          }
-        >
-          {formatEntity(affixProtoData.exclusiveGroup)}
-        </span>
-      ),
+      exclusiveGroup: formatZeroTerminatedString(affixProtoData.exclusiveGroup),
     };
   });
 
