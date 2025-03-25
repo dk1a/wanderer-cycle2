@@ -1,4 +1,3 @@
-import React from "react";
 import { AppRoutes, routeConfig } from "../../pages/routeConfig/routeConfig";
 import { AppLink } from "../utils/AppLink/AppLink";
 
