@@ -8,7 +8,7 @@ import {
   formatZeroTerminatedString,
 } from "../../mud/utils/format";
 
-const AdminPanel = () => {
+const AffixPage = () => {
   const { components } = useMUD();
   const { AffixPrototype } = components;
   const affixPrototypeEntities = useEntityQuery([Has(AffixPrototype)]);
@@ -76,4 +76,4 @@ const AdminPanel = () => {
   );
 };
 
-export default AdminPanel;
+export default AffixPage;
