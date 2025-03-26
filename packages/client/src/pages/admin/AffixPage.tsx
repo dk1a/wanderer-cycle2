@@ -42,11 +42,7 @@ const AffixPage = () => {
     { key: "entity", label: "entity", cellClassName: "text-dark-number" },
     { key: "name", label: "name" },
     { key: "affixTier", label: "affixTier", cellClassName: "text-dark-number" },
-    {
-      key: "exclusiveGroup",
-      label: "exclusiveGroup",
-      cellClassName: "text-dark-number",
-    },
+    { key: "exclusiveGroup", label: "exclusiveGroup" },
   ];
 
   const data = sortedEntities.map((entity) => {
