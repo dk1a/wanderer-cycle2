@@ -30,9 +30,27 @@ export default defineStoreIdxs(
       },
       root: {
         tables: {
+          GuiseName: {
+            UniqueIdx_GuiseName_Name: {
+              fields: ["name"],
+              unique: true,
+            },
+          },
+          SkillName: {
+            UniqueIdx_SkillName_Name: {
+              fields: ["name"],
+              unique: true,
+            },
+          },
           SlotEquipment: {
             Idx_SlotEquipment_Equipment: {
               fields: ["equipmentEntity"],
+              unique: false,
+            },
+          },
+          ActiveCycle: {
+            UniqueIdx_ActiveCycle_CycleEntity: {
+              fields: ["cycleEntity"],
               unique: false,
             },
           },

@@ -6,7 +6,6 @@ import {
   SKILL_TYPE_ARRAY,
   TARGET_TYPE_ARRAY,
   STATMOD_OP_ARRAY,
-  ACTION_TYPE_ARRAY,
   AFFIX_PART_ID_ARRAY,
   PSTAT_ARRAY,
   COMBAT_ACTION_TYPE_ARRAY,
@@ -29,6 +28,14 @@ const entityRelation = {
   },
 } as const;
 
+const wandererToCycleEntityRelation = {
+  key: ["wandererEntity"],
+  schema: {
+    wandererEntity: EntityId,
+    cycleEntity: EntityId,
+  },
+} as const;
+
 const arrayPStat = `uint32[${PSTAT_ARRAY.length}]` as const;
 
 const durationTable = {
@@ -41,11 +48,11 @@ const durationTable = {
   },
 } as const;
 
-const nameToEntityTable = {
-  key: ["name"],
+const nameTable = {
+  key: ["entity"],
   schema: {
-    name: "bytes32",
     entity: EntityId,
+    name: "string",
   },
 } as const;
 
@@ -68,7 +75,6 @@ const enums = {
   SkillType: SKILL_TYPE_ARRAY,
   TargetType: TARGET_TYPE_ARRAY,
   StatmodOp: STATMOD_OP_ARRAY,
-  ActionType: ACTION_TYPE_ARRAY,
   AffixPartId: AFFIX_PART_ID_ARRAY,
   CombatActionType: COMBAT_ACTION_TYPE_ARRAY,
 };
@@ -84,6 +90,9 @@ const userTypes = {
 export default defineWorld({
   enums,
   userTypes,
+  codegen: {
+    generateSystemLibraries: true,
+  },
   namespaces: {
     root: {
       namespace: "",
@@ -104,7 +113,7 @@ export default defineWorld({
             tokenAddress: "address",
           },
         },
-        Name: "string",
+        Name: nameTable,
         DefaultWheel: {
           key: [],
           schema: {
@@ -135,6 +144,7 @@ export default defineWorld({
             affixPart: arrayPStat,
           },
         },
+        GuiseName: nameTable,
         GuiseSkills: {
           ...entityKey,
           schema: {
@@ -142,7 +152,6 @@ export default defineWorld({
             entityArray: EntityIdArray,
           },
         },
-        GuiseNameToEntity: nameToEntityTable,
         LearnedSkills: {
           ...entityKey,
           schema: {
@@ -219,14 +228,11 @@ export default defineWorld({
             timeValue: "uint256",
           },
         },
+        SkillName: nameTable,
         SkillDescription: "string",
-        SkillNameToEntity: nameToEntityTable,
         SkillCooldown: durationTable,
-        FromTemplate: entityRelation,
-        ActiveCycle: entityRelation,
-        CycleToWanderer: entityRelation,
-        CurrentCycle: entityRelation,
-        PreviousCycle: entityRelation,
+        ActiveCycle: wandererToCycleEntityRelation,
+        PreviousCycle: wandererToCycleEntityRelation,
         BossesDefeated: {
           ...entityKey,
           schema: {
@@ -292,6 +298,13 @@ export default defineWorld({
             roundsMax: "uint32",
           },
         },
+        FromMap: {
+          key: ["encounterEntity"],
+          schema: {
+            encounterEntity: EntityId,
+            mapEntity: EntityId,
+          },
+        },
         RNGPrecommit: {
           ...entityKey,
           schema: {
@@ -334,6 +347,10 @@ export default defineWorld({
       },
       systems: {
         CombatSystem: {
+          openAccess: false,
+          accessList: [],
+        },
+        RandomEquipmentSystem: {
           openAccess: false,
           accessList: [],
         },
