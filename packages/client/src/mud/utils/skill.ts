@@ -37,7 +37,6 @@ export const getSkill = (components: ClientComponents, entity: Entity) => {
     entity,
   );
   const name = getComponentValueStrict(components.SkillName, entity);
-  console.log("name", name);
   const skillSpellDamage = getComponentValueStrict(
     components.SkillSpellDamage,
     entity,
