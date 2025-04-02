@@ -45,7 +45,7 @@ export const useExecuteCycleCombatRound = () => {
   const { systemCalls } = useMUD();
 
   return useCallback(
-    async (wandererEntity: Entity, actions: Entity) => {
+    async (wandererEntity: Entity, actions: CombatAction[]) => {
       await systemCalls.cycleCombat(wandererEntity, actions);
     },
     [systemCalls],
