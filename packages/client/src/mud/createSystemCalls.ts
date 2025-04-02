@@ -59,6 +59,31 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
+  const activateCycleCombat = async (
+    wandererEntity: Entity,
+    mapEntity: Entity,
+  ) => {
+    const tx = await worldContract.write.activateCycleCombat([
+      wandererEntity as Hex,
+      mapEntity as Hex,
+    ]);
+    await waitForTransaction(tx);
+  };
+  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
+  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
+  //   await waitForTransaction(tx);
+  // };
+
+  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
+  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
+  //   await waitForTransaction(tx);
+  // };
+
+  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
+  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
+  //   await waitForTransaction(tx);
+  // };
+
   // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
   //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
   //   await waitForTransaction(tx);
@@ -74,6 +99,7 @@ export function createSystemCalls(
     claimCycleTurns,
     passCycleTurn,
     learnCycleSkill,
+    activateCycleCombat,
     // permSkill,
     // noncombatSkill
   };

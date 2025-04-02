@@ -8,7 +8,10 @@ import {
   // setComponent,
 } from "@latticexyz/recs";
 // import { BigNumber } from "ethers";
-// import { useCallback, useEffect, useMemo } from "react";
+import {
+  useCallback,
+  // useEffect, useMemo
+} from "react";
 // import { useEntityQuery } from "../useEntityQuery";
 import { CombatAction } from "../utils/combat";
 // import { parsePStats } from "../utils/experience";
@@ -27,20 +30,16 @@ export const useActiveCombat = (initiatorEntity: Entity | undefined) => {
   return enemyEntity;
 };
 
-// export const useActivateCycleCombat = () => {
-//   const { world, systems } = useMUD();
-//
-//   return useCallback(
-//     async (wandererEntity: Entity, mapEntity: Entity) => {
-//       const tx = await systems["system.CycleActivateCombat"].executeTyped(
-//         world.entities[wandererEntity],
-//         world.entities[mapEntity]
-//       );
-//       await tx.wait();
-//     },
-//     [world, systems]
-//   );
-// };
+export const useActivateCycleCombat = () => {
+  const { systemCalls } = useMUD();
+
+  return useCallback(
+    async (wandererEntity: Entity, mapEntity: Entity) => {
+      await systemCalls.activateCycleCombat(wandererEntity, mapEntity);
+    },
+    [systemCalls],
+  );
+};
 
 // export const useExecuteCycleCombatRound = () => {
 //   const { world, systems } = useMUD();
