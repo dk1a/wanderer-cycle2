@@ -82,20 +82,16 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
-  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
-  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
-  //   await waitForTransaction(tx);
-  // };
-
-  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
-  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
-  //   await waitForTransaction(tx);
-  // };
-
-  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
-  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
-  //   await waitForTransaction(tx);
-  // };
+  const claimCycleCombatReward = async (
+    wandererEntity: Entity,
+    requestEntity: Entity,
+  ) => {
+    const tx = await worldContract.write.claimCycleCombatReward([
+      wandererEntity as Hex,
+      requestEntity as Hex,
+    ]);
+    await waitForTransaction(tx);
+  };
 
   // const noncombatSkill = async (cycleEntity: Entity, skillEntity: Entity) => {
   //   const tx = await worldContract.write.NoncombatSkill([cycleEntity as Hex, skillEntity as Hex]);
@@ -109,6 +105,7 @@ export function createSystemCalls(
     learnCycleSkill,
     activateCycleCombat,
     cycleCombat,
+    claimCycleCombatReward,
     // permSkill,
     // noncombatSkill
   };

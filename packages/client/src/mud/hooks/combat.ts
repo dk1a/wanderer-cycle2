@@ -51,21 +51,17 @@ export const useExecuteCycleCombatRound = () => {
     [systemCalls],
   );
 };
-//
-// export const useClaimCycleCombatReward = () => {
-//   const { world, systems } = useMUD();
-//
-//   return useCallback(
-//     async (wandererEntity: Entity, requestEntity: Entity) => {
-//       const tx = await systems["system.CycleCombatReward"].executeTyped(
-//         world.entities[wandererEntity],
-//         world.entities[requestEntity]
-//       );
-//       await tx.wait();
-//     },
-//     [world, systems]
-//   );
-// };
+
+export const useClaimCycleCombatReward = () => {
+  const { systemCalls } = useMUD();
+
+  return useCallback(
+    async (wandererEntity: Entity, requestEntity: Entity) => {
+      await systemCalls.claimCycleCombatReward(wandererEntity, requestEntity);
+    },
+    [systemCalls],
+  );
+};
 //
 // export const useCancelCycleCombatReward = () => {
 //   const { world, systems } = useMUD();
