@@ -93,6 +93,22 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
+  const cancelCycleCombatReward = async (
+    wandererEntity: Entity,
+    requestEntity: Entity,
+  ) => {
+    const tx = await worldContract.write.cancelCycleCombatReward([
+      wandererEntity as Hex,
+      requestEntity as Hex,
+    ]);
+    await waitForTransaction(tx);
+  };
+
+  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
+  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
+  //   await waitForTransaction(tx);
+  // };
+
   // const noncombatSkill = async (cycleEntity: Entity, skillEntity: Entity) => {
   //   const tx = await worldContract.write.NoncombatSkill([cycleEntity as Hex, skillEntity as Hex]);
   //   await waitForTransaction(tx);
@@ -106,6 +122,7 @@ export function createSystemCalls(
     activateCycleCombat,
     cycleCombat,
     claimCycleCombatReward,
+    cancelCycleCombatReward,
     // permSkill,
     // noncombatSkill
   };

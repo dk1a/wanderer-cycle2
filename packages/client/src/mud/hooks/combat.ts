@@ -62,21 +62,18 @@ export const useClaimCycleCombatReward = () => {
     [systemCalls],
   );
 };
-//
-// export const useCancelCycleCombatReward = () => {
-//   const { world, systems } = useMUD();
-//
-//   return useCallback(
-//     async (wandererEntity: Entity, requestEntity: Entity) => {
-//       const tx = await systems["system.CycleCombatReward"].cancelRequest(
-//         world.entities[wandererEntity],
-//         world.entities[requestEntity]
-//       );
-//       await tx.wait();
-//     },
-//     [world, systems]
-//   );
-// };
+
+export const useCancelCycleCombatReward = () => {
+  const { systemCalls } = useMUD();
+
+  return useCallback(
+    async (wandererEntity: Entity, requestEntity: Entity) => {
+      await systemCalls.cancelCycleCombatReward(wandererEntity, requestEntity);
+    },
+    [systemCalls],
+  );
+};
+
 //
 // export type CycleCombatRewardRequest = ReturnType<typeof useCycleCombatRewardRequests>[number];
 //
