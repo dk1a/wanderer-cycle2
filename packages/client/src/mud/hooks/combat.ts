@@ -41,17 +41,16 @@ export const useActivateCycleCombat = () => {
   );
 };
 
-// export const useExecuteCycleCombatRound = () => {
-//   const { world, systems } = useMUD();
-//
-//   return useCallback(
-//     async (wandererEntity: Entity, actions: CombatAction[]) => {
-//       const tx = await systems["system.CycleCombat"].executeTyped(world.entities[wandererEntity], actions);
-//       await tx.wait();
-//     },
-//     [world, systems]
-//   );
-// };
+export const useExecuteCycleCombatRound = () => {
+  const { systemCalls } = useMUD();
+
+  return useCallback(
+    async (wandererEntity: Entity, actions: Entity) => {
+      await systemCalls.cycleCombat(wandererEntity, actions);
+    },
+    [systemCalls],
+  );
+};
 //
 // export const useClaimCycleCombatReward = () => {
 //   const { world, systems } = useMUD();

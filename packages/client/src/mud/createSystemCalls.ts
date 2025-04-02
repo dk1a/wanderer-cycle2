@@ -6,6 +6,7 @@ import { Entity } from "@latticexyz/recs";
 import { Hex } from "viem";
 
 import { SetupNetworkResult } from "./setupNetwork";
+import { CombatAction } from "./utils/combat";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -69,10 +70,17 @@ export function createSystemCalls(
     ]);
     await waitForTransaction(tx);
   };
-  // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
-  //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
-  //   await waitForTransaction(tx);
-  // };
+
+  const cycleCombat = async (
+    wandererEntity: Entity,
+    action: CombatAction[],
+  ) => {
+    const tx = await worldContract.write.processCycleCombatRound([
+      wandererEntity as Hex,
+      action,
+    ]);
+    await waitForTransaction(tx);
+  };
 
   // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
   //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
@@ -100,6 +108,7 @@ export function createSystemCalls(
     passCycleTurn,
     learnCycleSkill,
     activateCycleCombat,
+    cycleCombat,
     // permSkill,
     // noncombatSkill
   };
