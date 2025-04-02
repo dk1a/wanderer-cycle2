@@ -1,20 +1,19 @@
-import { useComponentValue } from "@latticexyz/react";
+import { useComponentValue, useEntityQuery } from "@latticexyz/react";
 import {
   Entity,
   // getComponentValue,
-  // getComponentValueStrict,
-  // Has,
-  // HasValue,
+  getComponentValueStrict,
+  Has,
+  HasValue,
   // setComponent,
 } from "@latticexyz/recs";
 // import { BigNumber } from "ethers";
 import {
   useCallback,
-  // useEffect, useMemo
+  // useEffect,
+  useMemo,
 } from "react";
-// import { useEntityQuery } from "../useEntityQuery";
 import { CombatAction } from "../utils/combat";
-// import { parsePStats } from "../utils/experience";
 import { useMUD } from "../../MUDContext";
 
 export const useActiveCombat = (initiatorEntity: Entity | undefined) => {
@@ -25,9 +24,9 @@ export const useActiveCombat = (initiatorEntity: Entity | undefined) => {
 
   const activeCombat = useComponentValue(ActiveCombat, initiatorEntity);
   console.log("activeCombat", activeCombat);
-  const enemyEntity = activeCombat?.value;
+  const retaliatorEntity = activeCombat?.retaliatorEntity;
 
-  return enemyEntity;
+  return retaliatorEntity;
 };
 
 export const useActivateCycleCombat = () => {
@@ -74,46 +73,52 @@ export const useCancelCycleCombatReward = () => {
   );
 };
 
-//
-// export type CycleCombatRewardRequest = ReturnType<typeof useCycleCombatRewardRequests>[number];
-//
-// export const useCycleCombatRewardRequests = (requesterEntity: Entity | undefined) => {
-//   const mud = useMUD();
-//   const {
-//     world,
-//     components: { RNGRequestOwner, RNGPrecommit, CycleCombatRewardRequest },
-//   } = mud;
-//
-//   const requesterEntityId = useMemo(() => {
-//     if (!requesterEntity) return;
-//     return world.entities[requesterEntity];
-//   }, [world, requesterEntity]);
-//   const requestEntities = useEntityQuery(
-//     [HasValue(RNGRequestOwner, { value: requesterEntityId }), Has(RNGPrecommit), Has(CycleCombatRewardRequest)],
-//     true
-//   );
-//
-//   return useMemo(() => {
-//     return requestEntities.map((requestEntity) => {
-//       const precommit = getComponentValueStrict(RNGPrecommit, requestEntity).value;
-//       const request = getComponentValueStrict(CycleCombatRewardRequest, requestEntity);
-//
-//       const mapEntity = world.entityToIndex.get(request.mapEntity);
-//       if (mapEntity === undefined) throw new Error(`No index for map entity id ${request.mapEntity}`);
-//
-//       return {
-//         requestEntity,
-//         blocknumber: precommit,
-//         mapEntity,
-//         mapEntityId: request.mapEntity,
-//         connection: request.connection,
-//         fortune: request.fortune,
-//         winnerPStats: parsePStats(request.winner_strength, request.winner_arcana, request.winner_dexterity),
-//         loserPStats: parsePStats(request.loser_strength, request.loser_arcana, request.loser_dexterity),
-//       };
-//     });
-//   }, [world, RNGPrecommit, CycleCombatRewardRequest, requestEntities]);
-// };
+export type CycleCombatRewardRequest = ReturnType<
+  typeof useCycleCombatRewardRequests
+>[number];
+
+export const useCycleCombatRewardRequests = (
+  requesterEntity: Entity | undefined,
+) => {
+  const mud = useMUD();
+  const {
+    components: { RNGRequestOwner, RNGPrecommit, CycleCombatRReq },
+  } = mud;
+
+  const requestEntities = useEntityQuery(
+    [
+      HasValue(RNGRequestOwner, { value: requesterEntity }),
+      Has(RNGPrecommit),
+      Has(CycleCombatRReq),
+    ],
+    true,
+  );
+
+  return useMemo(() => {
+    return requestEntities.map((requestEntity) => {
+      const precommit = getComponentValueStrict(
+        RNGPrecommit,
+        requestEntity,
+      ).value;
+      const request = getComponentValueStrict(CycleCombatRReq, requestEntity);
+
+      const mapEntity = request.mapEntity;
+      if (mapEntity === undefined)
+        throw new Error(`No index for map entity id ${request.mapEntity}`);
+
+      return {
+        requestEntity,
+        blocknumber: precommit,
+        mapEntity,
+        mapEntityId: request.mapEntity,
+        connection: request.connection,
+        fortune: request.fortune,
+        winnerPStats: request.winnerPStat,
+        loserPStats: request.loserPStat,
+      };
+    });
+  }, [RNGPrecommit, CycleCombatRReq, requestEntities]);
+};
 
 export enum CombatResult {
   NONE,
