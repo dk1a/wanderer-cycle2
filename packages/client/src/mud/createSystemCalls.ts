@@ -6,6 +6,7 @@ import { Entity } from "@latticexyz/recs";
 import { Hex } from "viem";
 
 import { SetupNetworkResult } from "./setupNetwork";
+import { CombatAction } from "./utils/combat";
 
 export type SystemCalls = ReturnType<typeof createSystemCalls>;
 
@@ -59,6 +60,50 @@ export function createSystemCalls(
     await waitForTransaction(tx);
   };
 
+  const activateCycleCombat = async (
+    wandererEntity: Entity,
+    mapEntity: Entity,
+  ) => {
+    const tx = await worldContract.write.activateCycleCombat([
+      wandererEntity as Hex,
+      mapEntity as Hex,
+    ]);
+    await waitForTransaction(tx);
+  };
+
+  const cycleCombat = async (
+    wandererEntity: Entity,
+    action: CombatAction[],
+  ) => {
+    const tx = await worldContract.write.processCycleCombatRound([
+      wandererEntity as Hex,
+      action,
+    ]);
+    await waitForTransaction(tx);
+  };
+
+  const claimCycleCombatReward = async (
+    wandererEntity: Entity,
+    requestEntity: Entity,
+  ) => {
+    const tx = await worldContract.write.claimCycleCombatReward([
+      wandererEntity as Hex,
+      requestEntity as Hex,
+    ]);
+    await waitForTransaction(tx);
+  };
+
+  const cancelCycleCombatReward = async (
+    wandererEntity: Entity,
+    requestEntity: Entity,
+  ) => {
+    const tx = await worldContract.write.cancelCycleCombatReward([
+      wandererEntity as Hex,
+      requestEntity as Hex,
+    ]);
+    await waitForTransaction(tx);
+  };
+
   // const permSkill = async (wandererEntity: Entity, skillEntity: Entity) => {
   //   const tx = await worldContract.write.PermSkill([wandererEntity as Hex, skillEntity as Hex]);
   //   await waitForTransaction(tx);
@@ -74,6 +119,10 @@ export function createSystemCalls(
     claimCycleTurns,
     passCycleTurn,
     learnCycleSkill,
+    activateCycleCombat,
+    cycleCombat,
+    claimCycleCombatReward,
+    cancelCycleCombatReward,
     // permSkill,
     // noncombatSkill
   };
