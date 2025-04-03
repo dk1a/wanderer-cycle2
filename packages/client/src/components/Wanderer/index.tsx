@@ -14,24 +14,16 @@ export default function Wanderer({ wandererEntity }: WandererProps) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem("selectedWandererEntity");
-      if (saved) {
-        selectWandererEntity(saved as Entity);
-      }
-    } catch (e) {
-      console.warn("Error when reading from sessionStorage:", e);
+    const saved = sessionStorage.getItem("selectedWandererEntity");
+    if (saved) {
+      selectWandererEntity(saved as Entity);
     }
   }, [selectWandererEntity]);
 
   const handleSelectWanderer = (wanderer: Entity) => {
-    try {
-      sessionStorage.setItem("selectedWandererEntity", wanderer);
-      selectWandererEntity(wanderer);
-      navigate("/maps");
-    } catch (e) {
-      console.warn("ОError when reading from sessionStorage:", e);
-    }
+    sessionStorage.setItem("selectedWandererEntity", wanderer);
+    selectWandererEntity(wanderer);
+    navigate("/maps");
   };
 
   return (
