@@ -8,10 +8,9 @@ import { AffixPartId } from "../../codegen/common.sol";
 import { AffixAvailabilityTargetId } from "./types.sol";
 import { Affix, AffixData } from "./codegen/tables/Affix.sol";
 import { AffixPrototypeAvailable } from "./codegen/tables/AffixPrototypeAvailable.sol";
-import { AffixNaming } from "./codegen/tables/AffixNaming.sol";
 import { AffixPrototype, AffixPrototypeData } from "./codegen/tables/AffixPrototype.sol";
 import { Idx_AffixPrototype_ExclusiveGroup } from "./codegen/idxs/Idx_AffixPrototype_ExclusiveGroup.sol";
-import { UniqueIdx_AffixPrototype_TierName } from "./codegen/idxs/UniqueIdx_AffixPrototype_TierName.sol";
+import { UniqueIdx_AffixPrototype_AffixTierName } from "./codegen/idxs/UniqueIdx_AffixPrototype_AffixTierName.sol";
 import { LibArray } from "../../utils/LibArray.sol";
 
 /// @title Randomly pick affixes.
@@ -35,9 +34,9 @@ library LibPickAffix {
   )
     internal
     view
-    returns (bytes32[] memory statmodBaseEntities, bytes32[] memory affixProtoEntities, uint32[] memory affixValues)
+    returns (bytes32[] memory statmodEntities, bytes32[] memory affixProtoEntities, uint32[] memory affixValues)
   {
-    statmodBaseEntities = new bytes32[](affixPartIds.length);
+    statmodEntities = new bytes32[](affixPartIds.length);
     affixProtoEntities = new bytes32[](affixPartIds.length);
     affixValues = new uint32[](affixPartIds.length);
 
@@ -53,7 +52,7 @@ library LibPickAffix {
       );
 
       // set the corresponding statmod
-      statmodBaseEntities[i] = AffixPrototype.getStatmodBaseEntity(affixProtoEntity);
+      statmodEntities[i] = AffixPrototype.getStatmodEntity(affixProtoEntity);
 
       // pick its value
       affixProtoEntities[i] = affixProtoEntity;
@@ -87,23 +86,23 @@ library LibPickAffix {
   )
     internal
     view
-    returns (bytes32[] memory statmodBaseEntities, bytes32[] memory affixProtoEntities, uint32[] memory affixValues)
+    returns (bytes32[] memory statmodEntities, bytes32[] memory affixProtoEntities, uint32[] memory affixValues)
   {
     if (names.length != affixTiers.length) {
       revert LibPickAffix_MalformedInputManualPick(names.length, affixTiers.length);
     }
     uint256 len = names.length;
-    statmodBaseEntities = new bytes32[](len);
+    statmodEntities = new bytes32[](len);
     affixProtoEntities = new bytes32[](len);
     affixValues = new uint32[](len);
 
     for (uint32 i; i < len; i++) {
-      affixProtoEntities[i] = UniqueIdx_AffixPrototype_TierName.get(affixTiers[i], names[i]);
+      affixProtoEntities[i] = UniqueIdx_AffixPrototype_AffixTierName.get(affixTiers[i], names[i]);
       if (affixProtoEntities[i] == bytes32(0)) {
         revert LibPickAffix_InvalidTierName(affixTiers[i], names[i]);
       }
 
-      statmodBaseEntities[i] = AffixPrototype.getStatmodBaseEntity(affixProtoEntities[i]);
+      statmodEntities[i] = AffixPrototype.getStatmodEntity(affixProtoEntities[i]);
       affixValues[i] = AffixPrototype.getMax(affixProtoEntities[i]);
     }
   }

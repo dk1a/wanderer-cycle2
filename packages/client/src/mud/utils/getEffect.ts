@@ -1,111 +1,109 @@
-import {
-  Entity,
-  getComponentValue,
-  getComponentValueStrict,
-  hasComponent,
-  World,
-} from "@latticexyz/recs";
-import { defineEffectComponent } from "../components/EffectComponent";
-import { SetupResult } from "../setup";
-import { parseEffectStatmods } from "./effectStatmod";
+import { Hex } from "viem";
+import { getRecord } from "@latticexyz/stash/internal";
+import { getRecordStrict, mudTables, StateLocal } from "../stash";
 
-export enum EffectRemovability {
-  BUFF,
-  DEBUFF,
-  PERSISTENT,
+export interface EffectStatmod {
+  statmodEntity: Hex;
+  value: number;
+}
+
+export interface EffectTemplate {
+  entity: Hex;
+  statmods: EffectStatmod[];
+}
+
+export interface EffectApplied {
+  targetEntity: Hex;
+  applicationEntity: Hex;
+  statmods: EffectStatmod[];
+  effectSource: EffectSource;
 }
 
 export enum EffectSource {
   UNKNOWN,
   SKILL,
-  NFT,
-  OWNABLE,
+  EQUIPMENT,
   MAP,
 }
 
-export type EffectPrototype = ReturnType<typeof getEffectPrototype>;
-export type AppliedEffect = ReturnType<typeof getAppliedEffect>;
-
-export function getEffectPrototype(
-  world: World,
-  component: ReturnType<typeof defineEffectComponent>,
-  entity: Entity,
-) {
-  const effectPrototype = getComponentValue(component, entity);
-  if (!effectPrototype) return;
-  const statmods = parseEffectStatmods(
-    world,
-    effectPrototype.statmodProtoEntities,
-    effectPrototype.statmodValues,
-  );
+export function getEffectTemplate(state: StateLocal, entity: Hex) {
+  const effect = getRecordStrict({
+    state,
+    table: mudTables.effect__EffectTemplate,
+    key: { entity },
+  });
+  const statmods = parseEffectStatmods(effect.statmodEntities, effect.values);
 
   return {
     entity,
-    removability: effectPrototype.removability as EffectRemovability,
     statmods,
   };
 }
 
-type GetAppliedEffectComponents = Pick<
-  SetupResult["components"],
-  | "AppliedEffect"
-  | "SkillPrototype"
-  | "WNFT_Ownership"
-  | "OwnedBy"
-  | "FromPrototype"
-  | "MapPrototype"
->;
-
-export function getAppliedEffect(
-  world: World,
-  components: GetAppliedEffectComponents,
-  appliedEntity: Entity,
-  protoEntity: Entity,
+export function getEffectApplied(
+  state: StateLocal,
+  targetEntity: Hex,
+  applicationEntity: Hex,
 ) {
-  const {
-    AppliedEffect,
-    SkillPrototype,
-    WNFT_Ownership,
-    OwnedBy,
-    FromPrototype,
-    MapPrototype,
-  } = components;
+  const effect = getRecordStrict({
+    state,
+    table: mudTables.effect__EffectApplied,
+    key: { targetEntity, applicationEntity },
+  });
+  const statmods = parseEffectStatmods(effect.statmodEntities, effect.values);
 
-  const effectPrototypeData = getEffectPrototype(
-    world,
-    AppliedEffect,
-    appliedEntity,
-  );
-
-  const effectSource = (() => {
-    if (hasComponent(SkillPrototype, protoEntity)) {
-      return EffectSource.SKILL;
-    } else if (hasComponent(WNFT_Ownership, protoEntity)) {
-      return EffectSource.NFT;
-    } else if (hasComponent(OwnedBy, protoEntity)) {
-      return EffectSource.OWNABLE;
-    } else if (hasComponent(FromPrototype, protoEntity)) {
-      // the `protoEntity` in this context is what spawned the effect, and it can have its own prototype
-      const protoProtoEntityId = getComponentValueStrict(
-        FromPrototype,
-        protoEntity,
-      ).value;
-      const protoProtoEntity = world.entityToIndex.get(protoProtoEntityId);
-      if (protoProtoEntity === undefined) return EffectSource.UNKNOWN;
-
-      if (hasComponent(MapPrototype, protoProtoEntity)) {
-        return EffectSource.MAP;
-      } else {
-        return EffectSource.UNKNOWN;
-      }
-    } else {
-      return EffectSource.UNKNOWN;
-    }
-  })();
+  const effectSource = getEffectSource(state, applicationEntity);
 
   return {
-    ...effectPrototypeData,
-    protoEntity,
+    targetEntity,
+    applicationEntity,
+    statmods,
     effectSource,
   };
+}
+
+function parseEffectStatmods(
+  statmodEntities: readonly Hex[],
+  values: readonly number[],
+): EffectStatmod[] {
+  if (statmodEntities.length !== values.length) {
+    throw new Error(
+      `Length mismatch for statmodEntities and values: ${statmodEntities.length} ${values.length}`,
+    );
+  }
+
+  const effectStatmods: EffectStatmod[] = [];
+  for (let i = 0; i < statmodEntities.length; i++) {
+    effectStatmods.push({
+      statmodEntity: statmodEntities[i],
+      value: values[i],
+    });
+  }
+  return effectStatmods;
+}
+
+function getEffectSource(state: StateLocal, entity: Hex) {
+  if (
+    getRecord({ state, table: mudTables.root__SkillTemplate, key: { entity } })
+  ) {
+    return EffectSource.SKILL;
+  } else if (
+    getRecord({
+      state,
+      table: mudTables.root__EquipmentTypeComponent,
+      key: { entity },
+    })
+  ) {
+    return EffectSource.EQUIPMENT;
+  } else if (
+    getRecord({
+      state,
+      table: mudTables.root__MapTypeComponent,
+      key: { entity },
+    })
+  ) {
+    return EffectSource.MAP;
+  } else {
+    return EffectSource.UNKNOWN;
+  }
 }

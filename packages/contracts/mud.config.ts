@@ -9,6 +9,7 @@ import {
   AFFIX_PART_ID_ARRAY,
   PSTAT_ARRAY,
   COMBAT_ACTION_TYPE_ARRAY,
+  COMBAT_RESULT_ARRAY,
 } from "./enums";
 
 const EntityId = "bytes32" as const;
@@ -25,14 +26,6 @@ const entityRelation = {
   schema: {
     fromEntity: EntityId,
     toEntity: EntityId,
-  },
-} as const;
-
-const wandererToCycleEntityRelation = {
-  key: ["wandererEntity"],
-  schema: {
-    wandererEntity: EntityId,
-    cycleEntity: EntityId,
   },
 } as const;
 
@@ -77,6 +70,7 @@ const enums = {
   StatmodOp: STATMOD_OP_ARRAY,
   AffixPartId: AFFIX_PART_ID_ARRAY,
   CombatActionType: COMBAT_ACTION_TYPE_ARRAY,
+  CombatResult: COMBAT_RESULT_ARRAY,
 };
 
 const userTypes = {
@@ -97,15 +91,6 @@ export default defineWorld({
     root: {
       namespace: "",
       tables: {
-        Tasks: {
-          schema: {
-            id: "bytes32",
-            createdAt: "uint256",
-            completedAt: "uint256",
-            description: "string",
-          },
-          key: ["id"],
-        },
         ERC721Config: {
           key: ["namespace"],
           schema: {
@@ -114,21 +99,6 @@ export default defineWorld({
           },
         },
         Name: nameTable,
-        DefaultWheel: {
-          key: [],
-          schema: {
-            entity: EntityId,
-          },
-        },
-        Wheel: {
-          ...entityKey,
-          schema: {
-            entity: EntityId,
-            totalIdentityRequired: "uint32",
-            charges: "uint32",
-            isIsolated: "bool",
-          },
-        },
         Experience: {
           ...entityKey,
           schema: {
@@ -141,7 +111,7 @@ export default defineWorld({
           ...entityKey,
           schema: {
             entity: EntityId,
-            affixPart: arrayPStat,
+            arrayPStat: arrayPStat,
           },
         },
         GuiseName: nameTable,
@@ -177,7 +147,14 @@ export default defineWorld({
           ...entityKey,
           schema: {
             entity: EntityId,
-            entityArray: EntityIdArray,
+            affixEntities: EntityIdArray,
+          },
+        },
+        LootTargetId: {
+          ...entityKey,
+          schema: {
+            entity: EntityId,
+            targetId: "AffixAvailabilityTargetId",
           },
         },
         LootIlvl: {
@@ -229,10 +206,21 @@ export default defineWorld({
           },
         },
         SkillName: nameTable,
-        SkillDescription: "string",
+        SkillDescription: {
+          ...entityKey,
+          schema: {
+            entity: EntityId,
+            value: "string",
+          },
+        },
         SkillCooldown: durationTable,
-        ActiveCycle: wandererToCycleEntityRelation,
-        PreviousCycle: wandererToCycleEntityRelation,
+        ActiveCycle: {
+          ...entityKey,
+          schema: {
+            entity: EntityId,
+            cycleEntity: EntityId,
+          },
+        },
         BossesDefeated: {
           ...entityKey,
           schema: {
@@ -262,30 +250,15 @@ export default defineWorld({
           ...entityKey,
           schema: {
             entity: EntityId,
+            // timestamp
             value: "uint48",
-          },
-        },
-        ActiveWheel: entityRelation,
-        Identity: {
-          ...entityKey,
-          schema: {
-            entity: EntityId,
-            value: "uint32",
           },
         },
         Wanderer: {
           ...entityKey,
           schema: {
             entity: EntityId,
-            spawn: "bool",
-          },
-        },
-        WheelsCompleted: {
-          key: ["wandererEntity", "wheelEntity"],
-          schema: {
-            wandererEntity: EntityId,
-            wheelEntity: EntityId,
-            value: "uint32",
+            value: "bool",
           },
         },
         // An entity can initiate only 1 combat at a time
@@ -296,6 +269,30 @@ export default defineWorld({
             retaliatorEntity: EntityId,
             roundsSpent: "uint32",
             roundsMax: "uint32",
+          },
+        },
+        CombatRoundResultOffchain: {
+          type: "offchainTable",
+          key: ["initiatorEntity", "retaliatorEntity", "roundIndex"],
+          schema: {
+            initiatorEntity: EntityId,
+            retaliatorEntity: EntityId,
+            roundIndex: "uint256",
+            combatResult: "CombatResult",
+          },
+        },
+        CombatActionResultOffchain: {
+          type: "offchainTable",
+          key: ["attackerEntity", "defenderEntity", "roundIndex", "actionIndex"],
+          schema: {
+            attackerEntity: EntityId,
+            defenderEntity: EntityId,
+            roundIndex: "uint256",
+            actionIndex: "uint256",
+            actionType: "CombatActionType",
+            actionEntity: EntityId,
+            defenderLifeBefore: "uint32",
+            defenderLifeAfter: "uint32",
           },
         },
         FromMap: {
@@ -362,7 +359,7 @@ export default defineWorld({
     },
     /************************************************************************
      *
-     *    DURATION MODULE
+     *    DURATION
      *
      ************************************************************************/
     duration: {
@@ -377,7 +374,7 @@ export default defineWorld({
     },
     /************************************************************************
      *
-     *    STATMOD MODULE
+     *    STATMOD
      *
      ************************************************************************/
     statmod: {
@@ -427,7 +424,7 @@ export default defineWorld({
     },
     /************************************************************************
      *
-     *    EFFECT MODULE
+     *    EFFECT
      *
      ************************************************************************/
     effect: {
@@ -437,7 +434,7 @@ export default defineWorld({
           ...entityKey,
           schema: {
             entity: EntityId,
-            entities: EntityIdArray,
+            statmodEntities: EntityIdArray,
             values: "uint32[]",
           },
         },
@@ -446,7 +443,7 @@ export default defineWorld({
           schema: {
             targetEntity: EntityId,
             applicationEntity: EntityId,
-            entities: EntityIdArray,
+            statmodEntities: EntityIdArray,
             values: "uint32[]",
           },
         },
@@ -454,7 +451,7 @@ export default defineWorld({
     },
     /************************************************************************
      *
-     *    AFFIX MODULE
+     *    AFFIX
      *
      ************************************************************************/
     affix: {
@@ -463,7 +460,7 @@ export default defineWorld({
           ...entityKey,
           schema: {
             entity: EntityId,
-            statmodBaseEntity: EntityId,
+            statmodEntity: EntityId,
             exclusiveGroup: "bytes32",
             affixTier: "uint32",
             requiredLevel: "uint32",
@@ -497,6 +494,54 @@ export default defineWorld({
             targetId: "AffixAvailabilityTargetId",
             affixPrototypeEntity: EntityId,
             label: "string",
+          },
+        },
+      },
+    },
+    /************************************************************************
+     *
+     *    WHEEL
+     *
+     ************************************************************************/
+    wheel: {
+      tables: {
+        Wheel: {
+          ...entityKey,
+          schema: {
+            entity: EntityId,
+            totalIdentityRequired: "uint32",
+            charges: "uint32",
+            isIsolated: "bool",
+            name: "string",
+          },
+        },
+        ActiveWheel: {
+          key: ["cycleEntity"],
+          schema: {
+            cycleEntity: EntityId,
+            wheelEntity: EntityId,
+          },
+        },
+        WheelsCompleted: {
+          key: ["wandererEntity", "wheelEntity"],
+          schema: {
+            wandererEntity: EntityId,
+            wheelEntity: EntityId,
+            value: "uint32",
+          },
+        },
+        IdentityCurrent: {
+          key: ["wandererEntity"],
+          schema: {
+            wandererEntity: EntityId,
+            value: "uint256",
+          },
+        },
+        IdentityEarnedTotal: {
+          key: ["wandererEntity"],
+          schema: {
+            wandererEntity: EntityId,
+            value: "uint256",
           },
         },
       },

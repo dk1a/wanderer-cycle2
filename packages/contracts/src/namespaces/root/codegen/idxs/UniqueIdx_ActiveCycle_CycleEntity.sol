@@ -13,10 +13,8 @@ import { hashIndexes, hashValues } from "@dk1a/mud-table-idxs/src/utils.sol";
 
 import { IIdxErrors } from "@dk1a/mud-table-idxs/src/IIdxErrors.sol";
 
-import { registerBasicIdx } from "@dk1a/mud-table-idxs/src/namespaces/basicIdx/registerBasicIdx.sol";
-import { BasicIdx } from "@dk1a/mud-table-idxs/src/namespaces/basicIdx/codegen/tables/BasicIdx.sol";
-import { BasicIdxUsedKeys } from "@dk1a/mud-table-idxs/src/namespaces/basicIdx/codegen/tables/BasicIdxUsedKeys.sol";
-import { BasicIdx_KeyTuple } from "@dk1a/mud-table-idxs/src/namespaces/basicIdx/BasicIdx_KeyTuple.sol";
+import { registerUniqueIdx } from "@dk1a/mud-table-idxs/src/namespaces/uniqueIdx/registerUniqueIdx.sol";
+import { UniqueIdx } from "@dk1a/mud-table-idxs/src/namespaces/uniqueIdx/codegen/tables/UniqueIdx.sol";
 
 library UniqueIdx_ActiveCycle_CycleEntity {
   // Hex below is the result of `WorldResourceIdLib.encode({ namespace: "", name: "ActiveCycle", typeId: RESOURCE_TABLE });`
@@ -42,44 +40,41 @@ library UniqueIdx_ActiveCycle_CycleEntity {
 
   // Should be called once in e.g. PostDeploy
   function register() internal {
-    registerBasicIdx(_tableId, _keyIndexes, _fieldIndexes);
+    registerUniqueIdx(_tableId, _keyIndexes, _fieldIndexes);
   }
 
-  function length(bytes32 cycleEntity) internal view returns (uint256) {
+  function has(bytes32 cycleEntity) internal view returns (bool) {
     bytes32 _valuesHash = valuesHash(cycleEntity);
 
-    return BasicIdx_KeyTuple.length(_tableId, _indexesHash, _valuesHash);
+    return UniqueIdx.length(_tableId, _indexesHash, _valuesHash) > 0;
   }
 
-  function hasKeyTuple(bytes32[] memory _keyTuple) internal view returns (bool _has, uint40 _index) {
-    bytes32 _keyTupleHash = keccak256(abi.encode(_keyTuple));
-
-    return BasicIdxUsedKeys.get(_tableId, _indexesHash, _keyTupleHash);
-  }
-
-  function has(bytes32 wandererEntity) internal view returns (bool _has, uint40 _index) {
-    bytes32[] memory _keyTuple = new bytes32[](1);
-    _keyTuple[0] = wandererEntity;
-
-    return hasKeyTuple(_keyTuple);
-  }
-
-  function getKeyTuple(bytes32 cycleEntity, uint256 _index) internal view returns (bytes32[] memory _keyTuple) {
+  function getKeyTuple(bytes32 cycleEntity) internal view returns (bytes32[] memory _keyTuple) {
     bytes32 _valuesHash = valuesHash(cycleEntity);
 
-    _keyTuple = BasicIdx_KeyTuple.getItem(_tableId, _indexesHash, _valuesHash, _index, 1);
+    _keyTuple = UniqueIdx.get(_tableId, _indexesHash, _valuesHash);
+
+    if (_keyTuple.length == 0) {
+      revert IIdxErrors.UniqueIdx_InvalidGet({
+        tableId: _tableId,
+        libraryName: "UniqueIdx_ActiveCycle_CycleEntity",
+        valuesBlob: abi.encodePacked(cycleEntity),
+        indexesHash: _indexesHash,
+        valuesHash: _valuesHash
+      });
+    }
   }
 
-  function get(bytes32 cycleEntity, uint256 _index) internal view returns (bytes32 wandererEntity) {
-    bytes32[] memory _keyTuple = getKeyTuple(cycleEntity, _index);
+  function get(bytes32 cycleEntity) internal view returns (bytes32 entity) {
+    bytes32[] memory _keyTuple = getKeyTuple(cycleEntity);
 
-    wandererEntity = _keyTuple[0];
+    entity = _keyTuple[0];
   }
 
   /**
    * @notice Decode keys from a bytes32 array using the source table's field layout.
    */
-  function decodeKeyTuple(bytes32[] memory _keyTuple) internal pure returns (bytes32 wandererEntity) {
-    wandererEntity = _keyTuple[0];
+  function decodeKeyTuple(bytes32[] memory _keyTuple) internal pure returns (bytes32 entity) {
+    entity = _keyTuple[0];
   }
 }

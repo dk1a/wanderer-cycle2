@@ -13,9 +13,7 @@ import {
   ClientConfig,
   getContract,
 } from "viem";
-import { world } from "./world";
-import { syncToRecs } from "@latticexyz/store-sync/recs";
-import { syncToZustand } from "@latticexyz/store-sync/zustand";
+import { syncToStash } from "@latticexyz/store-sync/internal";
 import { getNetworkConfig } from "./getNetworkConfig";
 import IWorldAbi from "contracts/out/IWorld.sol/IWorld.abi.json";
 import {
@@ -25,16 +23,7 @@ import {
 } from "@latticexyz/common";
 import { transactionQueue, writeObserver } from "@latticexyz/common/actions";
 import { Subject, share } from "rxjs";
-
-/*
- * Import our MUD config, which includes strong types for
- * our tables and other config options. We use this to generate
- * things like RECS components and get back strong types for them.
- *
- * See https://mud.dev/templates/typescript/contracts#mudconfigts
- * for the source of this information.
- */
-import mudConfig from "contracts/mud.config";
+import { stash } from "./stash";
 
 export type SetupNetworkResult = Awaited<ReturnType<typeof setupNetwork>>;
 
@@ -80,37 +69,20 @@ export async function setupNetwork() {
     client: { public: publicClient, wallet: burnerWalletClient },
   });
 
-  const { components } = await syncToRecs({
-    world,
-    config: mudConfig,
-    address: networkConfig.worldAddress as Hex,
-    publicClient,
-    startBlock: BigInt(networkConfig.initialBlockNumber),
-  });
-
-  /*
-   * Sync on-chain state into RECS and keeps our client in sync.
-   * Uses the MUD indexer if available, otherwise falls back
-   * to the viem publicClient to make RPC calls to fetch MUD
-   * events from the chain.
-   */
   const {
-    tables,
-    useStore,
     latestBlock$,
+    //latestBlockNumber$,
     storedBlockLogs$,
+    //stopSync,
     waitForTransaction,
-  } = await syncToZustand({
-    config: mudConfig,
+  } = await syncToStash({
+    stash,
     address: networkConfig.worldAddress as Hex,
     publicClient,
     startBlock: BigInt(networkConfig.initialBlockNumber),
   });
 
   return {
-    tables,
-    components,
-    useStore,
     publicClient,
     walletClient: burnerWalletClient,
     latestBlock$,
