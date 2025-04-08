@@ -36,46 +36,40 @@ export function createSystemCalls({
     await waitForTransaction(tx);
   };
 
-  const activateCycleCombat = async (
-    wandererEntity: Entity,
-    mapEntity: Entity,
-  ) => {
+  const activateCycleCombat = async (wandererEntity: Hex, mapEntity: Hex) => {
     const tx = await worldContract.write.activateCycleCombat([
-      wandererEntity as Hex,
-      mapEntity as Hex,
+      wandererEntity,
+      mapEntity,
     ]);
     await waitForTransaction(tx);
   };
 
-  const cycleCombat = async (
-    wandererEntity: Entity,
-    action: CombatAction[],
-  ) => {
+  const cycleCombat = async (wandererEntity: Hex, action: CombatAction[]) => {
     const tx = await worldContract.write.processCycleCombatRound([
-      wandererEntity as Hex,
+      wandererEntity,
       action,
     ]);
     await waitForTransaction(tx);
   };
 
   const claimCycleCombatReward = async (
-    wandererEntity: Entity,
-    requestEntity: Entity,
+    wandererEntity: Hex,
+    requestEntity: Hex,
   ) => {
     const tx = await worldContract.write.claimCycleCombatReward([
-      wandererEntity as Hex,
-      requestEntity as Hex,
+      wandererEntity,
+      requestEntity,
     ]);
     await waitForTransaction(tx);
   };
 
   const cancelCycleCombatReward = async (
-    wandererEntity: Entity,
-    requestEntity: Entity,
+    wandererEntity: Hex,
+    requestEntity: Hex,
   ) => {
     const tx = await worldContract.write.cancelCycleCombatReward([
-      wandererEntity as Hex,
-      requestEntity as Hex,
+      wandererEntity,
+      requestEntity,
     ]);
     await waitForTransaction(tx);
   };
