@@ -6,13 +6,14 @@ import {
   useState,
 } from "react";
 import { Hex } from "viem";
-// import {
-//   CycleCombatRewardRequest,
-//   OnCombatResultData,
-//   useActiveCombat,
-//   useCycleCombatRewardRequests,
-//   useOnCombatResultEffect,
-// } from "../mud/hooks/combat";
+import {
+  CycleCombatRewardRequest,
+  CombatLog,
+  getCombatLog,
+  // useActiveCombat,
+  // useCycleCombatRewardRequests,
+  // useOnCombatResultEffect,
+} from "../mud/utils/combat";
 import { useMUD } from "../MUDContext";
 import { getRecordStrict, mudTables, useStashCustom } from "../mud/stash";
 import { getLearnedSkillEntities } from "../mud/utils/skill";
@@ -24,8 +25,8 @@ type WandererContextType = {
   cycleEntity?: Hex;
   previousCycleEntity?: Hex;
   enemyEntity?: Hex;
-  // combatRewardRequests: CycleCombatRewardRequest[];
-  // lastCombatResult?: OnCombatResultData;
+  combatRewardRequests: CycleCombatRewardRequest[];
+  combatLog?: CombatLog;
   // clearCombatResult: () => void;
   learnCycleSkill: (skillEntity: Hex) => Promise<void>;
   learnedSkillEntities: readonly Hex[];
@@ -75,12 +76,11 @@ export const WandererProvider = (props: { children: ReactNode }) => {
     return getActiveCombat(state, cycleEntity)?.retaliatorEntity;
   });
 
-  //
-  // const combatRewardRequests = useCycleCombatRewardRequests(cycleEntity);
-  // const [lastCombatResult, setLastCombatResult] = useState<OnCombatResultData>();
-  // const clearCombatResult = useCallback(() => setLastCombatResult(undefined), []);
-  // useOnCombatResultEffect(cycleEntity, setLastCombatResult);
-  //
+  const combatLog = useStashCustom((state) => {
+    if (!cycleEntity) return undefined;
+    return getCombatLog(state, cycleEntity, enemyEntity);
+  });
+
   const learnCycleSkill = useCallback(
     async (skillEntity: Hex) => {
       if (cycleEntity === undefined) throw new Error("No cycle entity");
@@ -110,7 +110,7 @@ export const WandererProvider = (props: { children: ReactNode }) => {
     // previousCycleEntity,
     enemyEntity,
     // combatRewardRequests,
-    // lastCombatResult,
+    combatLog,
     // clearCombatResult,
   };
   return (
