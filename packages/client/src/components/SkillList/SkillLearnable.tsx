@@ -8,6 +8,7 @@ import { getSkill, SkillType } from "../../mud/utils/skill";
 import { useLevel } from "../../mud/hooks/charstat";
 import { getActiveGuise } from "../../mud/utils/guise";
 import { UseSkillButton } from "../UseSkillButton";
+import { useMUD } from "../../MUDContext";
 
 export default function SkillLearnable({
   entity,
@@ -16,6 +17,7 @@ export default function SkillLearnable({
   entity: Hex;
   withButtons: boolean;
 }) {
+  const { systemCalls } = useMUD();
   const { learnCycleSkill, learnedSkillEntities, cycleEntity } =
     useWandererContext();
   const skill = useStashCustom((state) => getSkill(state, entity));
@@ -24,11 +26,10 @@ export default function SkillLearnable({
   const guise = useStashCustom((state) => getActiveGuise(state, cycleEntity));
   const level = useLevel(cycleEntity, guise?.levelMul)?.level;
 
-  // const executeNoncombatSkill = useExecuteNoncombatSkill();
-  // const onSkill = useCallback(async () => {
-  //   if (!cycleEntity) throw new Error("Cycle must be active");
-  //   await executeNoncombatSkill(cycleEntity, skill.entity);
-  // }, [cycleEntity, executeNoncombatSkill, skill]);
+  const onSkill = useCallback(async () => {
+    if (!cycleEntity) throw new Error("Cycle must be active");
+    await systemCalls.castNoncombatSkill(cycleEntity, skill.entity);
+  }, [cycleEntity, skill]);
 
   const isLearned = useMemo(
     () => learnedSkillEntities.includes(entity),
@@ -63,10 +64,7 @@ export default function SkillLearnable({
             </Button>
           )}
           {isLearned && skill.skillType === SkillType.COMBAT && (
-            <UseSkillButton
-              entity={entity}
-              // onSkill={onSkill}
-            />
+            <UseSkillButton entity={entity} onSkill={onSkill} />
           )}
         </div>
       )}
