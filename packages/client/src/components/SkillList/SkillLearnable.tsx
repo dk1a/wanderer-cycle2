@@ -1,14 +1,13 @@
 import { useCallback, useMemo, useState } from "react";
 import { Hex } from "viem";
-// import { SkillType } from "../../mud/utils/skill";
 import { useWandererContext } from "../../contexts/WandererContext";
 import { Button } from "../utils/Button/Button";
-// import {useLevel} from "..useLevel/../mud/hooks/charstat";
 import Skill from "../Guise/Skill";
 import { useStashCustom } from "../../mud/stash";
-import { getSkill } from "../../mud/utils/skill";
+import { getSkill, SkillType } from "../../mud/utils/skill";
 import { useLevel } from "../../mud/hooks/charstat";
 import { getActiveGuise } from "../../mud/utils/guise";
+import { UseSkillButton } from "../UseSkillButton";
 
 export default function SkillLearnable({
   entity,
@@ -63,7 +62,12 @@ export default function SkillLearnable({
               learn
             </Button>
           )}
-          {/*{isLearned && skill.skillType === SkillType.COMBAT && <UseSkillButton entity={entity} onSkill={onSkill} />}*/}
+          {isLearned && skill.skillType === SkillType.COMBAT && (
+            <UseSkillButton
+              entity={entity}
+              // onSkill={onSkill}
+            />
+          )}
         </div>
       )}
     </div>

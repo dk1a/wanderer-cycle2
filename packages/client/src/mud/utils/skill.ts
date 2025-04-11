@@ -66,6 +66,7 @@ export function getSkill(state: StateLocal, entity: Hex) {
   const skillType = skill.skillType as SkillType;
   const targetType = skill.targetType as TargetType;
 
+  console.log("duration", skillTemplateDuration);
   return {
     entity,
     name: name?.name ?? "",
