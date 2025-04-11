@@ -1,13 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { Hex } from "viem";
 // import { SkillType } from "../../mud/utils/skill";
-
 import { useWandererContext } from "../../contexts/WandererContext";
 import { Button } from "../utils/Button/Button";
 // import {useLevel} from "..useLevel/../mud/hooks/charstat";
 import Skill from "../Guise/Skill";
 import { useStashCustom } from "../../mud/stash";
 import { getSkill } from "../../mud/utils/skill";
+import { useLevel } from "../../mud/hooks/charstat";
+import { getActiveGuise } from "../../mud/utils/guise";
 
 export default function SkillLearnable({
   entity,
@@ -16,16 +17,13 @@ export default function SkillLearnable({
   entity: Hex;
   withButtons: boolean;
 }) {
-  const {
-    learnCycleSkill,
-    learnedSkillEntities,
-    // cycleEntity,
-  } = useWandererContext();
+  const { learnCycleSkill, learnedSkillEntities, cycleEntity } =
+    useWandererContext();
   const skill = useStashCustom((state) => getSkill(state, entity));
   // const duration = useDuration(cycleEntity, skill.entity);
 
-  // const guise = useActiveGuise(cycleEntity);
-  // const level = useLevel(cycleEntity, guise?.levelMul)?.level;
+  const guise = useStashCustom((state) => getActiveGuise(state, cycleEntity));
+  const level = useLevel(cycleEntity, guise?.levelMul)?.level;
 
   // const executeNoncombatSkill = useExecuteNoncombatSkill();
   // const onSkill = useCallback(async () => {
@@ -60,7 +58,7 @@ export default function SkillLearnable({
           {!isLearned && (
             <Button
               onClick={() => learnCycleSkill(entity)}
-              // disabled={level !== undefined && level < skill.requiredLevel}
+              disabled={level !== undefined && level < skill.requiredLevel}
             >
               learn
             </Button>
