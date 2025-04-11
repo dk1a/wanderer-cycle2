@@ -2,10 +2,10 @@
 pragma solidity >=0.8.21;
 
 import { LibCycleTurns } from "../src/namespaces/root/cycle/LibCycleTurns.sol";
-import { CycleTurns, CycleTurnsLastClaimed, ActiveGuise, ActiveCycle } from "../src/namespaces/root/codegen/index.sol";
-import { MudLibTest } from "./MudLibTest.t.sol";
+import { CycleTurns, ActiveGuise, ActiveCycle } from "../src/namespaces/root/codegen/index.sol";
+import { BaseTest } from "./BaseTest.t.sol";
 
-contract LibCycleTurnsTest is MudLibTest {
+contract LibCycleTurnsTest is BaseTest {
   bytes32 internal targetEntity = keccak256("targetEntity");
   bytes32 internal cycleEntity = keccak256("cycleEntity");
 

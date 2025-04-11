@@ -5,6 +5,7 @@ pragma solidity >=0.8.24;
 
 import { IBaseWorld } from "@latticexyz/world/src/codegen/interfaces/IBaseWorld.sol";
 import { ICombatSystem } from "./ICombatSystem.sol";
+import { ICancelCycleSystem } from "./ICancelCycleSystem.sol";
 import { IClaimCycleTurnsSystem } from "./IClaimCycleTurnsSystem.sol";
 import { ICompleteCycleSystem } from "./ICompleteCycleSystem.sol";
 import { ICycleActivateCombatSystem } from "./ICycleActivateCombatSystem.sol";
@@ -12,6 +13,7 @@ import { ICycleCombatRewardSystem } from "./ICycleCombatRewardSystem.sol";
 import { ICycleCombatSystem } from "./ICycleCombatSystem.sol";
 import { ICycleEquipmentSystem } from "./ICycleEquipmentSystem.sol";
 import { ICycleLearnSkillSystem } from "./ICycleLearnSkillSystem.sol";
+import { ICycleNoncombatSkillSystem } from "./ICycleNoncombatSkillSystem.sol";
 import { ICyclePassTurnSystem } from "./ICyclePassTurnSystem.sol";
 import { IStartCycleSystem } from "./IStartCycleSystem.sol";
 import { IRandomEquipmentSystem } from "./IRandomEquipmentSystem.sol";
@@ -28,6 +30,7 @@ import { IWandererSpawnSystem } from "./IWandererSpawnSystem.sol";
 interface IWorld is
   IBaseWorld,
   ICombatSystem,
+  ICancelCycleSystem,
   IClaimCycleTurnsSystem,
   ICompleteCycleSystem,
   ICycleActivateCombatSystem,
@@ -35,6 +38,7 @@ interface IWorld is
   ICycleCombatSystem,
   ICycleEquipmentSystem,
   ICycleLearnSkillSystem,
+  ICycleNoncombatSkillSystem,
   ICyclePassTurnSystem,
   IStartCycleSystem,
   IRandomEquipmentSystem,
