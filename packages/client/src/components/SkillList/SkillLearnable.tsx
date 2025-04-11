@@ -63,7 +63,7 @@ export default function SkillLearnable({
               learn
             </Button>
           )}
-          {isLearned && skill.skillType === SkillType.COMBAT && (
+          {isLearned && skill.skillType === SkillType.NONCOMBAT && (
             <UseSkillButton entity={entity} onSkill={onSkill} />
           )}
         </div>
