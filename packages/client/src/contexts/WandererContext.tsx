@@ -77,7 +77,7 @@ export const WandererProvider = (props: { children: ReactNode }) => {
   });
 
   const combatLog = useStashCustom((state) => {
-    if (!cycleEntity) return undefined;
+    if (!cycleEntity || !enemyEntity) return undefined;
     return getCombatLog(state, cycleEntity, enemyEntity);
   });
 
@@ -109,8 +109,8 @@ export const WandererProvider = (props: { children: ReactNode }) => {
     toggleWandererMode,
     // previousCycleEntity,
     enemyEntity,
-    // combatRewardRequests,
     combatLog,
+    // combatRewardRequests,
     // clearCombatResult,
   };
   return (
