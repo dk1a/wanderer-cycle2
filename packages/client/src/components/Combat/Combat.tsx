@@ -1,6 +1,6 @@
 import { useWandererContext } from "../../contexts/WandererContext";
 import { CombatRoundOutcome } from "./CombatRoundOutcome";
-// import CombatActions from "./CombatActions";
+import CombatActions from "./CombatActions";
 
 export function Combat() {
   const { combatLog, enemyEntity } = useWandererContext();
@@ -27,7 +27,7 @@ export function Combat() {
       ) : (
         <div>No enemy selected. Loading battle...</div>
       )}
-      {/*<CombatActions />*/}
+      <CombatActions />
     </section>
   );
 }
