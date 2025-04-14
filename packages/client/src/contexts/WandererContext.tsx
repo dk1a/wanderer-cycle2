@@ -6,14 +6,6 @@ import {
   useState,
 } from "react";
 import { Hex } from "viem";
-import {
-  CycleCombatRewardRequest,
-  CombatLog,
-  getCombatLog,
-  // useActiveCombat,
-  // useCycleCombatRewardRequests,
-  // useOnCombatResultEffect,
-} from "../mud/utils/combat";
 import { useMUD } from "../MUDContext";
 import { getRecordStrict, mudTables, useStashCustom } from "../mud/stash";
 import { getLearnedSkillEntities } from "../mud/utils/skill";
@@ -25,9 +17,6 @@ type WandererContextType = {
   cycleEntity?: Hex;
   previousCycleEntity?: Hex;
   enemyEntity?: Hex;
-  combatRewardRequests: CycleCombatRewardRequest[];
-  combatLog?: CombatLog;
-  // clearCombatResult: () => void;
   learnCycleSkill: (skillEntity: Hex) => Promise<void>;
   learnedSkillEntities: readonly Hex[];
   wandererMode: boolean;
@@ -76,11 +65,6 @@ export const WandererProvider = (props: { children: ReactNode }) => {
     return getActiveCombat(state, cycleEntity)?.retaliatorEntity;
   });
 
-  const combatLog = useStashCustom((state) => {
-    if (!cycleEntity || !enemyEntity) return undefined;
-    return getCombatLog(state, cycleEntity, enemyEntity);
-  });
-
   const learnCycleSkill = useCallback(
     async (skillEntity: Hex) => {
       if (cycleEntity === undefined) throw new Error("No cycle entity");
@@ -109,9 +93,6 @@ export const WandererProvider = (props: { children: ReactNode }) => {
     toggleWandererMode,
     // previousCycleEntity,
     enemyEntity,
-    combatLog,
-    // combatRewardRequests,
-    // clearCombatResult,
   };
   return (
     <WandererContext.Provider value={value}>
