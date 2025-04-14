@@ -1,9 +1,9 @@
+import { useMemo } from "react";
 import { useStashCustom } from "../../mud/stash";
+import { getCombatLog } from "../../mud/utils/combat";
 import { useWandererContext } from "../../contexts/WandererContext";
 import { CombatRoundOutcome } from "./CombatRoundOutcome";
 import CombatActions from "./CombatActions";
-import { getCombatLog } from "../../mud/utils/combat";
-import { useMemo } from "react";
 
 export function Combat() {
   const { cycleEntity, enemyEntity } = useWandererContext();

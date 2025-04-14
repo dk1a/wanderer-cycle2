@@ -1,5 +1,7 @@
 import { useCallback, useMemo, useState } from "react";
-import { useWandererContext } from "../../contexts/WandererContext";
+import Select from "react-select";
+import { Hex } from "viem";
+import { useStashCustom } from "../../mud/stash";
 import {
   CombatAction,
   CombatActionType,
@@ -7,17 +9,16 @@ import {
 } from "../../mud/utils/combat";
 import { getSkill, SkillType } from "../../mud/utils/skill";
 import { useMUD } from "../../MUDContext";
-import { useStashCustom } from "../../mud/stash";
+import { useWandererContext } from "../../contexts/WandererContext";
 import { UseSkillButton } from "../UseSkillButton";
 import { Button } from "../utils/Button/Button";
-import Select from "react-select";
 
 export default function CombatActions() {
   const { systemCalls } = useMUD();
   const { cycleEntity, learnedSkillEntities } = useWandererContext();
   const [isBusy, setIsBusy] = useState(false);
   const [selectedSkill, selectSkill] = useState<{
-    value: string;
+    value: Hex;
     label: string;
   } | null>(null);
 
@@ -36,25 +37,28 @@ export default function CombatActions() {
     [combatSkills],
   );
 
-  const handleRound = async (actions: CombatAction[]) => {
-    if (!cycleEntity) {
-      console.warn("No cycleEntity selected");
-      return;
-    }
+  const handleRound = useCallback(
+    async (actions: CombatAction[]) => {
+      if (!cycleEntity) {
+        console.warn("No cycleEntity selected");
+        return;
+      }
 
-    setIsBusy(true);
-    try {
-      await systemCalls.processCycleCombatRound(cycleEntity, actions);
-    } catch (err) {
-      console.error("Combat round failed", err);
-    } finally {
-      setIsBusy(false);
-    }
-  };
+      setIsBusy(true);
+      try {
+        await systemCalls.processCycleCombatRound(cycleEntity, actions);
+      } catch (err) {
+        console.error("Combat round failed", err);
+      } finally {
+        setIsBusy(false);
+      }
+    },
+    [cycleEntity, systemCalls],
+  );
 
   const onAttack = useCallback(async () => {
     await handleRound([attackAction]);
-  }, [cycleEntity]);
+  }, [handleRound]);
 
   const onSkill = useCallback(async () => {
     if (!selectedSkill) {
@@ -63,7 +67,7 @@ export default function CombatActions() {
     }
 
     const fullSkill = combatSkills.find(
-      (s) => s.entity === selectedSkill.value,
+      (skill) => skill.entity === selectedSkill.value,
     );
     if (!fullSkill) {
       console.warn("Selected skill not found in combatSkills");
@@ -76,7 +80,7 @@ export default function CombatActions() {
     };
 
     await handleRound([skillAction]);
-  }, [selectedSkill, combatSkills, cycleEntity]);
+  }, [handleRound, selectedSkill, combatSkills]);
 
   return (
     <div className="w-1/2 flex flex-col items-center mt-4">
