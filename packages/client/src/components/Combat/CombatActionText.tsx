@@ -1,4 +1,3 @@
-import React from "react";
 import { CombatActionLog, CombatActionType } from "../../mud/utils/combat";
 import { getSkill } from "../../mud/utils/skill";
 import { useStashCustom } from "../../mud/stash";

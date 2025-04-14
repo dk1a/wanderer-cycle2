@@ -1,4 +1,3 @@
-import React from "react";
 import { CombatActionText } from "./CombatActionText";
 import { CombatRoundLog } from "../../mud/utils/combat";
 

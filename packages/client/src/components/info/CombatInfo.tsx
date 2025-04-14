@@ -1,11 +1,14 @@
 import { useWandererContext } from "../../contexts/WandererContext";
-import { useLevel } from "../../mud/hooks/charstat";
+import { useStashCustom } from "../../mud/stash";
+import { getLevel } from "../../mud/utils/charstat";
 import BaseInfo from "./BaseInfo";
 
 export default function CombatInfo() {
   const { enemyEntity } = useWandererContext();
 
-  const levelData = useLevel(enemyEntity, undefined);
+  const levelData = useStashCustom((state) =>
+    getLevel(state, enemyEntity, undefined),
+  );
 
   return (
     <BaseInfo
