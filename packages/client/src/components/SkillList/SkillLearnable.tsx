@@ -5,7 +5,7 @@ import { Button } from "../utils/Button/Button";
 import Skill from "../Guise/Skill";
 import { useStashCustom } from "../../mud/stash";
 import { getSkill, SkillType } from "../../mud/utils/skill";
-import { useLevel } from "../../mud/hooks/charstat";
+import { getLevel } from "../../mud/utils/charstat";
 import { getActiveGuise } from "../../mud/utils/guise";
 import { UseSkillButton } from "../UseSkillButton";
 import { useMUD } from "../../MUDContext";
@@ -24,7 +24,9 @@ export default function SkillLearnable({
   // const duration = useDuration(cycleEntity, skill.entity);
 
   const guise = useStashCustom((state) => getActiveGuise(state, cycleEntity));
-  const level = useLevel(cycleEntity, guise?.levelMul)?.level;
+  const level = useStashCustom(
+    (state) => getLevel(state, cycleEntity, guise?.levelMul)?.level,
+  );
 
   const onSkill = useCallback(async () => {
     if (!cycleEntity) throw new Error("Cycle must be active");
