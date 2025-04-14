@@ -95,7 +95,7 @@ export default function CombatActions() {
           />
           {selectedSkill && (
             <UseSkillButton
-              entity={selectedSkill?.value}
+              entity={selectedSkill.value}
               onSkill={onSkill}
               style={{ width: "9rem" }}
             />

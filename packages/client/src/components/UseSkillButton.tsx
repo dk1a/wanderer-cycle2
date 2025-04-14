@@ -1,15 +1,17 @@
 import { CSSProperties } from "react";
+import { Hex } from "viem";
 import { useStashCustom } from "../mud/stash";
 import { getSkill } from "../mud/utils/skill";
-import { Hex } from "viem";
 import { getManaCurrent } from "../mud/utils/currents";
+import { formatZeroTerminatedString } from "../mud/utils/format";
 import { Button } from "./utils/Button/Button";
 
 type UseSkillButtonData = {
-  entity: Hex | undefined;
+  entity: Hex;
   onSkill: () => Promise<void>;
   style?: CSSProperties;
 };
+
 export function UseSkillButton({ entity, onSkill, style }: UseSkillButtonData) {
   const skill = useStashCustom((state) => getSkill(state, entity));
   const manaCurrent = useStashCustom((state) => getManaCurrent(state, entity));
@@ -35,7 +37,11 @@ export function UseSkillButton({ entity, onSkill, style }: UseSkillButtonData) {
             <span className="text-dark-number">
               {skill.duration.timeValue}{" "}
             </span>
-            {/*<span className="text-dark-string">{skill.duration.timeScopeName}</span>*/}
+            {
+              <span className="text-dark-string">
+                {formatZeroTerminatedString(skill.duration.timeId)}
+              </span>
+            }
             {")"}
           </div>
         </div>

@@ -1,14 +1,14 @@
 import { useCallback, useMemo, useState } from "react";
 import { Hex } from "viem";
-import { useWandererContext } from "../../contexts/WandererContext";
-import { Button } from "../utils/Button/Button";
-import Skill from "../Guise/Skill";
 import { useStashCustom } from "../../mud/stash";
 import { getSkill, SkillType } from "../../mud/utils/skill";
 import { getLevel } from "../../mud/utils/charstat";
 import { getActiveGuise } from "../../mud/utils/guise";
-import { UseSkillButton } from "../UseSkillButton";
 import { useMUD } from "../../MUDContext";
+import { useWandererContext } from "../../contexts/WandererContext";
+import { Button } from "../utils/Button/Button";
+import Skill from "../Guise/Skill";
+import { UseSkillButton } from "../UseSkillButton";
 
 export default function SkillLearnable({
   entity,
@@ -21,7 +21,6 @@ export default function SkillLearnable({
   const { learnCycleSkill, learnedSkillEntities, cycleEntity } =
     useWandererContext();
   const skill = useStashCustom((state) => getSkill(state, entity));
-  // const duration = useDuration(cycleEntity, skill.entity);
 
   const guise = useStashCustom((state) => getActiveGuise(state, cycleEntity));
   const level = useStashCustom(
