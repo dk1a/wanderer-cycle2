@@ -1,11 +1,8 @@
-import { EntityIndex } from "@latticexyz/recs";
-import { BigNumber } from "ethers";
-import {
-  CycleCombatRewardRequest,
-  useCancelCycleCombatReward,
-  useClaimCycleCombatReward,
-} from "../../mud/hooks/combat";
-import CustomButton from "../UI/Button/CustomButton";
+import { useCallback, useState } from "react";
+import { Hex } from "viem";
+import { CycleCombatRewardRequest } from "../../mud/utils/combat";
+import { useMUD } from "../../MUDContext";
+import { Button } from "../utils/Button/Button";
 
 const blockNumberLimit = 256;
 
@@ -14,14 +11,26 @@ export function CombatReward({
   currentBlockNumber,
   rewardRequest,
 }: {
-  requesterEntity: EntityIndex;
-  currentBlockNumber: number;
+  requesterEntity: Hex;
+  currentBlockNumber: bigint;
   rewardRequest: CycleCombatRewardRequest;
 }) {
-  const claimCycleCombatReward = useClaimCycleCombatReward();
-  const cancelCycleCombatReward = useCancelCycleCombatReward();
-  const { requestEntity, blocknumber } = rewardRequest;
-  const requestBlockNumber = BigNumber.from(blocknumber).toNumber();
+  const { systemCalls } = useMUD();
+  const [isBusy, setIsBusy] = useState(false);
+
+  const { requestId, blocknumber: requestBlockNumber } = rewardRequest;
+
+  const cancelCycleCombatReward = useCallback(async () => {
+    setIsBusy(true);
+    await systemCalls.cancelCycleCombatReward(requesterEntity, requestId);
+    setIsBusy(false);
+  }, [systemCalls, requesterEntity]);
+
+  const claimCycleCombatReward = useCallback(async () => {
+    setIsBusy(true);
+    await systemCalls.claimCycleCombatReward(requesterEntity, requestId);
+    setIsBusy(false);
+  }, [systemCalls, requesterEntity]);
 
   const isExpired = currentBlockNumber - requestBlockNumber >= blockNumberLimit;
 
@@ -29,14 +38,13 @@ export function CombatReward({
     return (
       <div className="flex flex-col items-center justify-around text-dark-200 text-lg">
         expired
-        <CustomButton
+        <Button
           style={{ width: "9rem" }}
-          onClick={() =>
-            cancelCycleCombatReward(requesterEntity, requestEntity)
-          }
+          onClick={cancelCycleCombatReward}
+          disabled={isBusy}
         >
           delete
-        </CustomButton>
+        </Button>
       </div>
     );
   } else {
@@ -51,12 +59,13 @@ export function CombatReward({
           <span className="text-dark-200 mx-1">/</span>
           <span className="text-dark-number">{blockNumberLimit}</span>
         </div>
-        <CustomButton
-          onClick={() => claimCycleCombatReward(requesterEntity, requestEntity)}
+        <Button
+          onClick={claimCycleCombatReward}
           style={{ width: "9rem" }}
+          disabled={isBusy}
         >
           claim reward
-        </CustomButton>
+        </Button>
       </div>
     );
   }
