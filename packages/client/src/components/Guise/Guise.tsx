@@ -13,7 +13,11 @@ interface GuiseProps {
 }
 
 export default function Guise({ guise, onSelectGuise, disabled }: GuiseProps) {
-  const pstats = Object.values(PSTAT) as PSTAT[];
+  const pstats = Object.values(PSTAT).filter(
+    (v) => typeof v === "number",
+  ) as PSTAT[];
+
+  console.log(pstats);
 
   return (
     <div className="border border-dark-400 w-72 h-auto p-4 flex flex-col bg-dark-500 transform delay-500">

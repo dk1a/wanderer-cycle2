@@ -26,11 +26,9 @@ export function getExperience(state: StateLocal, entity: Hex) {
 }
 
 export function getPStats(state: StateLocal, targetEntity: Hex) {
-  const pstats = [];
-  for (const pstatName of Object.values(PSTAT) as PSTAT[]) {
-    pstats.push(getPStat(state, targetEntity, pstatName));
-  }
-  return pstats;
+  return (Object.values(PSTAT).filter((v) => typeof v === "number") as PSTAT[])
+    .map((pstatName) => getPStat(state, targetEntity, pstatName))
+    .filter(Boolean);
 }
 
 export function getPStat(state: StateLocal, targetEntity: Hex, key: PSTAT) {

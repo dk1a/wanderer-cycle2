@@ -37,7 +37,10 @@ const MAX_LEVEL = 16 as const;
  * @dev Utility function to reverse a level into its required exp
  */
 export function levelToExp(level: number) {
-  if (level < 1 || level > MAX_LEVEL) throw new Error("Invalid level");
+  if (level < 1 || level > MAX_LEVEL) {
+    console.warn(`Invalid level passed to levelToExp: ${level}`);
+    return 0;
+  }
 
   // this formula starts from 0, so adjust the arg
   if (level == 1) {
