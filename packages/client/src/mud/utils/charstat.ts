@@ -10,7 +10,7 @@ import {
   PStats,
   pstatsFromExperience,
 } from "../utils/experience";
-import { ELE_STAT, PSTAT } from "contracts/enums";
+import { ELE_STAT, getEnumValues, PSTAT } from "contracts/enums";
 import { getValuesElementalFinal, getValuesFinal } from "./statmod";
 
 export function getExperience(state: StateLocal, entity: Hex) {
@@ -26,9 +26,9 @@ export function getExperience(state: StateLocal, entity: Hex) {
 }
 
 export function getPStats(state: StateLocal, targetEntity: Hex) {
-  return (Object.values(PSTAT).filter((v) => typeof v === "number") as PSTAT[])
-    .map((pstatName) => getPStat(state, targetEntity, pstatName))
-    .filter(Boolean);
+  return getEnumValues(PSTAT).map((pstat) =>
+    getPStat(state, targetEntity, pstat),
+  );
 }
 
 export function getPStat(state: StateLocal, targetEntity: Hex, key: PSTAT) {
@@ -156,7 +156,7 @@ export function getSpell(
   const arcana = getPStat(state, targetEntity, PSTAT.ARCANA);
 
   const buffedBaseValues = { ...baseValues };
-  for (const eleStat of Object.values(ELE_STAT) as ELE_STAT[]) {
+  for (const eleStat of getEnumValues(ELE_STAT)) {
     if (baseValues[eleStat] > 0) {
       buffedBaseValues[eleStat] += arcana.buffedLevel;
     }

@@ -1,4 +1,4 @@
-import { PSTAT } from "contracts/enums";
+import { getEnumValues, PSTAT } from "contracts/enums";
 
 export const pstatNames = {
   [PSTAT.STRENGTH]: "strength",
@@ -73,7 +73,7 @@ export function expToLevel(expVal: number) {
 export function getAggregateExperience(experience: PStats, levelMul: PStats) {
   let expTotal = 0;
   let mulTotal = 0;
-  for (const pstat of Object.values(PSTAT) as PSTAT[]) {
+  for (const pstat of getEnumValues(PSTAT)) {
     expTotal += experience[pstat] * levelMul[pstat];
     mulTotal += levelMul[pstat];
   }

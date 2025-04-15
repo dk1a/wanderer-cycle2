@@ -31,7 +31,7 @@ export function getGuise(state: StateLocal, entity: Hex) {
 
   return {
     entity,
-    name: name?.name ?? null,
+    name: name.name,
     levelMul: parseArrayPStat(guisePrototype.arrayPStat),
     skillEntities: Object.values(skillEntities?.entityArray ?? []),
   };
