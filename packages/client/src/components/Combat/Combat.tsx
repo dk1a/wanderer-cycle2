@@ -4,6 +4,7 @@ import { getCombatLog } from "../../mud/utils/combat";
 import { useWandererContext } from "../../contexts/WandererContext";
 import { CombatRoundOutcome } from "./CombatRoundOutcome";
 import CombatActions from "./CombatActions";
+import { DotsLoader } from "../utils/DotsLoader/DotsLoader";
 
 export function Combat() {
   const { cycleEntity, enemyEntity } = useWandererContext();
@@ -20,8 +21,8 @@ export function Combat() {
   }, [combatLog]);
 
   return (
-    <section className="p-2 flex flex-col items-center w-full">
-      <div className="flex justify-center w-1/2">
+    <section className="p-4 flex flex-col items-center w-full">
+      <div className="flex justify-center w-full">
         <div className="text-2xl text-dark-comment mr-2">
           {"// selected map"}
         </div>
@@ -31,7 +32,9 @@ export function Combat() {
         lastRound ? (
           <CombatRoundOutcome roundLog={lastRound} />
         ) : (
-          <div>Loading combat log...</div>
+          <div>
+            <DotsLoader text="Loading combat log" />
+          </div>
         )
       ) : (
         <div>No enemy selected. Loading battle...</div>

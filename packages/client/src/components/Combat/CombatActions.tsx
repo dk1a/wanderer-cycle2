@@ -83,11 +83,12 @@ export default function CombatActions() {
   }, [handleRound, selectedSkill, combatSkills]);
 
   return (
-    <div className="w-1/2 flex flex-col items-center mt-4">
+    <div className="flex flex-col items-center mt-4 w-full">
       <div className="flex flex-col items-center justify-around w-full">
-        <div className="flex items-center justify-center w-full gap-x-8">
+        <div className="flex items-center justify-center gap-x-8 w-full">
           <Select
             classNamePrefix={"custom-select"}
+            className={"w-full"}
             placeholder={"Select a skill"}
             options={skillOptions}
             onChange={selectSkill}
