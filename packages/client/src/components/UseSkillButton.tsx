@@ -17,7 +17,7 @@ export function UseSkillButton({ entity, onSkill, style }: UseSkillButtonData) {
   const manaCurrent = useStashCustom((state) => getManaCurrent(state, entity));
 
   return (
-    <div className="flex">
+    <div className="flex items-center justify-center">
       <Button
         style={style}
         onClick={onSkill}
@@ -33,16 +33,14 @@ export function UseSkillButton({ entity, onSkill, style }: UseSkillButtonData) {
       {skill.duration !== undefined && skill.duration.timeValue > 0 && (
         <div className="ml-2">
           <div className="text-dark-300">
-            {"("}
-            <span className="text-dark-number">
-              {skill.duration.timeValue}{" "}
-            </span>
+            {"( "}
+            <span className="text-dark-number">{skill.duration.timeValue}</span>
             {
               <span className="text-dark-string">
                 {formatZeroTerminatedString(skill.duration.timeId)}
               </span>
             }
-            {")"}
+            {" )"}
           </div>
         </div>
       )}

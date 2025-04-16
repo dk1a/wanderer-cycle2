@@ -86,21 +86,24 @@ export default function CombatActions() {
     <div className="flex flex-col items-center mt-4 w-full">
       <div className="flex flex-col items-center justify-around w-full">
         <div className="flex items-center justify-center gap-x-8 w-full">
-          <Select
-            classNamePrefix={"custom-select"}
-            className={"w-full"}
-            placeholder={"Select a skill"}
-            options={skillOptions}
-            onChange={selectSkill}
-            value={selectedSkill}
-          />
-          {selectedSkill && (
-            <UseSkillButton
-              entity={selectedSkill.value}
-              onSkill={onSkill}
-              style={{ width: "9rem" }}
+          <div className="d-flex flex-col w-full">
+            <Select
+              classNamePrefix={"custom-select"}
+              className={"w-full"}
+              placeholder={"Select a skill"}
+              options={skillOptions}
+              onChange={selectSkill}
+              value={selectedSkill}
             />
-          )}
+            {selectedSkill && (
+              <div className="w-full mt-4">
+                <UseSkillButton
+                  entity={selectedSkill.value}
+                  onSkill={onSkill}
+                />
+              </div>
+            )}
+          </div>
         </div>
       </div>
       <div className="mt-4">

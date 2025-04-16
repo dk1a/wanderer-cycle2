@@ -143,10 +143,15 @@
 .custom-select__menu {
   background-color: #292a2e !important;
   animation: scaleIn 0.35s ease-in-out;
-  border-radius: 0;
   margin: 0;
   padding: 0;
   border: 1px solid #3c3c3c;
+  color: #fff;
+}
+
+.custom-select__menu-list {
+  padding: 0 !important;
+  border-radius: 0 !important;
 }
 
 .custom-select__option {
