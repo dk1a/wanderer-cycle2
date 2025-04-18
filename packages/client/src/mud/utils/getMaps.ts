@@ -14,7 +14,7 @@ export function getMaps(
   mapType: Hex | undefined,
 ): MapData[] {
   let maps = Object.values(
-    getRecords({ state, table: mudTables.root__MapTypeComponent }),
+    getRecords({ state, table: mudTables.map__MapTypeComponent }),
   );
   if (mapType !== undefined) {
     maps = maps.filter(({ value }) => value === mapType);
