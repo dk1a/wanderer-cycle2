@@ -16,7 +16,7 @@ export function getMap(
   if (entity === undefined) return;
   const map = getRecord({
     state,
-    table: mudTables.root__MapTypeComponent,
+    table: mudTables.map__MapTypeComponent,
     key: { entity },
   });
   if (map === undefined) return;
@@ -54,7 +54,7 @@ export function getFromMap(
   if (encounterEntity === undefined) return;
   const fromMap = getRecord({
     state,
-    table: mudTables.root__FromMap,
+    table: mudTables.cycle__FromMap,
     key: { encounterEntity },
   });
   if (fromMap === undefined) return;
